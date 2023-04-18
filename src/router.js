@@ -24,6 +24,8 @@ Vue.mixin({
 });
 
 let routeArr = [];
+routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage});
+
 routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage});
 routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login});
 routeArr.push({ title: 'Register', icon: '', path: '/register', component: Register});
