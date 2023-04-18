@@ -34,7 +34,7 @@
                     <v-layout column align-start pt-12>
                         <p class="paragraph medium-text">Belum punya akun?</p>
                         <!-- <v-btn text color="#146C94" class="pa-0 pt-2">Daftar Sekarang</v-btn> -->
-                        <a color="#146C94" class="bold-text pt-3">Daftar Sekarang</a>
+                        <a  class="bold-text pt-3 daftar-anchor">Daftar Sekarang</a>
                     </v-layout>
                 </v-container>
             </v-card>
@@ -74,5 +74,9 @@
     .subtitle-paragraph{
         font-weight: 300;
         font-size: 18px;
+    }
+
+    .daftar-anchor{
+        color:#146C94 !important;
     }
 </style>

@@ -12,7 +12,7 @@
         </v-flex>
         <v-layout row wrap text-sm-center class="layout-main">
             <v-flex xs2 style="background-color: #146C94; border-radius: 6px; margin-bottom: 6px;">
-                <p class="main-title paragraph" style="color: #fff; padding: 8px 12px;">Kos Putri</p>
+                <p class="thin-title paragraph" style="color: #fff; padding: 8px 12px;">Kos Putri</p>
             </v-flex>
 
             <v-layout align-center justify-center row>
@@ -117,7 +117,9 @@
                                     <img src="../../assets/Frame1.png" alt="" width="50%">
                                     <img src="../../assets/Frame1.png" alt="" width="50%">                                 
                                 </div>
-                                <v-btn color="#146C94" text elevation="0" class="btn-foto-kamar">Lihat foto kamar lebih lanjut</v-btn>
+                                <a  class="bold-text pt-3 daftar-anchor">Lihat foto kamar lebih lanjut</a>
+
+                                <!-- <v-btn color="#146C94" text elevation="0" class="btn-foto-kamar"></v-btn> -->
                             </div>
                             <v-flex>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur repellat totam magnam ea ipsam deserunt ex? Voluptatem praesentium ullam tempore tenetur, quia architecto perspiciatis, iusto mollitia odit corrupti non aspernatur?
@@ -263,32 +265,8 @@ export default {
         border: 0.25px solid rgba(3,3,3, .1) ;
     }
 
-    .main-title{
-        font-weight: 700 !important; 
-        font-size: 32px !important;
-    }
-
-    .sub-title{
-        font-weight: 600; 
-        font-size: 20px !important;
-    }
-    
-    .paragraph{
-        margin: 0 !important;
-    }
-
-    .medium-title{
-        font-weight: 500;
-        font-size: 32px;
-    }
-
     .card-padding{
         padding: 24px !important;
-    }
-
-    .regular-text{
-        font-weight: 400;
-        font-size: 18px;
     }
 
     .btn-foto-kamar{
@@ -296,10 +274,6 @@ export default {
         margin-left: 0px !important;
     }
 
-    .small-title{
-        font-weight: 500;
-        margin-bottom: 6px !important;
-        font-size: 22px;
-    }
+
 
 </style>
