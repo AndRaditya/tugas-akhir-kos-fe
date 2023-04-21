@@ -10,32 +10,35 @@
                         </v-layout>
                         <v-layout column pt-4>
                             <v-layout column align-start>
-                                <p>Nama Lengkap</p>
+                                <p class="thin-regular-text">Nama Lengkap</p>
                             </v-layout>
                             <v-text-field
                                 outlined
                                 label="Masukkan Nama Lengkap"
-                                v-model="model.nama_lengkap"
-                            ></v-text-field>
-                            <v-layout column align-start>
-                                <p>Nomor Telepon</p>
-                            </v-layout>
-                            <v-text-field
+                                v-model="model.name"
+                                :rules="[rules.required]"
+                                ></v-text-field>
+                                <v-layout column align-start>
+                                    <p class="thin-regular-text">Nomor Telepon</p>
+                                </v-layout>
+                                <v-text-field
                                 outlined
                                 label="Masukkan Nomor Telepon"
-                                v-model="model.nomor_telepon"
-                            ></v-text-field>
-                            <v-layout column align-start>
-                                <p>Email</p>
-                            </v-layout>
-                            <v-text-field
+                                v-model="model.phone_number"
+                                :rules="[rules.required]"
+                                ></v-text-field>
+                                <v-layout column align-start>
+                                    <p class="thin-regular-text">Email</p>
+                                </v-layout>
+                                <v-text-field
                                 outlined
                                 label="Masukkan Email"
                                 v-model="model.email"
                                 type="email"
-                            ></v-text-field>
-                            <v-layout column align-start>
-                                <p>Password</p>
+                                :rules="[rules.required]"
+                                ></v-text-field>
+                                <v-layout column align-start>
+                                    <p class="thin-regular-text">Password</p>
                             </v-layout>
                             <v-text-field
                                 outlined
@@ -49,13 +52,15 @@
                             </v-text-field>
 
 
-                            <v-btn color="#146C94" elevation="0" class="white--text" ref="form_register" type="submit">Masuk</v-btn>
-                            <v-btn color="#19A7CE" outlined text elevation="0" style="margin-top: 12px;" class="outline-btn">Sudah Punya Akun? Masuk Sekarang</v-btn>
+                            <v-btn color="#146C94" elevation="0" class="white--text" ref="form_register" type="submit">Daftar Sekarang</v-btn>
+                            <hr class="mt-6">
+                            <v-btn color="#19A7CE" outlined text elevation="0" class="outline-btn mt-6" @click="login()">Sudah Punya Akun? Masuk Sekarang</v-btn>
                         </v-layout>
                     </v-container>
                 </v-form>
             </v-card>
         </v-layout> 
+        <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
     </v-main>
 </template>
 
@@ -65,6 +70,9 @@
 
         data(){
             return{
+                snackbar: '',
+                color: '',
+                error_message: '',
                 valid: false,
                 model: {},
                 
@@ -73,8 +81,6 @@
                     required: value => !!value || 'Required.',
                     min: v => v.length >= 8 || 'Min 8 characters',
                 },
-
-
             }
         },
         created(){
@@ -96,8 +102,8 @@
                     email: '',
                     password: '',
                     passwordUlang: '',
-                    nama_lengkap: '',
-                    nomor_telepon: '',
+                    name: '',
+                    phone_number: '',
                 }
             },
             validateForm () {
@@ -115,8 +121,44 @@
             },
 
             submitForm(){
-                this.devLog(this.model)
-            }
+                // this.devLog(this.model)
+                this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.model)) ;
+
+                this.$http.post(this.API+'/kos-booking', this.model)
+                .then(response => {
+                    this.devLog("Login Result Code: " +response.status);
+                    if(response.status == 200){
+                        if(response.data.api_status == "fail"){
+                            this.devLog('response fail')
+                            this.error_message = response.data.api_title;
+                            this.color = "red";
+                            this.snackbar = true;
+                        }else{
+                            this.user = response.data.data[0];
+                            localStorage.token= response.data.api_message;
+                            this.devLog("Token: "+ localStorage.token);
+                            this.devLog("Login Result Status: " +response.data.api_status);
+                            localStorage.userLogin = JSON.stringify(this.user);
+                            this.devLog(JSON.parse(localStorage.userLogin));
+
+                            this.$router
+                                .push({ path: '/dashboard' })
+                                .then(() => { this.$router.go() })
+                            // this.$router.push('/dashboard');
+                        }
+                    }
+                }).catch((err)=>{
+                    this.error_message = err.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                });
+            },
+
+            login(){
+                this.$router
+                    .push({ path: '/login' })
+                    .then(() => { this.$router.go() })
+            },
         }
 
     }
