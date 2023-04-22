@@ -101,7 +101,7 @@ export default {
 
   .small-title{
     font-weight: 500;
-    margin-bottom: 6px !important;
+    margin-bottom: 0.6rem !important;
     font-size: 2.2rem;
   }
 
@@ -113,26 +113,40 @@ export default {
   .belum--verifikasi-pengelola{
       color: #19A7CE;
       border: thin solid #19A7CE;
-      border-radius: 2px;
-      padding:  6px 24px;
+      border-radius: 0.2rem;
+      padding:  0.6rem 2.4rem;
   }
 
   .sudah--verifikasi-pengelola{
       color: #fff;
       background-color: #19A7CE;
-      border-radius: 2px;
-      padding:  6px 24px;
+      border-radius: 0.2rem;
+      padding:  0.6rem 2.4rem;
+  }
+
+  .terkonfirmasi-pengelola{
+      color: #fff;
+      background-color: #519259;
+      border-radius: 0.2rem;
+      padding:  0.6rem 2.4rem;
+  }
+
+  .dibatalkan-pengelola{
+      color: #fff;
+      background-color: #DF2E38;
+      border-radius: 0.2rem;
+      padding:  0.6rem 2.4rem;
   }
 
   .card-form{
       width: 28vw;
-      padding: 48px;
-      border-radius: 6px;
-      margin-bottom: 10px;
+      padding: 4.8rem;
+      border-radius: 0.6rem;
+      margin-bottom: 1rem;
   }
 
   .title-paragraph{
-      font-size: 28px;
+      font-size: 2.8rem;
       font-weight: 600;
   }
 
@@ -159,5 +173,15 @@ export default {
     font-size: 1.6rem;
     font-weight: 400;
     /* padding: 12px 18px; */
+  }
+
+  .v-list-item__title{
+    font-size: 1.6rem !important;
+    font-weight: 400;
+  }
+
+  .main-btn{
+    padding: 2.4rem 3.2rem !important;
+    font-size: 1.6rem;
   }
 </style>

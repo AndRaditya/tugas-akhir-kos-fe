@@ -65,6 +65,34 @@ Vue.mixin({
             // }
         });
     },
+
+    check_pengelola(){
+        let param_pengelola;
+
+        if(localStorage.userLogin){
+            if(localStorage.userLogin){
+                let localStorageUser = localStorage.getItem('userLogin');
+                let user_login = JSON.parse(localStorageUser);
+                
+                if(user_login.roles_id == 1){
+                    param_pengelola = true;
+                }else{
+                    param_pengelola = false;
+                }
+            }
+        }else{
+            let path = document.URL.split('/');
+
+            let mainPath = path.splice(0, path.length).join('/');
+            // this.$router.push(mainPath + url);
+            param_pengelola = mainPath.includes('pengelola');
+            this.devLog('mainPath');
+            this.devLog(param_pengelola);
+        }
+
+
+        return param_pengelola;
+    },
   },
 })
 

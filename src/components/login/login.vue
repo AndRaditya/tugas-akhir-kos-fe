@@ -3,9 +3,13 @@
         <v-layout align-center justify-center>
                     <v-card class="card-form" elevation="2">
                         <v-container column fluid>
-                            <v-layout column align-start>
+                            <v-layout column align-start v-if="!this.param_pengelola">
                                 <p class="title-paragraph">Masuk Sekarang!</p>
                                 <p class="subtitle-paragraph">Nikmati kemudahan memesan kos</p>
+                            </v-layout>
+                            <v-layout column align-start v-if="this.param_pengelola">
+                                <p class="title-paragraph">Selamat Datang Pengelola!</p>
+                                <!-- <p class="subtitle-paragraph">Nikmati kemudahan memesan kos</p> -->
                             </v-layout>
                             <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_login" autofocus lazy-validation>
                                 <v-layout column pt-4>
@@ -38,7 +42,7 @@
                                 <v-btn color="#146C94" elevation="0" class="white--text" type="submit">Masuk</v-btn>
                             </v-layout>
                         </v-form>
-                        <v-layout column align-start pt-12>
+                        <v-layout column align-start pt-12 v-if="!this.param_pengelola">
                             <p class="paragraph medium-regular-text">Belum punya akun?</p>
                             <a  class="bold-regular-text pt-3 daftar-anchor" @click="register()">Daftar Sekarang</a>
                         </v-layout>
@@ -53,10 +57,12 @@
     export default{
         name: "login-page",
 
-        // props: {
-        //     login: { type: Object, required: true}
-        // },
-
+        props: {
+            api: {
+                type: String,
+                required: true
+            },
+        },
         data(){
             return{
                 email: '',
@@ -66,6 +72,7 @@
                 password: '',
                 valid: false,
                 show1: false,
+                param_pengelola: false,
                 rules: {
                     required: value => !!value || 'Required.'
                 },
@@ -85,8 +92,10 @@
 
             }
         },
+        created(){
+            this.param_pengelola = this.check_pengelola();
+        },  
         methods:{
-
             // checkEmail() {
             //     if(	/^(([^<>()\[\\.,;:\s@"]+(\.[^<>()\[\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.login.email) && this.login.email.length > 0){
             //         this.email_ok = 1;
@@ -114,8 +123,8 @@
                     email: this.email,
                     password: this.password,
                 };
-                this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(loginData)) ;
-                this.$http.post(this.API+'/login', loginData)
+                this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(loginData)) ;
+                this.$http.post(this.api, loginData)
                 .then(response => {
                     this.devLog("Login Result Code: " +response.status);
                     if(response.status == 200){
@@ -132,9 +141,15 @@
                             localStorage.userLogin = JSON.stringify(this.user);
                             this.devLog(JSON.parse(localStorage.userLogin));
 
-                            this.$router
-                                .push({ path: '/dashboard' })
-                                .then(() => { this.$router.go() })
+                            if(!this.param_pengelola && this.user.roles_id == 2){
+                                this.$router
+                                    .push({ path: '/dashboard' })
+                                    .then(() => { this.$router.go() })
+                            }else if(this.param_pengelola && this.user.roles_id == 1){
+                                this.$router
+                                    .push({ path: '/pengelola' })
+                                    .then(() => { this.$router.go() })
+                            }
                             // this.$router.push('/dashboard');
                         }
                     }
