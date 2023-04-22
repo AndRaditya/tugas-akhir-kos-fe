@@ -3,11 +3,16 @@ import Router from 'vue-router';
 
 import LandingPage from './components/landing-page/landing-page'
 import Login from './components/login/login'
+import UserProfile from './components/profile/user-profile'
 import Register from './components/register/register'
+
 import RincianPesananCustomer from './components/customer/pesanan/rincian-pesanan'
 import RincianTransaksiCustomer from './components/customer/transaksi/rincian-transaksi'
 import RincianPembayaranCustomer from './components/customer/transaksi/rincian-pembayaran'
-import ProfileCustomer from './components/customer/profile/customer-profile'
+
+import PengelolaKos from './components/pengelola/kos/pengelola-kos'
+import PengelolaPesanan from './components/pengelola/pesanan/pengelola-pesanan'
+import PengelolaRincianPesanan from './components/pengelola/pesanan/pengelola-rincian-pesanan'
 
 Vue.use(Router)
 var baseUrl = "";
@@ -28,14 +33,25 @@ let routeArr = [];
 routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage});
 
 routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage});
-routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login});
+routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login, props:{api: api+'/login'}});
 routeArr.push({ title: 'Register', icon: '', path: '/register', component: Register});
 
-//Customer
+// Customer
 routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pesanan', component: RincianPesananCustomer});
 routeArr.push({ title: 'Rincian Transaksi', icon: '', path: '/transaksi', component: RincianTransaksiCustomer});
 routeArr.push({ title: 'Rincian Pembayaran', icon: '', path: '/pembayaran/:id', component: RincianPembayaranCustomer, props:{api: api+'/kos-booking/', apiPengelola: api+'/users-pengelola', apiPembayaran: api+'/kos-booking-pembayaran/'}});
-routeArr.push({ title: 'Profile', icon: '', path: '/profile', component: ProfileCustomer});
+routeArr.push({ title: 'Profile', icon: '', path: '/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});
+
+// Pengelola
+routeArr.push({ title: 'Dashboard', icon: '', path: '/pengelola', component: LandingPage});
+routeArr.push({ title: 'Login', icon: '', path: '/pengelola/login', component: Login, props:{api: api+'/login'}});
+
+routeArr.push({ title: 'Profile', icon: '', path: '/pengelola/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});
+
+routeArr.push({ title: 'Kos', icon: '', path: '/pengelola/kos', component: PengelolaKos, props:{api: api+'/kos/'}});
+routeArr.push({ title: 'Pesanan', icon: '', path: '/pengelola/pesanan', component: PengelolaPesanan, props:{api: api+'/kos-booking'}});
+routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pengelola/pesanan/:id', component: PengelolaRincianPesanan, props:{api: api+'/kos-booking/', apiKamarKosong: api + '/kamar-kosong'}});
+
 
 routeArr.push({ title: 'Page Not Found', name:'404', path:'*', component: {
   template: '<v-content><v-container style="height:100% !important;"><v-layout row class="text-xs-center" justify-center><v-flex class="text-xs-center" id="card" xs12 sm8 md4 align-center>'+

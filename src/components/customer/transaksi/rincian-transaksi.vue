@@ -12,8 +12,8 @@
                             <h3 class="thin-regular-text paragraph pb-2">{{ kos_booking.kode }}</h3>
                         </v-layout>
                         <v-layout justify-end class="mt-0">
-                            <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi'">{{ kos_booking.status }} Pengelola</p>
-                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Sudah Dikonfirmasi'">{{ kos_booking.status }} Pengelola</p>
+                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Sudah Dikonfirmasi'">{{ kos_booking.status }} Pengelola</p>
+                            <p class="belum--verifikasi-pengelola medium-regular-text" v-else>{{ kos_booking.status }}</p>
                         </v-layout>
                     </v-layout>
                     <hr>

@@ -158,7 +158,7 @@
                         <br>
                         <v-layout row align-start>
                             <v-flex xs6>
-                                <v-layout column>
+                                <v-layout column v-if="!this.param_pengelola">
                                     <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_booking" autofocus lazy-validation>
                                         <v-layout align-start column>
                                             <p class="regular-text">Masukkan Tanggal Mulai</p>
@@ -192,6 +192,9 @@
                                         </v-layout>
                                         <v-btn color="#146C94" type="submit" elevation="0" class="pengelola-btn white--text" width="100%">Pesan Sekarang</v-btn>
                                     </v-form>
+                                </v-layout>
+                                <v-layout row v-else-if="this.param_pengelola">
+
                                 </v-layout>
                             </v-flex>
                             <v-flex xs6>
@@ -269,6 +272,8 @@ export default {
             rules: {
                 required: value => !!value || 'Required.',
             },
+
+            param_pengelola: false,
         }
     },
     created(){
@@ -276,6 +281,7 @@ export default {
         this.initHeader();
         this.hargaKamar();
         this.sisaKamar();
+        this.param_pengelola = this.check_pengelola();
     },  
     methods:{
         initHeader(){

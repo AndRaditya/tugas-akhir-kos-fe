@@ -10,7 +10,7 @@
                         </v-layout>
                         <v-layout column pt-4>
                             <v-layout column align-start>
-                                <p class="thin-regular-text">Nama Lengkap</p>
+                                <p class="medium-regular-text">Nama Lengkap</p>
                             </v-layout>
                             <v-text-field
                                 outlined
@@ -18,7 +18,7 @@
                                 v-model="user.name"
                             ></v-text-field>
                             <v-layout column align-start>
-                                <p class="thin-regular-text">Nomor Telepon</p>
+                                <p class="medium-regular-text">Nomor Telepon</p>
                             </v-layout>
                             <v-text-field
                                 outlined
@@ -26,7 +26,7 @@
                                 v-model="user.phone_number"
                             ></v-text-field>
                             <v-layout column align-start>
-                                <p class="thin-regular-text">Email</p>
+                                <p class="medium-regular-text">Email</p>
                             </v-layout>
                             <v-text-field
                                 outlined
@@ -35,10 +35,35 @@
                                 type="email"
                             ></v-text-field>
 
-                            <v-layout column class="py-4">
-                                <p class="medium-regular-text">Ubah Password Anda</p>
+                            <v-layout column v-if="this.param_pengelola">
                                 <v-layout column align-start>
-                                    <p class="thin-regular-text">Password Lama</p>
+                                    <p class="medium-regular-text">Nama Bank</p>
+                                </v-layout>
+                                <!-- <v-text-field
+                                    outlined
+                                    label="Masukkan Bank"
+                                    v-model="user.bank"
+                                ></v-text-field> -->
+                                <v-select
+                                    outlined
+                                    label="Masukkan Bank"
+                                    v-model="user.bank"
+                                    :items="nama_bank"
+                                ></v-select>
+                                <v-layout column align-start>
+                                    <p class="medium-regular-text">Nomor Rekening</p>
+                                </v-layout>
+                                <v-text-field
+                                    outlined
+                                    label="Masukkan Nomor Rekening"
+                                    v-model="user.rekening"
+                                ></v-text-field>
+                            </v-layout>
+
+                            <v-layout column class="py-4">
+                                <p class="thin-regular-text">Ubah Password Anda</p>
+                                <v-layout column align-start>
+                                    <p class="medium-regular-text">Password Lama</p>
                                 </v-layout>
                                 <!-- v-model="user.password"
                                 :append-icon="model.show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -60,7 +85,7 @@
                                     >
                                 </v-text-field>
                                 <v-layout column align-start>
-                                    <p class="thin-regular-text">Password Baru</p>
+                                    <p class="medium-regular-text">Password Baru</p>
                                 </v-layout>
                                 <v-text-field
                                     outlined
@@ -76,7 +101,7 @@
                                     >
                                 </v-text-field>
                                 <v-layout column align-start>
-                                    <p class="thin-regular-text">Konfirmasi Password Baru</p>
+                                    <p class="medium-regular-text">Konfirmasi Password Baru</p>
                                 </v-layout>
                                 <v-text-field
                                     outlined
@@ -118,12 +143,25 @@
     export default{
         name: "register-page",
 
+        props: {
+            api: {
+                type: String,
+                required: true
+            },
+            apiPassword: {
+                type: String,
+                required: true
+            },
+        },
+
         data(){
             return{
                 valid: false,
                 model: {},
                 snackbar: '',
                 color: '',
+                nama_bank: ['BANK RAKYAT INDONESIA', 'BANK MANDIRI', 'BANK NEGARA INDONESIA', 'BANK CENTRAL ASIA',
+                'BANK TABUNGAN NEGARA', 'BANK DANAMON INDONESIA', 'BANK PERMATA'],
                 error_message: '',
                 
                 user:{
@@ -133,7 +171,11 @@
                     roles_id: null,
                     bank: '',
                     phone_number: '',
+                    rekening: '',
                 },
+                param_pengelola: false,
+
+                
                 // rules: {
                 //     required: value => !!value || 'Required.',
                 //     min: v => v.length >= 8 || 'Min 8 characters',
@@ -143,6 +185,7 @@
             }
         },
         created(){
+            this.param_pengelola = this.check_pengelola();
             this.devLog("Component Product Item Created...");
             this.devLog(`WINDOW: { WIDTH: ${this.WINDOW.WIDTH} , HEIGHT: ${this.WINDOW.HEIGHT} }`);
             this.pass.old.rule= [
@@ -168,7 +211,7 @@
 
                     let user_id = user_login.id;
 
-                    this.$http.get(this.API+'/users/'+user_id)
+                    this.$http.get(this.api+user_id)
                     .then(response => {
                         this.devLog("Login Result Code: " +response.status);
                         if(response.status == 200){
@@ -235,7 +278,7 @@
             putPassword(){
                 this.devLog("Updating User Password: put to "+ this.API+'/users/'+this.user.id);
                 this.devLog(JSON.stringify(this.user));
-                this.$http.put(this.API + '/users', this.user).then(response => {
+                this.$http.put(this.apiPassword, this.user).then(response => {
                     this.devLog("Loading "+ this.api + " - Result Status: " + JSON.stringify(response));
                     
                     // if(!response.data){
@@ -267,7 +310,7 @@
                 // this.devLog("Updating User : put to "+ this.API+this.id);
                 this.devLog("User : ");
                 this.devLog(this.user);
-                this.$http.put(this.API+ '/users/'+this.user.id, this.user)
+                this.$http.put(this.api+this.user.id, this.user)
                 .then(response => {
                     this.devLog(response.status);
                     this.load = false;

@@ -1,22 +1,46 @@
 <template>
-      <v-toolbar height="100vh" elevation="0" class="mb-6">
+      <v-toolbar height="100vh" elevation="0" class="mb-6 pt-2">
         <v-layout class="px-4">
-            <v-layout>
+            <v-layout justify-start align-start>
                 <!-- <img src="../assets/Frame1.png"> -->
+                <p v-if="this.param_pengelola" class="thin-bigger-regular-text paragraph" style="color: #146C94;">Admin</p>
             </v-layout>
 
+      
             <v-layout justify-end v-if="!this.is_login_customer && !this.is_login_pengelola">
-                <v-btn color="#146C94" text elevation="0" @click="dashboard()">Kos</v-btn>
+                <v-btn color="#146C94" text elevation="0" @click="redirect_router('dashboard')" v-if="!this.param_pengelola">Kos</v-btn>
                 <v-btn color="#146C94" text elevation="0" @click="login()">Masuk</v-btn>
-                <v-btn color="#146C94" outlined elevation="0" @click="register()" class="create-account-btn">Buat Akun</v-btn>
-            </v-layout>
+                <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('register')" class="create-account-btn" v-if="!this.param_pengelola">Buat Akun</v-btn>
+          </v-layout>
 
             <!-- Customer Navbar -->
-            <v-layout justify-end v-else-if="this.is_login_customer && !this.is_login_pengelola">
-                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="dashboard()">Kos</v-btn>
-                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="pesanan()">Rincian Pesanan</v-btn>
-                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="transaksi()">Rincian Transaksi</v-btn>
-                <v-btn color="#146C94" outlined elevation="0" @click="profile()" class="create-account-btn mr-2">Hai, {{ username }}</v-btn>
+            <v-layout justify-end v-else-if="this.is_login_customer && !this.is_login_pengelola && !this.param_pengelola">
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('dashboard')">Kos</v-btn>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan')">Rincian Pesanan</v-btn>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('transaksi')">Rincian Transaksi</v-btn>
+                <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('profile')" class="create-account-btn mr-2">Hai, {{ username }}</v-btn>
+                <v-btn color="#146C94" elevation="0" @click="logout()" class="create-account-btn white--text ml-2">Keluar</v-btn>
+            </v-layout>
+
+            <!-- Pengelola Navbar -->
+            <v-layout justify-end v-else-if="!this.is_login_customer && this.is_login_pengelola && this.param_pengelola">
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola/kos') ()">Kos</v-btn>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Kamar</v-btn>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola/pesanan') ()">Pesanan</v-btn>
+                <v-menu offset-y>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="#146C94" class="mr-2" text elevation="0" v-bind="attrs" v-on="on" >
+                      Transaksi <span class="material-symbols-outlined" style="color: #146C94">expand_more</span>
+                    </v-btn>
+                  </template>
+                  <v-layout column>
+                    <!-- <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Transaksi Masuk</v-btn>
+                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Transaksi Keluar</v-btn>
+                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Unduh Transaksi</v-btn> -->
+                  </v-layout>
+                </v-menu>
+
+                <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('pengelola/profile')" class="create-account-btn mr-2">Hai, Pengelola {{ username }}</v-btn>
                 <v-btn color="#146C94" elevation="0" @click="logout()" class="create-account-btn white--text ml-2">Keluar</v-btn>
             </v-layout>
         </v-layout>
@@ -24,23 +48,35 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
 
+
   data(){
     return{
       is_login_customer: false,
       is_login_pengelola: false,
       username: '',
+      param_pengelola: false,
+
+      items: [
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
+      ],
     }
   },
 
-  mounted(){
+  created(){
     this.checkLogin();
     this.userName();
+    this.param_pengelola = this.check_pengelola();
   },  
 
   methods:{
@@ -90,28 +126,23 @@ export default {
     },  
 
     login(){
-      this.$router.push('/login');
+      if(!this.param_pengelola){
+        this.$router.push('/login');
+      }
+      else if(this.param_pengelola){
+        this.$router
+          .push({ path: '/login' })
+          .then(() => { this.$router.go() })
+      }
     },
 
-    dashboard(){
-      this.$router.push('/dashboard');
-    },
-    
-    register(){
-      this.$router.push('/register');
-    },
-    
-    pesanan(){
-      this.$router.push('/pesanan');
-    },
-    
-    transaksi(){
-      this.$router.push('/transaksi');
+    redirect_router(item){
+      // this.$router.push('/'+item);
+      this.$router
+          .push({ path: '/'+item })
+          .then(() => { this.$router.go() })
     },
 
-    profile(){
-      this.$router.push('/profile')
-    },
 
   }
 }
