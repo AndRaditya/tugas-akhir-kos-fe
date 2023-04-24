@@ -12,8 +12,12 @@
                             <h3 class="thin-regular-text paragraph pb-2">{{ kos_booking.kode }}</h3>
                         </v-layout>
                         <v-layout justify-end class="mt-0">
-                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Sudah Dikonfirmasi'">{{ kos_booking.status }} Pengelola</p>
-                            <p class="belum--verifikasi-pengelola medium-regular-text" v-else>{{ kos_booking.status }}</p>
+                            <!-- <p class="sudah--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Sudah Dikonfirmasi'">{{ kos_booking.status }} Pengelola</p>
+                            <p class="belum--verifikasi-pengelola medium-regular-text" v-else>{{ kos_booking.status }}</p> -->
+                            <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Kamar'">{{ kos_booking.status }}</p>
+                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Menunggu Konfirmasi Pembayaran'">{{ kos_booking.status }}</p>
+                            <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
+                            <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking.status }}</p>
                         </v-layout>
                     </v-layout>
                     <hr>
@@ -40,7 +44,7 @@
                             <p class="thin-bigger-regular-text">Total Biaya</p>
                             <p class="bold-bigger-regular-text paragraph">Rp{{ total_harga[index] }}</p>
                         </v-layout>
-                        <v-layout justify-end v-if="kos_booking.status == 'Sudah Dikonfirmasi'">
+                        <v-layout justify-end v-if="kos_booking.status == 'Menunggu Konfirmasi Kamar'">
                             <v-btn color="#146C94" width="30%" class="white--text thin-bigger-regular-text" elevation="0" @click="redirectPayment(kos_booking.id)">Lakukan Pembayaran</v-btn>
                         </v-layout>
                     </v-layout>
@@ -148,7 +152,7 @@
                     let tglSelesai = new Date(element.tanggal_selesai);
                     let tglPesan = new Date(element.date);
                     
-                    this.devLog(tglMulai);
+                    // this.devLog(tglMulai);
 
                     const options = {
                         year: "numeric",
