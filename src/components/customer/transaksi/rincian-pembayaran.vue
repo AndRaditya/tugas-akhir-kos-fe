@@ -3,7 +3,7 @@
         <v-layout align-start column>
             <p class="thin-title paragraph">Rincian Pembayaran</p>
         </v-layout>
-        <v-layout column v-if="this.model_pembayaran">
+        <v-layout column v-if="this.model_pembayaran && this.kos_booking_model.status == 'Menunggu Konfirmasi Kamar'">
             <v-layout row class="pt-4">
                 <v-flex xs8> 
                     <v-layout align-start column>
@@ -17,94 +17,101 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-flex style="width: 80%;">
-                <v-card class="card-regular">
-                    <v-layout row>
-                        <v-layout>
-                            <p class="thin-bigger-regular-text paragraph">Silahkan transfer sebelum</p>
-                        </v-layout>
-                        <v-layout>
-
-                        </v-layout>
-                    </v-layout>
-                </v-card>
-                <v-card class="card-regular">
-                    <v-layout row>
-                        <v-layout column align-start>
-                            <p class="medium-regular-text">{{ tanggal_mulai }} &ndash; {{ tanggal_selesai }}</p>
-                            <p class="medium-regular-text">{{ kos_booking_model.total_kamar }} Kamar</p>
-                        </v-layout>
-                        <v-layout justify-end align-start class="mt-0">
-                            <p class="medium-regular-text">{{ kos_booking_model.total_bulan }} Bulan</p>
-                            <p>&nbsp;</p>
-                        </v-layout>
-                    </v-layout>
-                    <v-layout row>
-                        <v-layout align-start>
-                            <p class="regular-text">Harga Kamar Bulanan</p>
-                        </v-layout>
-                        <v-layout justify-end>
-                            <p class="thin-regular-text">Rp1.500.000</p>
-                        </v-layout>
-                    </v-layout>
-                    <hr>
-                    <v-layout row class="mt-6">
-                        <v-layout align-start>
-                            <p class="paragraph thin-bigger-regular-text">Total Biaya</p>
-                        </v-layout>
-                        <v-layout justify-end>
-                            <p class="paragraph bold-bigger-regular-text">Rp{{ total_harga }}</p>
-                        </v-layout>
-                    </v-layout>
-                </v-card>
-                <v-card class="card-regular">
-                    <v-layout row >
-                        <v-flex xs4>
-                            <v-layout align-start>
-                                <p class="thin-bigger-regular-text">Transfer Biaya</p>
+            <v-form @submit="submitForm" enctype="multipart/form-data">
+                <v-flex style="width: 80%;">
+                    <v-card class="card-regular">
+                        <v-layout row>
+                            <v-layout>
+                                <p class="thin-bigger-regular-text paragraph">Silahkan transfer sebelum</p>
                             </v-layout>
-                        </v-flex>
-                        <v-flex xs8>
+                            <v-layout>
+
+                            </v-layout>
+                        </v-layout>
+                    </v-card>
+                    <v-card class="card-regular">
+                        <v-layout row>
                             <v-layout column align-start>
-                                <p class="bold-bigger-regular-text">{{ user_model.bank }}</p>
-                                <p class="bold-bigger-regular-text">{{ user_model.rekening }}</p>
+                                <p class="medium-regular-text">{{ tanggal_mulai }} &ndash; {{ tanggal_selesai }}</p>
+                                <p class="medium-regular-text">{{ kos_booking_model.total_kamar }} Kamar</p>
                             </v-layout>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout align-start column>
-                        <!-- 1. Create the button that will be clicked to select a file -->
-                        <v-btn 
-                            color="#146C94" 
-                            width="25%" 
-                            class="white--text" 
-                            elevation="0" 
-                            :loading="isSelecting" 
-                            @click="onPickFile()"
-                        >
-                           Unggah Bukti Transfer
-                        </v-btn>
+                            <v-layout justify-end align-start class="mt-0">
+                                <p class="medium-regular-text">{{ kos_booking_model.total_bulan }} Bulan</p>
+                                <p>&nbsp;</p>
+                            </v-layout>
+                        </v-layout>
+                        <v-layout row>
+                            <v-layout align-start>
+                                <p class="regular-text">Harga Kamar Bulanan</p>
+                            </v-layout>
+                            <v-layout justify-end>
+                                <p class="thin-regular-text">Rp1.500.000</p>
+                            </v-layout>
+                        </v-layout>
+                        <hr>
+                        <v-layout row class="mt-6">
+                            <v-layout align-start>
+                                <p class="paragraph thin-bigger-regular-text">Total Biaya</p>
+                            </v-layout>
+                            <v-layout justify-end>
+                                <p class="paragraph bold-bigger-regular-text">Rp{{ total_harga }}</p>
+                            </v-layout>
+                        </v-layout>
+                    </v-card>
+                    <v-card class="card-regular">
+                        <v-layout row >
+                            <v-flex xs4>
+                                <v-layout align-start>
+                                    <p class="thin-bigger-regular-text">Transfer Biaya</p>
+                                </v-layout>
+                            </v-flex>
+                            <v-flex xs8>
+                                <v-layout column align-start>
+                                    <p class="bold-bigger-regular-text">{{ user_model.bank }}</p>
+                                    <p class="bold-bigger-regular-text">{{ user_model.rekening }}</p>
+                                </v-layout>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout align-start column>
+                            <!-- 1. Create the button that will be clicked to select a file -->
+                            <v-btn 
+                                color="#146C94" 
+                                width="25%" 
+                                class="white--text" 
+                                elevation="0" 
+                                :loading="isSelecting" 
+                                @click="onPickFile()"
+                            >
+                            Unggah Bukti Transfer
+                            </v-btn>
 
-                        <!-- Create a File Input that will be hidden but triggered with JavaScript -->
-                        <input 
-                            type="file"
-                            ref="file"
-                            @change="onFileChange($event.target.files)"
-                            style="display: none"
-                            accept="image/*"
-                        >
-                        <p class="medium-regular-text mt-6">{{ fileName }}</p>
+
+                            <!-- style="display: none" -->
+                            <!-- @change="onFileChange($event.target.files)" -->
+                            <!-- Create a File Input that will be hidden but triggered with JavaScript -->
+                            <!-- <input 
+                                type="file"
+                                ref="file"
+                                v-on:change="onFileChange"
+                                accept="image/*"
+                            > -->
+
+                            <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
+                            <p class="medium-regular-text mt-6">{{ fileName }}</p>
+                        </v-layout>
+                        <v-layout column align-start class="mt-12">
+                            <p class="thin-regular-text">Silahkan tekan tombol Bayar</p>
+                            <p class="paragraph thin-regular-text">Jika Anda sudah Unggah Bukti Transfer</p>
+                        </v-layout>
+                    </v-card>
+                    <v-layout align-start class="my-12">
+                        <!-- <v-btn color="#146C94" width="25%" class="white--text" elevation="0" @click="submitForm()">Bayar</v-btn> -->
+                        <v-btn color="#146C94" width="25%" class="white--text" elevation="0" type="submit">Bayar</v-btn>
                     </v-layout>
-                    <v-layout column align-start class="mt-12">
-                        <p class="thin-regular-text">Silahkan tekan tombol Bayar</p>
-                        <p class="paragraph thin-regular-text">Jika Anda sudah Unggah Bukti Transfer</p>
-                    </v-layout>
-                </v-card>
-                <v-layout align-start class="my-12">
-                    <v-btn color="#146C94" width="25%" class="white--text" elevation="0" @click="submitForm()">Bayar</v-btn>
-                </v-layout>
-            </v-flex>
+                </v-flex>
+            </v-form>
         </v-layout>
-        <v-layout column class="layout-main" mt-6 v-else-if="!this.model_pembayaran">
+        <v-layout column class="layout-main" mt-6 v-else-if="!this.model_pembayaran || this.kos_booking_model.status != 'Menunggu Konfirmasi Kamar'">
             <p class="thin-title">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
             <h3 class="thin-sub-title pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
         </v-layout>
@@ -147,7 +154,8 @@
                 selectedFile: null,
                 errorDialog: null,
                 errorText: "",
-                fileName: "",
+                fileName: '',
+                file: '',
 
                 snackbar: '',
                 color: '',
@@ -167,11 +175,7 @@
             }
         },
         watch: {
-            // '$route.path': function (path) {
-            //     this.devLog("watching change");
-            //     // this.initData();
-            //     window.location.reload(true);
-            // },
+
         },
 
         created(){
@@ -201,7 +205,7 @@
                     total_kamar: null,
                     total_price: null,
 
-                    bukti_transfer: [],
+                    bukti_transfer: '',
                 }
                 this.user_model = {
                     rekening: '',
@@ -268,8 +272,6 @@
                 let tglMulai = new Date(this.kos_booking_model.tanggal_mulai);
                 let tglSelesai = new Date(this.kos_booking_model.tanggal_selesai);
                 
-                this.devLog(tglMulai);
-
                 const options = {
                     year: "numeric",
                     month: "long",
@@ -282,26 +284,35 @@
 
             },
 
+             getFormData(object) {
+                const formData = new FormData();
+                Object.keys(object).forEach(key => {
+                if (typeof object[key] !== 'object') formData.append(key, object[key])
+                else formData.append(key, JSON.stringify(object[key]))
+                })
+                formData.append('bukti_transfer', this.file);
+                return formData;
+            },
+
             submitForm(){
                 if(this.kos_booking_model.bukti_transfer){
                     this.devLog("booking model : ");
                     this.devLog(this.kos_booking_model);
                     this.devLog(this.apiPembayaran+this.kos_booking_model.id)
-                    this.$http.put(this.apiPembayaran+this.kos_booking_model.id)
+
+                    this.kos_booking_model.status = 'Menunggu Konfirmasi Pembayaran'
+
+                    this.$http.put(this.api+this.kos_booking_model.id, this.kos_booking_model)
                     .then(response => {
                         this.devLog(response.status);
-                        if(response.status == 200){
+                        if(response.status == 202){
                             this.devLog("Loading "+ this.apiPembayaran + " - Result Status: " +response.status);
                             this.devLog(response.data);
-                            // var me = JSON.parse(localStorage.userLogin);
-                            // this.devLog(`Me ID : ${me.id} vs User ID : ${this.user.id}`);
-                            // if(me.id === this.user.id){
-                            //     this.devLog('me id === user id')
-                            //     this.updateUserLogin(this.user.id);
-                            //     this.error_message = 'Profile updated!';
-                            //     this.color = "green";
-                            //     this.snackbar = true;
-                            // } 
+                            this.uploadPembayaran();
+
+                            this.$router
+                                .push({ path: '/transaksi' })
+                                .then(() => { this.$router.go() })
                         }
                     }).catch((err) => {
                         // this.devLog(JSON.stringify(err))
@@ -316,6 +327,22 @@
                 }
             },
 
+            uploadPembayaran(){
+                this.$http.post(this.apiPembayaran+this.kos_booking_model.id, this.kos_booking_model)
+                    .then(response => {
+                        this.devLog(response.status);
+                        if(response.status == 200){
+                            this.devLog("Loading "+ this.apiPembayaran + " - Result Status: " +response.status);
+                            this.devLog(response.data);
+                        }
+                    }).catch((err) => {
+                        // this.devLog(JSON.stringify(err))
+                        this.error_message = err.message;
+                        this.color = "red";
+                        this.snackbar = true;
+                    });
+            },
+
             onPickFile() {
                 this.$refs.file.click();
             },
@@ -327,11 +354,7 @@
                         this.errorDialog = true;
                         this.errorText = "Please choose an image file";
                     } else {
-                        // let formData = new FormData();
                         this.fileName = imageFile.name;
-                        // let imageURL = URL.createObjectURL(imageFile);
-                        // let editable = true;
-                        // let imgFile = null;
 
                         this.devLog("onfilechange");
                         let reader = new FileReader();
@@ -340,10 +363,6 @@
                             let image_url = e.target.result;
 
                             this.kos_booking_model.bukti_transfer = image_url;
-
-                            // this.kos_booking_model.bukti_transfer.push({
-                            //     image_url: image_url,
-                            // });
                         };
                         reader.readAsDataURL(imageFile);
 

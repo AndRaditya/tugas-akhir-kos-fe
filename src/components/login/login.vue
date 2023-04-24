@@ -19,16 +19,17 @@
                                     <v-text-field
                                         outlined
                                         label="Masukkan Email"
-                                        v-model="email"
-                                        :rules="[rules.required]"
+                                        v-model="login.email"
+                                        :rules="email_rules"
+                                        @input="checkEmail()"
+                                        :success="email_ok==1 ? true : false"
+                                        :error="email_ok==-1 ? true : false"
                                         type="email"
                                         ></v-text-field>
-                                        <!-- @input="checkEmail()" -->
                                     <v-layout column align-start wrap>
                                         <p class="thin-regular-text">Password</p>
                                     </v-layout>
-                                    <!-- @input="checkPass()" -->
-                                    <v-text-field
+                                    <!-- <v-text-field
                                         outlined
                                         label="Masukkan Password"
                                         v-model="password"
@@ -37,9 +38,22 @@
                                         @click:append="show1 = !show1"
                                         :rules="[rules.required]"
                                         >
-                                        <!-- :rules="pass.rule" -->
-                                </v-text-field>
-                                <v-btn color="#146C94" elevation="0" class="white--text" type="submit">Masuk</v-btn>
+                                    </v-text-field> -->
+                                    <!-- :rules="pass.rule" -->
+                                    <!-- min="6" -->
+                                    <v-text-field
+                                        outlined
+                                        label="Masukkan Password"
+                                        :append-icon="!pass.visible ? 'mdi-eye' : 'mdi-eye-off'"
+                                        @click:append="() => (pass.visible = !pass.visible)"
+                                        v-model="login.password"
+                                        @input="checkPass()"
+                                        :success="pass.ok==1 ? true : false"
+                                        :error="pass.ok==-1 ? true : false"
+                                        :rules="pass.rule"
+                                        :type="!pass.visible ? 'password' : 'text'"
+                                    ></v-text-field>
+                                <v-btn color="#146C94" elevation="0" class="white--text mt-4" type="submit">Masuk</v-btn>
                             </v-layout>
                         </v-form>
                         <v-layout column align-start pt-12 v-if="!this.param_pengelola">
@@ -76,42 +90,57 @@
                 rules: {
                     required: value => !!value || 'Required.'
                 },
-                // pass: {
-                //     visible: false,
-                //     ok: 0,
-                //     rule: [
-                //         v => (v != "") || 'Password must not be empty!',
-                //         v => (v.length >= 6) || 'Password must not be less than 6 characters!',
-                //     ],
-                // },
-                // email_rules: [
-                //     v => !!v || "Field is required",
-                //     // v => /^(([^<>()\[\\.,;:\s@"]+(\.[^<>()\[\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid'
-                // ],
-                // email_ok: 0,
+                pass: {
+                    visible: false,
+                    ok: 0,
+                    rule: [
+                        v => (v != "") || 'Password must not be empty!',
+                        v => (v.length >= 5) || 'Password must not be less than 5 characters!',
+                    ],
+                },
+                email_rules: [
+                    v => !!v || "Field is required",
+                    v => /^[^@]+@\w+(\.\w+)+\w$/.test(v) || 'E-mail must be valid'
+                ],
+                email_ok: 0,
 
+                login: {},
             }
         },
         created(){
             this.param_pengelola = this.check_pengelola();
         },  
         methods:{
-            // checkEmail() {
-            //     if(	/^(([^<>()\[\\.,;:\s@"]+(\.[^<>()\[\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.login.email) && this.login.email.length > 0){
-            //         this.email_ok = 1;
-            //     }else{
-            //         this.email_ok = -1;
-            //     }
-            // },
+            initModel(){
+                this.login = {
+                    email: '',
+                    password: '',
+                }
+            },
+            checkEmail() {
+                if(	/^[^@]+@\w+(\.\w+)+\w$/.test(this.login.email) && this.login.email.length > 0){
+                    this.email_ok = 1;
+                }else{
+                    this.email_ok = -1;
+                }
+            },
+            checkPass() {
+                if(this.login.password.length >= 5){
+                    this.pass.ok = 1;
+                }else{
+                    this.pass.ok = -1;
+                }
+            },
 
             validateForm () {
                 console.log('valid')
                 this.devLog("validating");
                 // this.devLog(this.valid);
                 this.valid = (this.$refs.form_login).validate();
-                this.devLog(this.valid);
+                this.checkPass();
+                this.checkEmail();
 
-                if (this.valid == true) {
+                if (this.valid == true && this.pass.ok == 1 && this.email_ok == 1) {
                     this.submitForm();
                 }else{
                     window.scrollTo(0,0);
@@ -120,8 +149,8 @@
 
             submitForm(){
                 let loginData = {
-                    email: this.email,
-                    password: this.password,
+                    email: this.login.email,
+                    password: this.login.password,
                 };
                 this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(loginData)) ;
                 this.$http.post(this.api, loginData)
@@ -147,7 +176,7 @@
                                     .then(() => { this.$router.go() })
                             }else if(this.param_pengelola && this.user.roles_id == 1){
                                 this.$router
-                                    .push({ path: '/pengelola' })
+                                    .push({ path: '/' })
                                     .then(() => { this.$router.go() })
                             }
                             // this.$router.push('/dashboard');

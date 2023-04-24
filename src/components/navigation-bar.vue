@@ -34,9 +34,9 @@
                     </v-btn>
                   </template>
                   <v-layout column>
-                    <!-- <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Transaksi Masuk</v-btn>
+                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Transaksi Masuk</v-btn>
                     <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Transaksi Keluar</v-btn>
-                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Unduh Transaksi</v-btn> -->
+                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Unduh Transaksi</v-btn>
                   </v-layout>
                 </v-menu>
 
@@ -139,7 +139,7 @@ export default {
     redirect_router(item){
       // this.$router.push('/'+item);
       this.$router
-          .push({ path: '/'+item })
+          .replace({ path: '/'+item })
           .then(() => { this.$router.go() })
     },
 
