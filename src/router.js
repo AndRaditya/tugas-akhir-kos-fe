@@ -13,6 +13,14 @@ import RincianPembayaranCustomer from './components/customer/transaksi/rincian-p
 import PengelolaKos from './components/pengelola/kos/pengelola-kos'
 import PengelolaPesanan from './components/pengelola/pesanan/pengelola-pesanan'
 import PengelolaRincianPesanan from './components/pengelola/pesanan/pengelola-rincian-pesanan'
+import PengelolaKamar from './components/pengelola/kamar/list-pengelola-kamar'
+import PengelolaRincianKamar from './components/pengelola/kamar/cru-pengelola-kamar'
+
+import PengelolaTransaksiMasuk from './components/pengelola/transaksi-masuk/list-pengelola-transaksi-masuk'
+import PengelolaCruTransaksiMasuk from './components/pengelola/transaksi-masuk/cru-pengelola-transaksi-masuk'
+
+import PengelolaTransaksiKeluar from './components/pengelola/transaksi-keluar/list-pengelola-transaksi-keluar'
+import PengelolaCruTransaksiKeluar from './components/pengelola/transaksi-keluar/cru-pengelola-transaksi-keluar'
 
 Vue.use(Router)
 var baseUrl = "";
@@ -42,15 +50,31 @@ routeArr.push({ title: 'Rincian Transaksi', icon: '', path: '/transaksi', compon
 routeArr.push({ title: 'Rincian Pembayaran', icon: '', path: '/pembayaran/:id', component: RincianPembayaranCustomer, props:{api: api+'/kos-booking/', apiPengelola: api+'/users-pengelola', apiPembayaran: api+'/kos-booking-pembayaran/'}});
 routeArr.push({ title: 'Profile', icon: '', path: '/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});
 
+
 // Pengelola
 routeArr.push({ title: 'Dashboard', icon: '', path: '/pengelola', component: LandingPage});
 routeArr.push({ title: 'Login', icon: '', path: '/pengelola/login', component: Login, props:{api: api+'/login'}});
 
-routeArr.push({ title: 'Profile', icon: '', path: '/pengelola/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});
+routeArr.push({ title: 'Profile', icon: '', path: '/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});
 
-routeArr.push({ title: 'Kos', icon: '', path: '/pengelola/kos', component: PengelolaKos, props:{api: api+'/kos/'}});
-routeArr.push({ title: 'Pesanan', icon: '', path: '/pengelola/pesanan', component: PengelolaPesanan, props:{api: api+'/kos-booking'}});
-routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pengelola/pesanan/:id', component: PengelolaRincianPesanan, props:{api: api+'/kos-booking/', apiKamarKosong: api + '/kamar-kosong'}});
+routeArr.push({ title: 'Kos', icon: '', path: '/kos', component: PengelolaKos, props:{api: api+'/kos/'}});
+routeArr.push({ title: 'Pesanan', icon: '', path: '/pesanan', component: PengelolaPesanan, props:{api: api+'/kos-booking'}});
+routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pesanan/:id', component: PengelolaRincianPesanan, props:{api: api+'/kos-booking/', apiKamarKosong: api + '/kamar-kosong'}});
+
+routeArr.push({ title: 'Kamar', icon: '', path: '/kamar', component: PengelolaKamar, props:{api: api+'/kamar'}});
+routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/add', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: true, ubahNomor: true}});
+routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/edit/:id', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: true, ubahNomor: false}});
+routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/:id', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: false, ubahNomor: false}});
+
+routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk', component: PengelolaTransaksiMasuk, props:{api: api+'/transaksi-masuk'}});
+routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/add', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: true}});
+routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/edit/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: true}});
+routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: false}});
+
+routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar', component: PengelolaTransaksiKeluar, props:{api: api+'/transaksi-keluar'}});
+routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/add', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: true}});
+routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/edit/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: true}});
+routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: false}});
 
 
 routeArr.push({ title: 'Page Not Found', name:'404', path:'*', component: {

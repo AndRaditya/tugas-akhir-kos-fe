@@ -18,7 +18,7 @@
                                 <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Kamar'">{{ kos_booking.status }}</p>
                                 <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Menunggu Konfirmasi Pembayaran'">{{ kos_booking.status }}</p>
                                 <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
-                                <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking_model.status == 'Dibatalkan'">{{ kos_booking_model.status }}</p>
+                                <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking_model.status }}</p>
                             </v-layout>
                         </v-flex>
        

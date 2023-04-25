@@ -24,23 +24,23 @@
 
             <!-- Pengelola Navbar -->
             <v-layout justify-end v-else-if="!this.is_login_customer && this.is_login_pengelola && this.param_pengelola">
-                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola/kos') ()">Kos</v-btn>
-                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Kamar</v-btn>
-                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola/pesanan') ()">Pesanan</v-btn>
-                <v-menu offset-y>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('kos') ()">Kos</v-btn>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('kamar') ()">Kamar</v-btn>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan') ()">Pesanan</v-btn>
+                <v-menu offset-y >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="#146C94" class="mr-2" text elevation="0" v-bind="attrs" v-on="on" >
                       Transaksi <span class="material-symbols-outlined" style="color: #146C94">expand_more</span>
                     </v-btn>
                   </template>
-                  <v-layout column>
-                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Transaksi Masuk</v-btn>
-                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Transaksi Keluar</v-btn>
-                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('pengelola/kamar') ()">Unduh Transaksi</v-btn>
+                  <v-layout column style="background-color: #fff">
+                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('transaksi-masuk') ()">Transaksi Masuk</v-btn>
+                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('transaksi-keluar') ()">Transaksi Keluar</v-btn>
+                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('kamar') ()">Unduh Transaksi</v-btn>
                   </v-layout>
                 </v-menu>
 
-                <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('pengelola/profile')" class="create-account-btn mr-2">Hai, Pengelola {{ username }}</v-btn>
+                <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('profile')" class="create-account-btn mr-2">Hai, Pengelola {{ username }}</v-btn>
                 <v-btn color="#146C94" elevation="0" @click="logout()" class="create-account-btn white--text ml-2">Keluar</v-btn>
             </v-layout>
         </v-layout>
@@ -139,7 +139,7 @@ export default {
     redirect_router(item){
       // this.$router.push('/'+item);
       this.$router
-          .replace({ path: '/'+item })
+          .push({ path: '/'+item })
           .then(() => { this.$router.go() })
     },
 
