@@ -178,6 +178,10 @@
                                 this.$router
                                     .push({ path: '/' })
                                     .then(() => { this.$router.go() })
+                            }else if(this.user.roles_id == 1){
+                                this.$router
+                                    .push({ path: '/pengelola' })
+                                    .then(() => { this.$router.go() })
                             }
                             // this.$router.push('/dashboard');
                         }
