@@ -147,8 +147,5 @@ export default {
 </script>
 
 <style scoped>
-    .tambah-foto-btn{
-        color: #19A7CE;
-        padding: 2.4rem 6.4rem !important;
-    }
+
 </style>

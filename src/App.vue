@@ -30,6 +30,10 @@ export default {
     color: #2c3e50;
   }
 
+  .theme--light.v-icon {
+    color: #146C94 !important;
+  } 
+
   .thin-title{
     font-weight: 500;
     font-size: 3rem;
@@ -184,4 +188,28 @@ export default {
     padding: 2.4rem 3.2rem !important;
     font-size: 1.6rem;
   }
+
+  .v-data-table-header tr th span, 
+  .v-data-footer__select, 
+  .v-select__selection, 
+  .v-data-table__empty-wrapper td,
+  .v-data-footer__pagination{
+      font-size: 1.4rem !important;
+  }
+
+  tbody tr td{
+    font-size: 1.4rem !important;
+  }
+
+  .tambah-foto-btn{
+    color: #19A7CE !important;
+    padding: 2.4rem 6.4rem !important;
+  }
+
+  .btn-simpan-perubahan{
+    background-color: #146C94 !important;
+    font-size: 2.4rem !important;
+    padding: 3.2rem 6.4rem !important;
+  }
+
 </style>
