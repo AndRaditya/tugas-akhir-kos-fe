@@ -423,38 +423,6 @@ export default {
                 this.devLog(this.kos_model.kos_photos[index]);
             });
         },
-
-        readFile(input, index) {
-            const fr = new FileReader();
-            fr.readAsDataURL(input);
-            this.devLog('fr.result');
-            this.devLog(fr.result);
-            fr.addEventListener("load", () => {
-                this.devLog(fr);
-                const res = fr.result;
-                this.devLog("index " + index);
-                this.kos_model.kos_photos[index].image_url = res;
-
-                this.devLog("this.kos_model.kos_photos[index]");
-                this.devLog(this.kos_model.kos_photos[index]);
-            });
-        },
-
-        readFile(input, index) {
-            const fr = new FileReader();
-            fr.readAsDataURL(input);
-            this.devLog('fr.result');
-            this.devLog(fr.result);
-            fr.addEventListener("load", () => {
-                this.devLog(fr);
-                const res = fr.result;
-                this.devLog("index " + index);
-                this.kos_model.kos_photos[index].image_url = res;
-
-                this.devLog("this.kos_model.kos_photos[index]");
-                this.devLog(this.kos_model.kos_photos[index]);
-            });
-        },
     }
 }
 </script>
