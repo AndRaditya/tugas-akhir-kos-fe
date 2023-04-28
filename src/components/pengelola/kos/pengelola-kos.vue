@@ -223,7 +223,7 @@ export default {
                 this.devLog(this.valid);
 
                 if (this.valid == true) {
-                    // this.submitForm();
+                    this.submitForm();
                 }else{
                     window.scrollTo(0,0);
                 }
@@ -241,19 +241,17 @@ export default {
                         this.snackbar = true;
                     }else{
                         this.kos_model = response.data.data[0];
-                        
-                        this.initPhoto();
-
-                        for (let i = 0; i < this.kos_model.kos_photos.length; i++) {
-                            if (this.kos_model.kos_photos[i].photo_path) {
-                                this.updatePhoto(i);
-                            }
-                        }
-
-                        this.devLog('this.kos_model')
                         this.devLog(this.kos_model)
                         this.getTextKamarSpec();
                         this.getKosFasilitasAxio();
+
+                        this.initPhoto();
+
+                        for (let i = 0; i < this.kos_model.kos_photos.length; i++) {
+                            if (this.kos_model.kos_photos[i].url) {
+                                this.updatePhoto(i);
+                            }
+                        }
                     }
                 }
             }).catch((err)=>{
@@ -402,24 +400,44 @@ export default {
         },
 
         updatePhoto(index) {
-            this.devLog('update photo')
-            let photo_path = this.kos_model.kos_photos[index].photo_path;
-
-            this.devLog(photo_path);
-            fetch('http://127.0.0.1:8000/storage/kos_photos/2/01cec8110aab2eaf88a6ba0cb6bf6b65.jpeg', {
-                // mode: 'no-cors',
-                headers: {
-                    'Access-Control-Allow-Origin' : '*',
-                    'Access-Control-Allow-Methods' : 'POST, GET, OPTIONS, PUT, PATCH, DELETE',
-                    'Access-Control-Allow-Headers' : 'Origin, Content-Type, X-Auth-Token',
-                }
-            })
+            let url = this.kos_model.kos_photos[index].url;
+            fetch(url)
                 .then((res) => res.blob())
                 .then((blob) => {
                     this.devLog("index i " + index);
                     this.readFile(blob, index);
-                })
+                });
+        },
 
+        readFile(input, index) {
+            const fr = new FileReader();
+            fr.readAsDataURL(input);
+            this.devLog(fr.result);
+            fr.addEventListener("load", () => {
+                this.devLog(fr);
+                const res = fr.result;
+                this.devLog("index " + index);
+                this.kos_model.kos_photos[index].image_url = res;
+
+                this.devLog("this.kos_model.kos_photos[index]");
+                this.devLog(this.kos_model.kos_photos[index]);
+            });
+        },
+
+        readFile(input, index) {
+            const fr = new FileReader();
+            fr.readAsDataURL(input);
+            this.devLog('fr.result');
+            this.devLog(fr.result);
+            fr.addEventListener("load", () => {
+                this.devLog(fr);
+                const res = fr.result;
+                this.devLog("index " + index);
+                this.kos_model.kos_photos[index].image_url = res;
+
+                this.devLog("this.kos_model.kos_photos[index]");
+                this.devLog(this.kos_model.kos_photos[index]);
+            });
         },
 
         readFile(input, index) {
