@@ -8,14 +8,16 @@
 
       
             <v-layout justify-end v-if="!this.is_login_customer && !this.is_login_pengelola">
-                <v-btn color="#146C94" text elevation="0" @click="redirect_router('dashboard')" v-if="!this.param_pengelola">Kos</v-btn>
+                <v-btn color="#146C94" text elevation="0" @click="redirect_router('dashboard/#main_kos')" v-if="!this.param_pengelola">Kos</v-btn>
                 <v-btn color="#146C94" text elevation="0" @click="login()">Masuk</v-btn>
                 <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('register')" class="create-account-btn" v-if="!this.param_pengelola">Buat Akun</v-btn>
           </v-layout>
 
             <!-- Customer Navbar -->
             <v-layout justify-end v-else-if="this.is_login_customer && !this.is_login_pengelola && !this.param_pengelola">
-                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('dashboard')">Kos</v-btn>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('dashboard/#main_kos')">Kos</v-btn>
+                <!-- <router-link :to="{ name: 'Landing Page', hash: '#main_kos' }">Kos</router-link> -->
+
                 <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan')">Rincian Pesanan</v-btn>
                 <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('transaksi')">Rincian Transaksi</v-btn>
                 <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('profile')" class="create-account-btn mr-2">Hai, {{ username }}</v-btn>
@@ -26,7 +28,7 @@
             <v-layout justify-end v-else-if="!this.is_login_customer && this.is_login_pengelola && this.param_pengelola">
                 <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('kos') ()">Kos</v-btn>
                 <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('kamar') ()">Kamar</v-btn>
-                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan') ()">Pesanan</v-btn>
+                <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola-pesanan') ()">Pesanan</v-btn>
                 <v-menu offset-y >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="#146C94" class="mr-2" text elevation="0" v-bind="attrs" v-on="on" >
@@ -36,7 +38,7 @@
                   <v-layout column style="background-color: #fff">
                     <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('transaksi-masuk') ()">Transaksi Masuk</v-btn>
                     <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('transaksi-keluar') ()">Transaksi Keluar</v-btn>
-                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('kamar') ()">Unduh Transaksi</v-btn>
+                    <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('transaksi-unduh') ()">Unduh Transaksi</v-btn>
                   </v-layout>
                 </v-menu>
 
@@ -55,7 +57,6 @@ export default {
   props: {
     msg: String
   },
-
 
   data(){
     return{

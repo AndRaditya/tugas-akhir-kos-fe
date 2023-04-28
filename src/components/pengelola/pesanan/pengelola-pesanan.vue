@@ -18,7 +18,7 @@
                                 <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Kamar'">{{ kos_booking.status }}</p>
                                 <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Menunggu Konfirmasi Pembayaran'">{{ kos_booking.status }}</p>
                                 <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
-                                <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking_model.status }}</p>
+                                <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Dibatalkan'">Dibatalkan</p>
                             </v-layout>
                         </v-flex>
        
@@ -42,7 +42,6 @@
                                 <p class="medium-bigger-regular-text">{{ tanggal_selesai[index] }}</p>
                                 <p class="medium-bigger-regular-text">{{ kos_booking.total_kamar }} Kamar</p>
                                 <p class="medium-bigger-regular-text"  v-if="kos_booking.kamar.length > 0">{{ kos_booking.kamar[0].number }}</p>
-
                             </v-layout>
                         </v-flex>
                     </v-layout>

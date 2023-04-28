@@ -22,6 +22,8 @@ import PengelolaCruTransaksiMasuk from './components/pengelola/transaksi-masuk/c
 import PengelolaTransaksiKeluar from './components/pengelola/transaksi-keluar/list-pengelola-transaksi-keluar'
 import PengelolaCruTransaksiKeluar from './components/pengelola/transaksi-keluar/cru-pengelola-transaksi-keluar'
 
+import PengelolaUnduhTransaksi from './components/pengelola/transaksi-unduh/transaksi-unduh'
+
 Vue.use(Router)
 var baseUrl = "";
 
@@ -57,9 +59,9 @@ routeArr.push({ title: 'Login', icon: '', path: '/pengelola/login', component: L
 
 routeArr.push({ title: 'Profile', icon: '', path: '/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});
 
-routeArr.push({ title: 'Kos', icon: '', path: '/kos', component: PengelolaKos, props:{api: api+'/kos/'}});
-routeArr.push({ title: 'Pesanan', icon: '', path: '/pesanan', component: PengelolaPesanan, props:{api: api+'/kos-booking'}});
-routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pesanan/:id', component: PengelolaRincianPesanan, props:{api: api+'/kos-booking/', apiKamarKosong: api + '/kamar-kosong'}});
+routeArr.push({ title: 'Kos', icon: '', path: '/kos', component: PengelolaKos, props:{api: api+'/kos/', apiKosFasilitas: api + '/kos-fasilitas', apiPhoto: api + '/kos-photos/'}});
+routeArr.push({ title: 'Pesanan', icon: '', path: '/pengelola-pesanan', component: PengelolaPesanan, props:{api: api+'/kos-booking'}});
+routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pengelola-pesanan/:id', component: PengelolaRincianPesanan, props:{api: api+'/kos-booking/', apiKamarKosong: api + '/kamar-kosong'}});
 
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar', component: PengelolaKamar, props:{api: api+'/kamar'}});
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/add', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: true, ubahNomor: true}});
@@ -76,6 +78,8 @@ routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/ad
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/edit/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: true}});
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: false}});
 
+routeArr.push({ title: 'Transaksi Unduh', icon: '', path: '/transaksi-unduh', component: PengelolaUnduhTransaksi, props:{api: api+'/transaksi-keluar/'}});
+
 
 routeArr.push({ title: 'Page Not Found', name:'404', path:'*', component: {
   template: '<v-content><v-container style="height:100% !important;"><v-layout row class="text-xs-center" justify-center><v-flex class="text-xs-center" id="card" xs12 sm8 md4 align-center>'+
@@ -86,7 +90,17 @@ routeArr.push({ title: 'Page Not Found', name:'404', path:'*', component: {
 
 
 let admRoute = new Router({
-    routes: routeArr
+    routes: routeArr,
+    scrollBehavior (to) {
+      if (to.hash) {
+        return window.scrollTo({ 
+          top: document.querySelector(to.hash).offsetTop, 
+          behavior: 'smooth' 
+        })
+      } else {
+        return { x: 0, y: 0 }
+      }
+    }
   })
 
 // admRoute.afterEach((to) => {

@@ -10,7 +10,7 @@
                     :content="slide.content" />
             </vueper-slides>
         </v-flex>
-        <v-layout row wrap text-sm-center class="layout-main">
+        <v-layout row wrap text-sm-center class="layout-main" id="main_kos">
             <v-flex xs2 style="background-color: #146C94; border-radius: 6px; margin-bottom: 6px;">
                 <p class="main-title paragraph" style="color: #fff; padding: 8px 12px;">{{ kos_model.tipe }}</p>
             </v-flex>
@@ -156,21 +156,50 @@
                         </v-layout>
                         <hr>
                         <br>
-                        <v-layout row align-start>
+                        <v-layout row align-start >
                             <v-flex xs6>
                                 <v-layout column v-if="!this.param_pengelola">
                                     <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_booking" autofocus lazy-validation>
                                         <v-layout align-start column>
                                             <p class="regular-text">Masukkan Tanggal Mulai</p>
                                         </v-layout>
-                                        <v-text-field
+                                        <!-- <v-text-field
                                             v-model="kos_booking_model.tanggal_mulai"
                                             type="date"
                                             icon="event"
                                             placeholder="Placeholder"
                                             :rules="[rules.required]"
                                             outlined
-                                        ></v-text-field>
+                                        ></v-text-field> -->
+                                        <v-flex class="pl-0">
+                                            <v-menu
+                                                ref="dialogTglBooking"
+                                                v-model="menu_tgl_booking"
+                                                :return-value.sync="kos_booking_model.tanggal_mulai"
+                                                :close-on-content-click="false"
+                                                elevation="0"
+                                                min-width="0%"
+                                            >
+                                                <template v-slot:activator="{ on }">
+                                                    <v-text-field
+                                                        label="Tanggal Mulai"
+                                                        append-icon="event"       
+                                                        v-on="on"
+                                                        outlined
+                                                        v-model="kos_booking_model.tanggal_mulai"
+                                                        :rules="[rules.required]"
+                                                    ></v-text-field>
+                                                </template>
+                                                <v-date-picker v-model="kos_booking_model.tanggal_mulai" scrollable>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn text color="primary" @click="menu_tgl_booking = false">Cancel</v-btn>
+                                                    <v-btn text color="primary" @click="$refs.dialogTglBooking.save(kos_booking_model.tanggal_mulai)">OK</v-btn>
+                                                </v-date-picker>
+                                            </v-menu>
+                                        </v-flex>
+
+
+
                                         <v-text-field
                                             v-model="kos_booking_model.total_bulan"
                                             type="number"
@@ -273,6 +302,8 @@ export default {
                 required: value => !!value || 'Required.',
             },
 
+            menu_tgl_booking: false,
+
             param_pengelola: false,
         }
     },
@@ -332,7 +363,7 @@ export default {
 
             this.kos_booking_model = {
                 users_id: null,
-                tanggal_mulai: '',
+                tanggal_mulai: new Date().toISOString().substr(0, 10),
                 total_bulan: 1,
                 total_kamar: 1,
                 tanggal_selesai: '',
@@ -424,6 +455,26 @@ export default {
                 this.snackbar = true;
             });
         },
+
+        checkScroll(){
+            let path = document.URL.split('/');
+
+            let mainPath = path.splice(0, path.length).join('/');
+            let param_scroll = mainPath.includes('main_kos');
+            this.devLog('mainPath');
+
+            return param_scroll;
+        },
+
+        scrollToView(){
+            document.getElementById("main_kos")
+                .scrollIntoView({ behavior: 'smooth' });
+        }
+    },
+    mounted(){
+        if(this.checkScroll){
+            this.scrollToView()
+        }
     }
 }
 
