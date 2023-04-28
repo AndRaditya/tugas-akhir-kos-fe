@@ -12,7 +12,8 @@
                 </v-flex>
                 <v-flex xs4>
                     <v-layout justify-end class="mt-0" column>
-                        <p class="sudah--verifikasi-pengelola medium-regular-text">Pesanan {{ kos_booking_model.status }} Pengelola</p>
+                        <!-- <p class="sudah--verifikasi-pengelola medium-regular-text">Pesanan {{ kos_booking_model.status }} Pengelola</p> -->
+                        <p class="sudah--verifikasi-pengelola medium-regular-text">Pesanan Menunggu Pembayaran</p>
                         <p>&nbsp;</p>
                     </v-layout>
                 </v-flex>

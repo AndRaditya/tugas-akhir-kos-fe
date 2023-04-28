@@ -4,7 +4,7 @@
             <p class="thin-title paragraph">Rincian Transaksi</p>
         </v-layout>
         <v-layout column class="layout-main" mt-6 v-if="this.model_transaksi">
-            <v-card class="card-regular" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">\
+            <v-card class="card-regular" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
                 <v-layout column>
                     <v-layout row align-start>
                         <v-layout column align-start>

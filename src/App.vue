@@ -191,7 +191,6 @@ export default {
 
   .v-data-table-header tr th span, 
   .v-data-footer__select, 
-  .v-select__selection, 
   .v-data-table__empty-wrapper td,
   .v-data-footer__pagination{
       font-size: 1.4rem !important;
@@ -210,6 +209,24 @@ export default {
     background-color: #146C94 !important;
     font-size: 2.4rem !important;
     padding: 3.2rem 6.4rem !important;
+  }
+
+  .material-icons{
+    color: #fff;
+    padding: 0.2rem !important;
+  }
+
+  .accent--text{
+    font-size: 1.2rem !important;
+  }
+
+  .v-date-picker-title__year, 
+  .v-date-picker-title__date div{
+    color: #fff !important;
+  }
+
+  textarea{
+    padding-top: 0.6rem !important;
   }
 
 </style>
