@@ -188,6 +188,7 @@
                                                         outlined
                                                         v-model="kos_booking_model.tanggal_mulai"
                                                         :rules="[rules.required]"
+                                                        :disabled="!status_kamar_terisi"
                                                     ></v-text-field>
                                                 </template>
                                                 <v-date-picker v-model="kos_booking_model.tanggal_mulai" scrollable>
@@ -198,8 +199,6 @@
                                             </v-menu>
                                         </v-flex>
 
-
-
                                         <v-text-field
                                             v-model="kos_booking_model.total_bulan"
                                             type="number"
@@ -207,19 +206,21 @@
                                             label="Masukkan Jumlah Bulan"
                                             outlined
                                             @input="hargaKamar()"
+                                            :disabled="!status_kamar_terisi"
                                         ></v-text-field>
                                         <v-text-field
                                             v-model="kos_booking_model.total_kamar"
                                             type="number"
                                             label="Masukkan Jumlah Kamar"
                                             outlined
-                                            min="1"
                                             @input="hargaKamar()"
+                                            :rules="kamar_rules"
+                                            :disabled="!status_kamar_terisi"
                                         ></v-text-field>
                                         <v-layout row class="pb-6">
                                             <p style="color:#146C94" class="main-title">Rp{{ harga_kamar }}</p>&nbsp;<p class="pt-4 regular-text">/bulan</p>
                                         </v-layout>
-                                        <v-btn color="#146C94" type="submit" elevation="0" class="pengelola-btn white--text" width="100%">Pesan Sekarang</v-btn>
+                                        <v-btn color="#146C94" type="submit" elevation="0" class="pengelola-btn white--text" width="100%" v-if="status_kamar_terisi">Pesan Sekarang</v-btn>
                                     </v-form>
                                 </v-layout>
                                 <v-layout row v-else-if="this.param_pengelola">
@@ -302,6 +303,13 @@ export default {
                 required: value => !!value || 'Required.',
             },
 
+            kamar_rules: [ 
+                v => !!v || "This field is required",
+                v => ( v && v >= this.total_kamar_kosong ) || "Kamar tidak boleh kosong",
+                v => ( v && v <= this.total_kamar_kosong ) || "Hanya tersisa " + this.total_kamar_kosong + ' kamar',
+            ],
+
+            status_kamar_terisi: false,
             menu_tgl_booking: false,
 
             param_pengelola: false,
@@ -394,6 +402,10 @@ export default {
 
                 if (this.valid == true) {
                     this.submitForm();
+                }else{
+                    this.error_message = 'Terdapat kesalahan';
+                    this.color = "red";
+                    this.snackbar = true;
                 }
             }else{
                 this.error_message = 'Anda Harus Login Terlebih Dahulu';
@@ -432,9 +444,6 @@ export default {
         },
 
         sisaKamar(){
-            // let kamar_kosong = [];
-            // total_kamar_kosong
-
             this.$http.get(this.API+'/kamar-kosong')
             .then(response => {
                 this.devLog("get kamar kosong result code: " + response.status);
@@ -447,6 +456,12 @@ export default {
 
                         this.total_kamar_kosong = this.kamar_kosong.length;
                         this.devLog('kamar kosong' + this.total_kamar_kosong);
+
+                        if(this.total_kamar_kosong > 0){
+                            this.status_kamar_terisi = true;
+                        }else{
+                            this.status_kamar_terisi = false;
+                        }
                     }
                 }
             }).catch((err)=>{

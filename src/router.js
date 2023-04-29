@@ -24,8 +24,6 @@ import PengelolaCruTransaksiKeluar from './components/pengelola/transaksi-keluar
 
 import PengelolaUnduhTransaksi from './components/pengelola/transaksi-unduh/transaksi-unduh'
 
-import PengelolaUnduhTransaksi from './components/pengelola/transaksi-unduh/transaksi-unduh'
-
 Vue.use(Router)
 var baseUrl = "";
 

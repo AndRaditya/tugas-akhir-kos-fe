@@ -5,6 +5,7 @@ import router from "./router"
 import Vuelidate from 'vuelidate'
 // import LoginPage from './components/login/login'
 import axios from 'axios'
+
 Vue.config.productionTip = false
 
 Vue.prototype.$http = axios;

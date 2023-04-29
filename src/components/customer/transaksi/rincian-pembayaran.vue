@@ -3,7 +3,7 @@
         <v-layout align-start column>
             <p class="thin-title paragraph">Rincian Pembayaran</p>
         </v-layout>
-        <v-layout column v-if="this.model_pembayaran && this.kos_booking_model.status == 'Menunggu Konfirmasi Kamar'">
+        <v-layout column v-if="this.model_pembayaran && this.kos_booking_model.status == 'Menunggu Konfirmasi Kamar' && this.kos_booking_model.ready == true" >
             <v-layout row class="pt-4">
                 <v-flex xs8> 
                     <v-layout align-start column>
@@ -12,7 +12,6 @@
                 </v-flex>
                 <v-flex xs4>
                     <v-layout justify-end class="mt-0" column>
-                        <!-- <p class="sudah--verifikasi-pengelola medium-regular-text">Pesanan {{ kos_booking_model.status }} Pengelola</p> -->
                         <p class="sudah--verifikasi-pengelola medium-regular-text">Pesanan Menunggu Pembayaran</p>
                         <p>&nbsp;</p>
                     </v-layout>
@@ -22,11 +21,12 @@
                 <v-flex style="width: 80%;">
                     <v-card class="card-regular">
                         <v-layout row>
-                            <v-layout>
+                            <v-layout align-center>
                                 <p class="thin-bigger-regular-text paragraph">Silahkan transfer sebelum</p>
                             </v-layout>
-                            <v-layout>
-
+                            <v-layout align-start justify-end>
+                                <counter-vue :start_date="kos_booking_model.date" :exp_date="kos_booking_model.exp_date" v-if="!expired_status"></counter-vue>
+                                <p class="bold-bigger-regular-text paragraph waktu-habis-text" v-else-if="expired_status">Waktu Anda Habis</p>
                             </v-layout>
                         </v-layout>
                     </v-card>
@@ -59,7 +59,7 @@
                             </v-layout>
                         </v-layout>
                     </v-card>
-                    <v-card class="card-regular">
+                    <v-card class="card-regular" v-if="!expired_status">
                         <v-layout row >
                             <v-flex xs4>
                                 <v-layout align-start>
@@ -85,18 +85,6 @@
                             >
                             Unggah Bukti Transfer
                             </v-btn>
-
-
-                            <!-- style="display: none" -->
-                            <!-- @change="onFileChange($event.target.files)" -->
-                            <!-- Create a File Input that will be hidden but triggered with JavaScript -->
-                            <!-- <input 
-                                type="file"
-                                ref="file"
-                                v-on:change="onFileChange"
-                                accept="image/*"
-                            > -->
-
                             <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
                             <p class="medium-regular-text mt-6">{{ fileName }}</p>
                         </v-layout>
@@ -105,7 +93,7 @@
                             <p class="paragraph thin-regular-text">Jika Anda sudah Unggah Bukti Transfer</p>
                         </v-layout>
                     </v-card>
-                    <v-layout align-start class="my-12">
+                    <v-layout align-start class="my-12"  v-if="!expired_status">
                         <!-- <v-btn color="#146C94" width="25%" class="white--text" elevation="0" @click="submitForm()">Bayar</v-btn> -->
                         <v-btn color="#146C94" width="25%" class="white--text" elevation="0" type="submit">Bayar</v-btn>
                     </v-layout>
@@ -131,6 +119,7 @@
 </template>
 
 <script>
+import counterVue from '@/components/counter.vue';
 
     export default{
         name: 'rincian-pembayaran',
@@ -147,6 +136,9 @@
                 type: String,
                 required: true
             },
+        },
+        components:{
+            counterVue
         },
 
         data(){
@@ -173,6 +165,12 @@
                 tanggal_mulai: '',
                 tanggal_selesai: '',
                 total_harga: '',
+
+                expired_status: false,
+                now_date: '',
+                date_interval: '',
+
+                interval_time: null,
             }
         },
         watch: {
@@ -182,6 +180,7 @@
         created(){
             this.initData();
             this.initModel();
+            this.interval_time = 10;
         },
 
         methods:{
@@ -200,6 +199,7 @@
                     id: null,
                     kode: '',
                     date: '',
+                    exp_date: '',
                     tanggal_mulai: '',
                     tanggal_selesai: '',
                     total_bulan: null,
@@ -207,6 +207,8 @@
                     total_price: null,
 
                     bukti_transfer: '',
+
+                    ready: false,
                 }
                 this.user_model = {
                     rekening: '',
@@ -219,7 +221,7 @@
 
                 this.$http.get(this.api+this.id)
                 .then(response => {
-                    this.devLog("Login Result Code: " +response.status);
+                    this.devLog("pembayaran Result Code: " +response.status);
                     if(response.status == 200){
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
@@ -232,6 +234,8 @@
                             this.devLog(this.kos_booking_model)
                             this.model_pembayaran = true;
                             this.getDate();
+
+                            this.kos_booking_model.ready = true;
                         }
                     }
                 }).catch((err)=>{
@@ -285,7 +289,7 @@
 
             },
 
-             getFormData(object) {
+            getFormData(object) {
                 const formData = new FormData();
                 Object.keys(object).forEach(key => {
                 if (typeof object[key] !== 'object') formData.append(key, object[key])
@@ -372,9 +376,66 @@
                 }
             },
  
+            getStatusExpDate(){
+                if(this.kos_booking_model){
+                    const timer = setInterval(() => {
+                        // const now = this._now;
+                        const now = new Date()
+                        const exp_date = new Date(this.kos_booking_model.exp_date);
+                        const distance = exp_date.getTime() - now.getTime();
+
+                        this.devLog('test')
+
+                        if(distance < 0){
+                            clearInterval(timer);
+                            this.expired_status = true;
+                            clearInterval(this.date_interval);
+                            this.cancelPesanan();
+                            return
+                        }
+
+                        this.interval_time = 60000;
+
+                    }, this.interval_time);
+                }
+            },
+
+            cancelPesanan(){
+                this.kos_booking_model.status = 'Dibatalkan';
+
+                this.$http.put(this.api+this.kos_booking_model.id, this.kos_booking_model)
+                .then(response => {
+                    this.devLog(response.status);
+                    if(response.status == 202){
+                        this.devLog("Loading "+ this.apiPembayaran + " - Result Status: " +response.status);
+                        this.devLog(response.data);
+
+                        this.$router
+                            .push({ path: '/transaksi' })
+                            .then(() => { this.$router.go() })
+                    }
+                }).catch((err) => {
+                    // this.devLog(JSON.stringify(err))
+                    this.error_message = err.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                });
+            }
         },
+        computed: {
+            // _now() {
+            //     return Date.now()
+            // }
+        },
+        mounted(){
+            this.devLog('mounted');
+            this.date_interval = setInterval(this.getStatusExpDate,  this.interval_time);
+        }
     }
 </script>
 
 <style>
+    .waktu-habis-text{
+        color: #DF2E38;
+    }
 </style>
