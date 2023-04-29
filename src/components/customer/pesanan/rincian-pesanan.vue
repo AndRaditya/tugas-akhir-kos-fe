@@ -140,6 +140,16 @@
 <script>
     export default{
         name:"rincian-pesanan",
+        props:{
+            api: {
+                type: String,
+                default: "no_data",
+            },
+            apiUser: {
+                type: String,
+                default: "no_data",
+            },
+        },
         data(){
             return{
                 user_model:{},
@@ -191,7 +201,7 @@
                     let user_id = kos_booking.users_id;
                     this.kos_booking_model = kos_booking;
 
-                    this.$http.get(this.API+'/users/'+user_id)
+                    this.$http.get(this.apiUser+user_id)
                     .then(response => {
                         this.devLog("get user result code: " + response.status);
                         if(response.status == 200){
@@ -247,7 +257,7 @@
             submitForm(){
                 this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.kos_booking_model));
 
-                this.$http.post(this.API+'/kos-booking', this.kos_booking_model)
+                this.$http.post(this.api, this.kos_booking_model)
                 .then(response => {
                     this.devLog("Result Code: " +response.status);
                     if(response.status == 201){

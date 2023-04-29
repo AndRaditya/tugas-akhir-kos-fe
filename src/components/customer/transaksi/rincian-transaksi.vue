@@ -63,6 +63,12 @@
 <script>
     export default{
         name: 'rincian-transaksi',
+        props: {
+            api: {
+                type: String,
+                default: "no_data",
+            },
+        },
         data(){
             return{
                 kos_booking_model:{},
@@ -118,7 +124,7 @@
                     let user_login = JSON.parse(localStorageUser);
                     let user_id = user_login.id;
 
-                    this.$http.get(this.API+'/kos-booking-users/'+user_id)
+                    this.$http.get(this.api+user_id)
                     .then(response => {
                         this.devLog("Login Result Code: " +response.status);
                         if(response.status == 200){
