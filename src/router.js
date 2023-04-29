@@ -10,7 +10,7 @@ import RincianPesananCustomer from './components/customer/pesanan/rincian-pesana
 import RincianTransaksiCustomer from './components/customer/transaksi/rincian-transaksi'
 import RincianPembayaranCustomer from './components/customer/transaksi/rincian-pembayaran'
 
-import PengelolaKos from './components/pengelola/kos/pengelola-kos'
+import PengelolaCruKos from './components/pengelola/kos/cru-pengelola-kos'
 import PengelolaPesanan from './components/pengelola/pesanan/pengelola-pesanan'
 import PengelolaRincianPesanan from './components/pengelola/pesanan/pengelola-rincian-pesanan'
 import PengelolaKamar from './components/pengelola/kamar/list-pengelola-kamar'
@@ -59,22 +59,22 @@ routeArr.push({ title: 'Login', icon: '', path: '/pengelola/login', component: L
 
 routeArr.push({ title: 'Profile', icon: '', path: '/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});
 
-routeArr.push({ title: 'Kos', icon: '', path: '/kos', component: PengelolaKos, props:{api: api+'/kos/', apiKosFasilitas: api + '/kos-fasilitas', apiPhoto: api + '/kos-photos/'}});
+routeArr.push({ title: 'Kos', icon: '', path: '/kos', component: PengelolaCruKos, props:{api: api+'/kos/', apiKosFasilitas: api + '/kos-fasilitas', apiPhoto: api + '/kos-photos/'}});
 routeArr.push({ title: 'Pesanan', icon: '', path: '/pengelola-pesanan', component: PengelolaPesanan, props:{api: api+'/kos-booking'}});
 routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pengelola-pesanan/:id', component: PengelolaRincianPesanan, props:{api: api+'/kos-booking/', apiKamarKosong: api + '/kamar-kosong'}});
 
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar', component: PengelolaKamar, props:{api: api+'/kamar'}});
-routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/add', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: true, ubahNomor: true}});
+routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/add', component: PengelolaRincianKamar, props:{api: api+'/kamar', editable: true, ubahNomor: true}});
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/edit/:id', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: true, ubahNomor: false}});
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/:id', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: false, ubahNomor: false}});
 
 routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk', component: PengelolaTransaksiMasuk, props:{api: api+'/transaksi-masuk'}});
-routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/add', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: true}});
+routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/add', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk', editable: true}});
 routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/edit/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: true}});
 routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: false}});
 
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar', component: PengelolaTransaksiKeluar, props:{api: api+'/transaksi-keluar'}});
-routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/add', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: true}});
+routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/add', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar', editable: true}});
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/edit/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: true}});
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: false}});
 
