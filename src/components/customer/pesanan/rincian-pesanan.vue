@@ -260,7 +260,7 @@
                             localStorage.removeItem('kosBooking');
 
                             this.$router
-                                .push({ path: '/dashboard' })
+                                .push({ path: '/transaksi' })
                                 .then(() => { this.$router.go() })
                             // this.$router.push('/dashboard');
                         }

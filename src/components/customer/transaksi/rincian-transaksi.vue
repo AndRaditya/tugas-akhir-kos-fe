@@ -14,8 +14,8 @@
                         <v-layout justify-end class="mt-0">
                             <!-- <p class="sudah--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Sudah Dikonfirmasi'">{{ kos_booking.status }} Pengelola</p>
                             <p class="belum--verifikasi-pengelola medium-regular-text" v-else>{{ kos_booking.status }}</p> -->
-                            <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Kamar'">{{ kos_booking.status }}</p>
-                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Menunggu Konfirmasi Pembayaran'">{{ kos_booking.status }}</p>
+                            <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Kamar'">Menunggu Pembayaran Customer</p>
+                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Menunggu Konfirmasi Pembayaran'">Menunggu Konfirmasi Pembayaran dari Pengelola</p>
                             <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
                             <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking.status }}</p>
                         </v-layout>
