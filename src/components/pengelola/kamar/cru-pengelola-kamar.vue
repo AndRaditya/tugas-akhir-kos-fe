@@ -5,7 +5,7 @@
                 <p class="main-title">{{ nav_title }} Kamar</p>
             </v-layout>
         </v-layout>
-        <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data-kamar" autofocus lazy-validation>
+        <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kamar" autofocus lazy-validation>
             <v-layout row class="mt-6">
                 <v-flex xs5>
                     <v-layout column>
@@ -42,11 +42,13 @@
                             <p class="regular-text">Fasilitas Kamar</p>
                         </v-layout>
                         <v-select
-                            v-model="kamar_model.status"
-                            placeholder="Masukkan Status Kamar"
+                            v-model="kamar_model.kamar_fasilitas"
+                            placeholder="Masukkan Fasilitas Kamar"
                             outlined
-                            :items="status_kamar"
+                            :items="kamar_fasiitas_items"
                             :readonly="!editable"
+                            multiple
+                            chips
                         ></v-select>
                         <v-layout align-start column>
                             <p class="regular-text">Harga Kamar</p>
@@ -63,20 +65,56 @@
 
                     </v-layout>
                 </v-flex>
-                <v-flex xs6>
-                    <v-layout></v-layout>
-                        <v-layout justify-end class="pb-4">
-                            <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn">
-                                <span class="material-symbols-outlined">
-                                photo_camera
-                                </span>
-                                &nbsp;Lihat Semua Foto
-                            </v-btn>
-                        </v-layout>
-                        <v-layout justify-end class="pb-8">
-                            <v-btn outlined elevation="0" class="tambah-foto-btn">Tambahkan Foto
-                            </v-btn>
-                        </v-layout>
+                <v-flex xs6 class="ml-8">
+                    <v-layout row wrap class="">
+                        <v-flex
+                            v-for="(url, index) in urls"
+                            :key="index"
+                            class="preview-img-flex ma-2 mr-2 mb-2"
+                            shrink
+                        >
+                            <v-layout v-if="index < 6" column>
+                                <v-card elevation-0 style="cursor: pointer">
+                                    <v-img
+                                        v-if="url"
+                                        :src="url"
+                                        width="275"
+                                        height="200"
+                                        contain
+                                        class="grey lighten-5"
+                                    ></v-img>
+                                </v-card>
+                                <v-flex v-if="url" mt-2>
+                                    <v-btn
+                                        icon
+                                        small
+                                        class="error my-auto"
+                                        @click="removeImage(index)"
+                                        ><span class="material-icons">
+                                        delete
+                                        </span></v-btn>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout justify-end class="pb-4">
+                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn">
+                            <span class="material-symbols-outlined">
+                            photo_camera
+                            </span>
+                            &nbsp;Lihat Semua Foto
+                        </v-btn>
+                    </v-layout>
+                    <v-layout justify-end class="pb-8">
+                        <v-btn      
+                            outlined                           
+                            elevation="0" 
+                            @click="onPickFile()" 
+                            class="tambah-foto-btn" >
+                            Tambahkan Foto
+                        </v-btn>
+                        <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
+                    </v-layout>
                 </v-flex>
             </v-layout>
             <v-flex class="my-4" v-if="editable">
@@ -113,20 +151,24 @@ export default {
     data(){
         return{
             id: null,
+            deletedImages: [],
+            urls: [],
+
             valid: false,
             nav_title: "",
             nav_path: [],
 
             kamar_model:{},
             kamar_model_temp: {},
-            kamar_fasilitas_model: {},
+
             kamar_photos: {},
             snackbar: '',
             color: '',
             error_message: '',
 
             status_kamar: ['Dipakai', 'Kosong'],
-            nomor_kamar: [1, 2, 3, 4, 5, 6, 7, 8]
+            nomor_kamar: [1, 2, 3, 4, 5, 6, 7, 8],
+            kamar_fasiitas_items: [],
         }
     },
     created(){
@@ -134,10 +176,15 @@ export default {
         this.devLog(this.editable + 'editable');
         this.initData();
         this.initAxio();
+
+        this.devLog(this.api);
     },
     methods:{
         initData(){
             this.initModel();
+            this.getKamarFasilitas();
+            this.getNomorKamar();
+
             this.nav_path = this.$route.path.split("/");
             var last = this.nav_path.length -1;
             for (var i = 1; i <= last; i++) {
@@ -160,6 +207,7 @@ export default {
                 }
             }
         },
+
         initAxio(){
             this.devLog(this.nav_title);
             if(this.nav_title == "Ubah" || this.nav_title == "Detail"){
@@ -175,7 +223,8 @@ export default {
                             }else{
                                 this.kamar_model = response.data.data[0];
                                 this.devLog(this.kamar_model)
-                                this.getNomorKamar();
+                                this.getKamarFasilitasAxio();
+                                this.initPhoto();
                             }
                         }
                     }).catch((err)=>{
@@ -186,7 +235,34 @@ export default {
             }
 
         },
+
+        initModel(){
+            this.kamar_model = {
+                id: null,
+                number: null,
+                status: '',
+                harga: null,
+                nama_penyewa: '',
+                kamar_photos: [],
+                kamar_fasilitas: [],
+            }
+            
+            this.kamar_model_temp = {
+                id: null,
+                number: null,
+                kamar_fasilitas_id: null,
+                status: '',
+                harga: null,
+                nama_penyewa: '',
+            }
+        },
+
+        getKamarFasilitas(){
+            this.kamar_fasiitas_items = ['Kasur ukuran 90x90', 'TV', 'Meja', 'Nakas', 'Lemari', 'Kamar Mandi Dalam', 'Water Heater', 'Kloset Duduk'];
+        },
+
         getNomorKamar(){
+            this.devLog('get nomor kamar')
             this.$http.get(this.api)
                 .then(response => {
                     this.devLog("get user result code: " + response.status);
@@ -207,25 +283,7 @@ export default {
                     this.snackbar = true;
                 });
         },
-        initModel(){
-            this.kamar_model = {
-                id: null,
-                number: null,
-                kamar_fasilitas_id: null,
-                status: '',
-                harga: null,
-                nama_penyewa: '',
-            }
-            
-            this.kamar_model_temp = {
-                id: null,
-                number: null,
-                kamar_fasilitas_id: null,
-                status: '',
-                harga: null,
-                nama_penyewa: '',
-            }
-        },
+
         tambahKamarNomor(){
             const nomor_model  = [];
             
@@ -240,6 +298,170 @@ export default {
             this.devLog('this.nomor_kamar');
             this.devLog(this.nomor_kamar);
         },
+
+        validateForm () {
+            console.log('valid')
+            this.devLog("validating");
+            this.valid = (this.$refs.form_data_kamar).validate();
+            this.devLog(this.valid);
+
+            if (this.valid == true) {
+                this.submitForm();
+            }else{
+                window.scrollTo(0,0);
+            }
+        },
+
+        submitForm(){
+            switch (this.nav_title) {
+                case "Tambah":
+                    this.postData();
+                break;
+
+                default:
+                    this.putData();
+                break;
+            }
+        },
+
+        postData(){
+            this.devLog(this.api)
+            this.devLog(JSON.stringify(this.kamar_model));
+            this.devLog(this.kamar_model);
+
+            this.$http.post(this.api, this.kamar_model)
+            .then(response => {
+                this.devLog("update kos: " +response.status);
+                if(response.status == 201){
+                    if(response.data.api_status == "fail"){
+                        this.devLog('response fail')
+                        this.error_message = response.data.api_title;
+                        this.color = "red";
+                        this.snackbar = true;
+                    }else{
+                        // if (this.deletedImages.length > 0) {
+                        //     for (let j = 0; j < this.deletedImages.length; j++) {
+                        //         this.removeImageWithAPI(this.deletedImages[j]);
+                        //     }
+                        //     this.devLog("image deleted with api");
+                        // }
+
+                        this.error_message = 'Berhasil Submit Data';
+                        this.color = "green";
+                        this.snackbar = true;
+
+                        this.$router
+                            .push({ path: '/kamar' })
+                            .then(() => { this.$router.go() })
+                    }
+                }
+            }).catch((err)=>{
+                this.error_message = err.response.data.message;
+                this.color = "red";
+                this.snackbar = true;
+            });
+        },  
+
+        putData(){
+            this.devLog(this.api+this.id)
+            this.devLog(JSON.stringify(this.kamar_model));
+            this.devLog(this.kamar_model);
+
+            this.$http.put(this.api+this.id, this.kamar_model)
+            .then(response => {
+                this.devLog("update kos: " +response.status);
+                if(response.status == 202){
+                    if(response.data.api_status == "fail"){
+                        this.devLog('response fail')
+                        this.error_message = response.data.api_title;
+                        this.color = "red";
+                        this.snackbar = true;
+                    }else{
+                        // if (this.deletedImages.length > 0) {
+                        //     for (let j = 0; j < this.deletedImages.length; j++) {
+                        //         this.removeImageWithAPI(this.deletedImages[j]);
+                        //     }
+                        //     this.devLog("image deleted with api");
+                        // }
+
+                        this.error_message = 'Berhasil Submit Data';
+                        this.color = "green";
+                        this.snackbar = true;
+
+                        this.$router
+                            .push({ path: '/kamar' })
+                            .then(() => { this.$router.go() })
+                    }
+                }
+            }).catch((err)=>{
+                this.error_message = err.response.data.message;
+                this.color = "red";
+                this.snackbar = true;
+            });
+        },  
+
+
+
+        getKamarFasilitasAxio(){
+            this.devLog('get kamar fasilitas axio')
+            let kamar_fasilitas_temp = [];
+            kamar_fasilitas_temp = this.kamar_model.kamar_fasilitas;
+            this.kamar_model.kamar_fasilitas = [];
+
+            this.devLog('kamar_fasilitas_temp');
+            this.devLog(kamar_fasilitas_temp);
+
+            kamar_fasilitas_temp.forEach((element) => {
+                this.kamar_model.kamar_fasilitas.push(element.name)
+            })
+        },
+
+        initPhoto() {
+            this.kamar_model.kamar_photos.forEach((element) => {
+                this.urls.push(element.photo_path);
+            });
+        },
+
+        onPickFile() {
+            this.$refs.file.click();
+        },
+
+        onFileChange(file) {
+            let imageFile = file[0];
+            if (file.length > 0) {
+                if (!imageFile.type.match("image.*")) {
+                    this.errorDialog = true;
+                    this.errorText = "Please choose an image file";
+                } else {
+                    let imageURL = URL.createObjectURL(imageFile);
+                    this.fileName = imageFile.name;
+
+                    this.devLog("onfilechange");
+                    let reader = new FileReader();
+                    reader.onloadend = (e) => {
+                        this.devLog(e.target);
+                        let image_url = e.target.result;
+
+                        this.kamar_model.kamar_photos.push({
+                            image_url: image_url,
+                        });
+                    };
+                    reader.readAsDataURL(imageFile);
+
+                    this.urls.push(imageURL);
+                }
+            }
+        },
+
+        removeImage(index) {
+            this.deletedImages.push(this.kamar_model.kamar_photos[index]);
+            this.devLog(this.deletedImages);
+
+            this.urls[index] = null;
+            this.urls.splice(index, 1);
+            this.kamar_model.kamar_photos.splice(index, 1);
+        },
+
     }
 }
 </script>
