@@ -2,7 +2,7 @@
     <!-- <v-main> -->
         <v-container grid-list-md class="pt-0">
             <v-layout align-start>
-                <p class="main-title">Rincian Pesanan</p>
+                <p class="thin-title paragraph">Rincian Pesanan</p>
             </v-layout>
             <v-layout column class="layout-main" mt-6 v-if="this.model_ready">
                 <v-layout align-start row> 
@@ -97,8 +97,8 @@
                 </v-layout>
             </v-layout>
             <v-layout column class="layout-main" mt-6 v-else-if="!this.model_ready">
-                <p class="main-title">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
-                <p class="pt-2 medium-bigger-regular-text">Silahkan Cek Rincian Transaksi jika sudah melakukan Pemesanan</p>
+                <p class="thin-title">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
+                <p class="thin-sub-title pt-2">Silahkan Cek Rincian Transaksi jika sudah melakukan Pemesanan</p>
             </v-layout>
             <v-dialog v-model="dialog_konfirmasi_batal" persistent max-width="25vw">
                 <v-card class="pa-4">
@@ -109,6 +109,15 @@
                     </v-layout>
                 </v-card>
             </v-dialog>
+            <v-dialog v-model="dialog_kamar_terisi" persistent max-width="25vw">
+                <v-card class="pa-4">
+                    <p class="medium-regular-text">Mohon Maaf Kamar sudah terisi</p>
+                    <v-layout justify-center class="pt-4">
+                        <v-btn outlined class="mr-2" @click="$router.go(-1);">Keluar</v-btn>
+                    </v-layout>
+                </v-card>
+            </v-dialog>
+
             <v-dialog v-model="dialog_lokasi" persistent max-width="25vw">
                 <v-card class="pa-4">
                     <v-layout row align-start class="pa-4 pb-0">
@@ -149,6 +158,10 @@
                 type: String,
                 default: "no_data",
             },
+            apiKamarKosong: {
+                type: String,
+                default: "no_data",
+            },
         },
         data(){
             return{
@@ -167,6 +180,10 @@
 
                 locations : [],
                 lengths : [],
+            
+                status_kamar_terisi: false,
+                kamar_kosong: [],
+                dialog_kamar_terisi: false,
             }
         },
         created(){
@@ -191,6 +208,7 @@
             },
             initData(){
                 this.initModel();
+                this.sisaKamar();
                 this.devLog('init data');
 
                 if(localStorage.kosBooking){
@@ -257,33 +275,39 @@
             submitForm(){
                 this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.kos_booking_model));
 
-                this.$http.post(this.api, this.kos_booking_model)
-                .then(response => {
-                    this.devLog("Result Code: " +response.status);
-                    if(response.status == 201){
-                        if(response.data.api_status == "fail"){
-                            this.devLog('response fail')
-                            this.error_message = response.data.api_title;
-                            this.color = "red";
-                            this.snackbar = true;
-                        }else{
-                            localStorage.removeItem('kosBooking');
+                if(this.status_kamar_terisi == true){
+                    this.$http.post(this.api, this.kos_booking_model)
+                    .then(response => {
+                        this.devLog("Result Code: " +response.status);
+                        if(response.status == 201){
+                            if(response.data.api_status == "fail"){
+                                this.devLog('response fail')
+                                this.error_message = response.data.api_title;
+                                this.color = "red";
+                                this.snackbar = true;
+                            }else{
+                                localStorage.removeItem('kosBooking');
 
-                            this.$router
-                                .push({ path: '/transaksi' })
-                                .then(() => { this.$router.go() })
-                            // this.$router.push('/dashboard');
+                                this.$router
+                                    .push({ path: '/transaksi' })
+                                    .then(() => { this.$router.go() })
+                            }
                         }
-                    }
-                }).catch((err)=>{
-                    this.error_message = err.response.data.message;
-                    this.color = "red";
-                    this.snackbar = true;
-                });
-            },
+                    }).catch((err)=>{
+                        this.error_message = err.response.data.message;
+                        this.color = "red";
+                        this.snackbar = true;
+                    });
+                }else{
+                    this.dialog_kamar_terisi = true;
+                    localStorage.removeItem('kosBooking');
+                }
+            },            
+            
             dialog_batal(){
                 this.dialog_konfirmasi_batal = true;
             },
+            
             cancelBooking(){
                 localStorage.removeItem('kosBooking');
                 this.dialog_konfirmasi_batal = false;
@@ -292,6 +316,34 @@
                     .push({ path: '/dashboard' })
                     .then(() => { this.$router.go() })
 
+            },
+
+            sisaKamar(){
+                this.$http.get(this.apiKamarKosong)
+                .then(response => {
+                    this.devLog("get kamar kosong result code: " + response.status);
+                    if(response.status == 200){
+                        if(!response.data){
+                            this.devLog('response fail')
+                        }else{
+                            this.kamar_kosong = response.data.data;
+                            this.devLog(this.kamar_kosong)
+
+                            this.total_kamar_kosong = this.kamar_kosong.length;
+                            this.devLog('kamar kosong' + this.total_kamar_kosong);
+
+                            if(this.total_kamar_kosong > 0){
+                                this.status_kamar_terisi = true;
+                            }else{
+                                this.status_kamar_terisi = false;
+                            }
+                        }
+                    }
+                }).catch((err)=>{
+                    this.error_message = err.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                });
             },
         }
     }

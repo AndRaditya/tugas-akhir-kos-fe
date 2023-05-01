@@ -6,9 +6,9 @@ import Login from './components/login/login'
 import UserProfile from './components/profile/user-profile'
 import Register from './components/register/register'
 
-import RincianPesananCustomer from './components/customer/pesanan/rincian-pesanan'
-import RincianTransaksiCustomer from './components/customer/transaksi/rincian-transaksi'
-import RincianPembayaranCustomer from './components/customer/transaksi/rincian-pembayaran'
+import RincianPesananCustomer from './components/customer/pesanan/customer-rincian-pesanan'
+import RincianTransaksiCustomer from './components/customer/transaksi/customer-rincian-transaksi'
+import RincianPembayaranCustomer from './components/customer/transaksi/customer-rincian-pembayaran'
 
 import PengelolaCruKos from './components/pengelola/kos/cru-pengelola-kos'
 import PengelolaPesanan from './components/pengelola/pesanan/pengelola-pesanan'
@@ -47,7 +47,7 @@ routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login, prop
 routeArr.push({ title: 'Register', icon: '', path: '/register', component: Register});
 
 // Customer
-routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pesanan', component: RincianPesananCustomer, props: {api: api + '/kos-booking', apiUser: api + '/users/'}});
+routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pesanan', component: RincianPesananCustomer, props: {api: api + '/kos-booking', apiUser: api + '/users/', apiKamarKosong: api + '/kamar-kosong'}});
 routeArr.push({ title: 'Rincian Transaksi', icon: '', path: '/transaksi', component: RincianTransaksiCustomer, props: {api: api + '/kos-booking-users/'}});
 routeArr.push({ title: 'Rincian Pembayaran', icon: '', path: '/pembayaran/:id', component: RincianPembayaranCustomer, props:{api: api+'/kos-booking/', apiPengelola: api+'/users-pengelola', apiPembayaran: api+'/kos-booking-pembayaran/'}});
 routeArr.push({ title: 'Profile', icon: '', path: '/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});

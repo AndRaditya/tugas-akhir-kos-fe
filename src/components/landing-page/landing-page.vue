@@ -305,7 +305,7 @@ export default {
 
             kamar_rules: [ 
                 v => !!v || "This field is required",
-                v => ( v && v >= this.total_kamar_kosong ) || "Kamar tidak boleh kosong",
+                v => ( v && v >= 1 ) || "Kamar tidak boleh kosong",
                 v => ( v && v <= this.total_kamar_kosong ) || "Hanya tersisa " + this.total_kamar_kosong + ' kamar',
             ],
 
