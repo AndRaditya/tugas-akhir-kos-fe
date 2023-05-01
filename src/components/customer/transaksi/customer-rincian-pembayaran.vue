@@ -69,7 +69,12 @@
                             <v-flex xs8>
                                 <v-layout column align-start>
                                     <p class="bold-bigger-regular-text">{{ user_model.bank }}</p>
-                                    <p class="bold-bigger-regular-text">{{ user_model.rekening }}</p>
+                                    <v-layout row class="mt-4">
+                                        <p class="bold-bigger-regular-text" ref="copy_nomor_rekening">{{ user_model.rekening }}</p>
+                                        <span class="material-symbols-outlined pt-1 ml-6" style="cursor: pointer" @click="copyNomorRek(user_model.rekening)">
+                                            content_copy
+                                        </span>
+                                    </v-layout>
                                 </v-layout>
                             </v-flex>
                         </v-layout>
@@ -384,8 +389,6 @@ import counterVue from '@/components/counter.vue';
                         const exp_date = new Date(this.kos_booking_model.exp_date);
                         const distance = exp_date.getTime() - now.getTime();
 
-                        this.devLog('test')
-
                         if(distance < 0){
                             clearInterval(timer);
                             this.expired_status = true;
@@ -420,6 +423,14 @@ import counterVue from '@/components/counter.vue';
                     this.color = "red";
                     this.snackbar = true;
                 });
+            },
+
+            async copyNomorRek(mytext){
+                try {
+                    await navigator.clipboard.writeText(mytext);
+                } catch($e) {
+                    this.devLog('cant copy')
+                }
             }
         },
         computed: {

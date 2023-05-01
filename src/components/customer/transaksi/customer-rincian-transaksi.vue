@@ -126,7 +126,7 @@
 
                     this.$http.get(this.api+user_id)
                     .then(response => {
-                        this.devLog("Login Result Code: " +response.status);
+                        this.devLog("transaksi Result Code: " +response.status);
                         if(response.status == 200){
                             if(response.data.api_status == "fail"){
                                 this.devLog('response fail')
@@ -137,7 +137,9 @@
                             }else{
                                 this.kos_booking_model = response.data.data;
                                 this.devLog(this.kos_booking_model)
-                                this.model_transaksi = true;
+                                if(this.kos_booking_model.length > 0){
+                                    this.model_transaksi = true;
+                                }
                                 this.getDateAndPrice();
                             }
                         }
