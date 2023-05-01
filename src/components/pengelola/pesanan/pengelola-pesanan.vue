@@ -176,7 +176,7 @@ export default {
             //         booking_id: items
             //     }
             // });
-            this.$router.push('/pengelola/pesanan/'+items);
+            this.$router.push('/pengelola-pesanan/'+items);
 
         }
     }
