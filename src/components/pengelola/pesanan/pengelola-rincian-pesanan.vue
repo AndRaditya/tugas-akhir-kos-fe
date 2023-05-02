@@ -61,7 +61,7 @@
                             </v-layout>
 
                             <v-layout column align-start v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pembayaran'" class="pt-6">
-                                <v-btn color="#146C94" outlined elevation="0" width="30%" @click="redirect_router('register')" class="create-account-btn" >Lihat Bukti Transfer</v-btn>
+                                <v-btn color="#146C94" outlined elevation="0" width="30%" @click="imageDialog = true" class="create-account-btn" >Lihat Bukti Transfer</v-btn>
                             </v-layout>
                         </v-layout>
 
@@ -78,14 +78,39 @@
         </v-layout>
         
         <v-dialog v-model="dialog_konfirmasi_batal" persistent max-width="25vw">
-                <v-card class="pa-4">
-                    <p class="medium-regular-text">Ingin Membatalkan Pesanan?</p>
-                    <v-layout justify-center class="pt-4">
-                        <v-btn outlined class="mr-2" @click="dialog_konfirmasi_batal = false">Keluar</v-btn>
-                        <v-btn color="red" class="ml-2 white--text" @click="submitForm('Dibatalkan')">Batalkan</v-btn>
-                    </v-layout>
-                </v-card>
-            </v-dialog>
+            <v-card class="pa-4">
+                <p class="medium-regular-text">Ingin Membatalkan Pesanan?</p>
+                <v-layout justify-center class="pt-4">
+                    <v-btn outlined class="mr-2" @click="dialog_konfirmasi_batal = false">Keluar</v-btn>
+                    <v-btn color="red" class="ml-2 white--text" @click="submitForm('Dibatalkan')">Batalkan</v-btn>
+                </v-layout>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="imageDialog" :lazy="true" max-width="40vw">
+            <v-card class="rounded-card">
+                <v-toolbar dark color="primary" dense flat>
+                </v-toolbar>
+
+                <v-layout row wrap fill-height class="pa-0 ma-0">
+                    <v-flex class="text-xs-center pa-0 ma-0">
+                        <v-img
+                            :src="url_dialog"
+                            max-width="100%"
+                            contain
+                            class="grey lighten-5"
+                        ></v-img>
+                    </v-flex>
+                </v-layout>
+
+                <v-card-actions py-0 px-4 ma-0>
+                    <v-flex class="ma-0 pa-2 justify-center">
+                        <v-btn small raised round color="primary" class="right mx-2" @click="imageDialog = false" dark>Close</v-btn>
+                    </v-flex>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
     </v-container>
 </template>
@@ -128,6 +153,9 @@
                 nomor_kamar: null,
                 dialog_konfirmasi_batal: false,
 
+                imageDialog: false,
+                url_dialog: '',
+
                 rules: {
                     required: value => !!value || 'Required.',
                     min: v => v.length >= 8 || 'Min 8 characters',
@@ -148,6 +176,7 @@
                 this.getData();
                 this.getKamar();
             },
+
             initModel(){
                 this.kos_booking_model = {
                     id: null,
@@ -164,6 +193,7 @@
                     bukti_transfer: [],
                 }
             },
+            
             validateForm () {
                 console.log('valid')
                 this.devLog("validating");
@@ -219,7 +249,6 @@
 
             },
 
-
             getData(){
                 this.devLog('get data');
 
@@ -236,6 +265,7 @@
                             
                         }else{
                             this.kos_booking_model = response.data.data[0];
+                            this.url_dialog = this.kos_booking_model.bukti_transfer.photo_path;
                             this.devLog(this.kos_booking_model)
                             this.model_transaksi = true;
                             this.getDateAndPrice();
