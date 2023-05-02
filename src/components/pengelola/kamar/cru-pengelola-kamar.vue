@@ -18,6 +18,7 @@
                             outlined
                             :items="nomor_kamar"
                             :readonly="!ubahNomor"
+                            :rules="requiredRule"
                         ></v-select>
                         <v-layout align-start column>
                             <p class="regular-text">Penyewa</p>
@@ -37,6 +38,7 @@
                             outlined
                             :items="status_kamar"
                             :readonly="!editable"
+                            :rules="requiredRule"
                         ></v-select>
                         <v-layout align-start column>
                             <p class="regular-text">Fasilitas Kamar</p>
@@ -49,6 +51,7 @@
                             :readonly="!editable"
                             multiple
                             chips
+                            :rules="requiredRule2"
                         ></v-select>
                         <v-layout align-start column>
                             <p class="regular-text">Harga Kamar</p>
@@ -169,6 +172,13 @@ export default {
             status_kamar: ['Dipakai', 'Kosong'],
             nomor_kamar: [1, 2, 3, 4, 5, 6, 7, 8],
             kamar_fasiitas_items: [],
+
+            requiredRule: [
+                v => !!v || 'This is required',
+            ],
+            requiredRule2: [
+                v => v.length>0|| 'This is required',
+            ],
         }
     },
     created(){

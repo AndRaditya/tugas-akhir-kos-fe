@@ -229,4 +229,8 @@ export default {
     padding-top: 0.6rem !important;
   }
 
+  .v-select__selection--comma{
+    font-size: 1.6rem !important;
+  }
+
 </style>

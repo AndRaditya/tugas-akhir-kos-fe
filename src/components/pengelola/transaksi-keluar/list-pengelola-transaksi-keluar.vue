@@ -70,7 +70,7 @@ export default {
                 { text: "No.", value: "index", align: "left", sortable: true},
                 { text: "Nomor Transaksi", value: "no", align: "left"},
                 { text: "Tanggal Transaksi", value: "tanggal", align: "left"},
-                { text: "Kategori Transaksi", value: "tanggal", align: "left"},
+                { text: "Kategori Transaksi", value: "transaksi_keluar_kategori.name", align: "left"},
                 { text: "Nilai", value: "nilai", align: "left"},
                 { text: "Deskripsi", value: "desc", align: "left"},
                 { text: "Actions", value: "actions", sortable: false, align: "center" },
@@ -123,14 +123,13 @@ export default {
             const id_temp = this.list_temp.id;
 
             this.dialog_konfirmasi_hapus = false;
-            const index = this.list.datas.indexOf(this.list_temp);
             this.devLog(this.api+'/'+id_temp)
 
             this.$http.delete(this.api+'/'+id_temp)
                 .then(response => {
                     this.devLog(JSON.stringify(response));
                     if(response.status == 204){
-                        this.list.datas.splice(index, 1);
+                        this.axioData();
                         this.closeDialog();
                     }
                 }).catch((err) => {

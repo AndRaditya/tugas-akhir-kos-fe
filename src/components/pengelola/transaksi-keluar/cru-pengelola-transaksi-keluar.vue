@@ -22,10 +22,12 @@
                             <p class="regular-text">Kategori Transaksi</p>
                         </v-layout>
                         <v-select
-                            v-model="transaksi_keluar_model.no"
+                            v-model="transaksi_keluar_model.transaksi_keluar_kategori_id"
                             placeholder="Masukkan Kategori Transaksi"
                             outlined
+                            :items="kategori_transaksi_keluar"
                             :readonly="!editable"
+                            :rules="requiredRule"
                         ></v-select>
                         <v-layout align-start column>
                             <p class="regular-text">Nilai Transaksi</p>
@@ -38,6 +40,7 @@
                             type="number"
                             hide-spin-buttons
                             outlined
+                            :rules="requiredRule"
                         ></v-text-field>
                     </v-layout>
                 </v-flex>
@@ -59,6 +62,7 @@
                             label="Masukkan Deskripsi Transaksi"
                             :readonly="!editable"
                             outlined
+                            :rules="requiredRule"
                         ></v-textarea>
                         
                     </v-layout>
@@ -79,6 +83,10 @@ export default {
     name: 'cru-transaksi-keluar',
     props:{
         api: {
+            type: String,
+            required: true
+        },
+        apiKategori: {
             type: String,
             required: true
         },
@@ -104,6 +112,12 @@ export default {
             snackbar: '',
             color: '',
             error_message: '',
+
+            kategori_transaksi_keluar: [],
+
+            requiredRule: [
+                v => !!v || 'This is required',
+            ],
         }
     },
     created(){
@@ -115,6 +129,7 @@ export default {
     methods:{
         initData(){
             this.initModel();
+            this.getKategori();
             this.nav_path = this.$route.path.split("/");
             var last = this.nav_path.length -1;
             for (var i = 1; i <= last; i++) {
@@ -137,6 +152,7 @@ export default {
                 }
             }
         },
+        
         initModel(){
             this.transaksi_keluar_model = {
                 id: null,
@@ -144,12 +160,10 @@ export default {
                 tanggal: '',
                 desc: '',
                 nilai: null,
-            }
-
-            this.transaksi_keluar_kategori_model = {
-
-            }        
+                kategori_transaksi: '',
+            }       
         },
+
         initAxio(){
             this.devLog(this.nav_title);
             if(this.nav_title == "Ubah" || this.nav_title == "Detail"){
@@ -178,6 +192,7 @@ export default {
             }
 
         },
+
         getNow() {
             const today = new Date();
 
@@ -192,12 +207,127 @@ export default {
             const dateTime = date +' '+ time;
             this.transaksi_keluar_model.tanggal = dateTime;
         },
+
         getZeroBefore(item){
             if(item < 10){
                 item = '0' + item
             }
             return item;
-        }
+        },
+
+        getKategori(){
+            this.devLog('this.id');
+            this.devLog(this.apiKategori);
+
+            this.$http.get(this.apiKategori)
+                .then(response => {
+                    this.devLog("get kategori result code: " + response.status);
+                    if(response.status == 200){
+                        if(!response.data){
+                            this.devLog('response fail')
+                        }else{
+                            this.devLog(response.data)
+                            this.kategori_transaksi_keluar = response.data;
+                            this.devLog(this.kategori_transaksi_keluar)
+                        }
+                    }
+                }).catch((err)=>{
+                    this.error_message = err.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                });
+        
+        },
+
+        validateForm () {
+            console.log('valid')
+            this.devLog("validating");
+            this.valid = (this.$refs.form_transaksi_keluar).validate();
+            this.devLog(this.valid);
+
+            if (this.valid == true) {
+                this.submitForm();
+            }else{
+                window.scrollTo(0,0);
+            }
+        },
+
+        submitForm(){
+            switch (this.nav_title) {
+                case "Tambah":
+                    this.devLog('post data')
+                    this.postData();
+                break;
+
+                default:
+                    this.devLog('put data')
+                    this.putData();
+                break;
+            }
+        },
+
+        postData(){
+            this.devLog(this.api)
+            this.devLog(this.transaksi_keluar_model);
+
+            this.$http.post(this.api, this.transaksi_keluar_model)
+            .then(response => {
+                this.devLog("post data trs: " +response.status);
+                if(response.status == 201){
+                    if(response.data.api_status == "fail"){
+                        this.devLog('response fail')
+                        this.error_message = response.data.api_title;
+                        this.color = "red";
+                        this.snackbar = true;
+                    }else{
+                        this.error_message = 'Berhasil Submit Data';
+                        this.color = "green";
+                        this.snackbar = true;
+
+                        this.$router
+                            .push({ path: '/transaksi-keluar' })
+                            .then(() => { this.$router.go() })
+                    }
+                }
+            }).catch((err)=>{
+                this.error_message = err.response.data.message;
+                this.color = "red";
+                this.snackbar = true;
+            });
+        },  
+
+        putData(){
+            this.devLog(this.api+this.id)
+            this.devLog(JSON.stringify(this.transaksi_keluar_model));
+            this.devLog(this.transaksi_keluar_model);
+
+            this.$http.put(this.api+this.id, this.transaksi_keluar_model)
+            .then(response => {
+                this.devLog("update kos: " +response.status);
+                if(response.status == 202){
+                    if(response.data.api_status == "fail"){
+                        this.devLog('response fail')
+                        this.error_message = response.data.api_title;
+                        this.color = "red";
+                        this.snackbar = true;
+                    }else{
+
+                        this.error_message = 'Berhasil Update Data';
+                        this.color = "green";
+                        this.snackbar = true;
+
+                        this.$router
+                            .push({ path: '/transaksi-keluar' })
+                            .then(() => { this.$router.go() })
+                    }
+                }
+            }).catch((err)=>{
+                this.error_message = err.response.data.message;
+                this.color = "red";
+                this.snackbar = true;
+            });
+        },  
+
 
     }
 }
