@@ -1,8 +1,11 @@
 <template>
-    <v-container grid-list-md class="pt-0">
-        <v-layout align-start>
+    <v-container grid-list-md class="pa-0">
+        <v-layout align-start row>
             <v-layout align-start>
                 <p class="main-title">{{ nav_title }} Kamar</p>
+            </v-layout>
+            <v-layout align-end justify-end v-if="!editable">
+                <v-btn elevation="0" class="white--text btn-go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
             </v-layout>
         </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kamar" autofocus lazy-validation>
@@ -101,7 +104,7 @@
                         </v-flex>
                     </v-layout>
                     <v-layout justify-end class="pb-4">
-                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn">
+                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn" @click="imageDialog = true">
                             <span class="material-symbols-outlined">
                             photo_camera
                             </span>
@@ -126,6 +129,51 @@
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
+        <v-dialog v-model="imageDialog" :lazy="true" max-width="60vw">
+            <v-card class="rounded-card">
+                <v-toolbar dark color="primary" dense flat>
+                </v-toolbar>
+
+                <v-layout row wrap fill-height class="pa-0 ma-0">
+                    <v-flex
+                        v-for="(url, index) in urls"
+                        :key="index"
+                        class="preview-img-flex ma-2 mr-2 mb-2"
+                        shrink
+                    >
+                        <v-layout column>
+                            <v-card elevation-0>
+                                <v-img
+                                    v-if="url"
+                                    :src="url"
+                                    width="350"
+                                    height="200"
+                                    contain
+                                    class="grey lighten-5"
+                                ></v-img>
+                            </v-card>
+                            <v-flex v-if="url" mt-2>
+                                <v-btn
+                                    icon
+                                    small
+                                    class="error my-auto"
+                                    @click="removeImage(index)"
+                                    ><span class="material-icons">
+                                    delete
+                                    </span></v-btn>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+                </v-layout>
+
+                <v-card-actions py-0 px-4 ma-0>
+                    <v-flex class="ma-0 pa-2 justify-center">
+                        <v-btn raised round color="primary" class="right mx-2" @click="imageDialog = false" dark>Close</v-btn>
+                    </v-flex>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
@@ -134,6 +182,10 @@ export default {
     name: 'cru-pengelola-kamar',
     props: {
         api: {
+            type: String,
+            default: "no_data",
+        },
+        apiDeletePhoto: {
             type: String,
             default: "no_data",
         },
@@ -156,7 +208,8 @@ export default {
             id: null,
             deletedImages: [],
             urls: [],
-
+            imageDialog: false, 
+            
             valid: false,
             nav_title: "",
             nav_path: [],
@@ -349,13 +402,6 @@ export default {
                         this.color = "red";
                         this.snackbar = true;
                     }else{
-                        // if (this.deletedImages.length > 0) {
-                        //     for (let j = 0; j < this.deletedImages.length; j++) {
-                        //         this.removeImageWithAPI(this.deletedImages[j]);
-                        //     }
-                        //     this.devLog("image deleted with api");
-                        // }
-
                         this.error_message = 'Berhasil Submit Data';
                         this.color = "green";
                         this.snackbar = true;
@@ -387,20 +433,15 @@ export default {
                         this.color = "red";
                         this.snackbar = true;
                     }else{
-                        // if (this.deletedImages.length > 0) {
-                        //     for (let j = 0; j < this.deletedImages.length; j++) {
-                        //         this.removeImageWithAPI(this.deletedImages[j]);
-                        //     }
-                        //     this.devLog("image deleted with api");
-                        // }
-
+                        if (this.deletedImages.length > 0) {
+                            for (let j = 0; j < this.deletedImages.length; j++) {
+                                this.devLog("image deleted with api");
+                                this.removeImageWithAPI(this.deletedImages[j]);
+                            }
+                        }
                         this.error_message = 'Berhasil Submit Data';
                         this.color = "green";
                         this.snackbar = true;
-
-                        this.$router
-                            .push({ path: '/kamar' })
-                            .then(() => { this.$router.go() })
                     }
                 }
             }).catch((err)=>{
@@ -409,7 +450,6 @@ export default {
                 this.snackbar = true;
             });
         },  
-
 
 
         getKamarFasilitasAxio(){
@@ -464,12 +504,47 @@ export default {
         },
 
         removeImage(index) {
-            this.deletedImages.push(this.kamar_model.kamar_photos[index]);
+            if(this.kamar_model.kamar_photos[index].photo_path){
+                this.deletedImages.push(this.kamar_model.kamar_photos[index]);
+            }
             this.devLog(this.deletedImages);
 
             this.urls[index] = null;
             this.urls.splice(index, 1);
             this.kamar_model.kamar_photos.splice(index, 1);
+        },
+
+        removeImageWithAPI(deleteImage) {
+            this.devLog(deleteImage);
+            this.$http.put(this.apiDeletePhoto + this.id, {kamar_photos: deleteImage})
+            .then((response) => {
+                    if(response.status == 202){
+                        if(response.data.api_status == "fail"){
+                            this.devLog('response fail')
+                            this.error_message = response.data.api_title;
+                            this.color = "red";
+                            this.snackbar = true;
+                        }else{
+                            this.error_message = 'Berhasil Update Data';
+                            this.color = "green";
+                            this.snackbar = true;
+                        }
+                    }
+                })
+            .catch((err) => {
+                this.error_message = err.response.data.message;
+                this.color = "red";
+                this.snackbar = true;
+            });
+        },
+
+        goEdit(){
+            let mainPath = this.$route.path.split('/');
+            mainPath = mainPath.splice(0, mainPath.length-1).join('/');
+
+            this.$router
+                .push({ path: mainPath+'/edit/'+this.id })
+                .then(() => { this.$router.go() })
         },
 
     }

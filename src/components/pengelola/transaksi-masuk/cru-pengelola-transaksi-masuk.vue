@@ -1,8 +1,12 @@
 <template>
     <v-container grid-list-md class="pt-0">
-        <v-layout align-start>
+        <v-layout align-start row>
             <v-layout align-start>
                 <p class="main-title">{{ nav_title }} Transaksi Masuk</p>
+            </v-layout>
+
+            <v-layout align-end justify-end v-if="!editable">
+                <v-btn elevation="0" class="white--text btn-go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
             </v-layout>
         </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_transaksi_masuk" autofocus lazy-validation>
@@ -84,6 +88,7 @@
                                     height="300"
                                     contain
                                     class="grey lighten-5"
+                                    @click="imageDialog = true" 
                                 ></v-img>
                             </v-card>
                             <v-flex v-if="url && editable" mt-2>
@@ -180,6 +185,29 @@
             </v-flex>
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
+        <v-dialog v-model="imageDialog" :lazy="true" max-width="40vw">
+            <v-card class="rounded-card">
+                <v-toolbar dark color="primary" dense flat>
+                </v-toolbar>
+
+                <v-layout row wrap fill-height class="pa-0 ma-0">
+                    <v-flex class="text-xs-center pa-0 ma-0">
+                        <v-img
+                            :src="url"
+                            max-width="100%"
+                            contain
+                            class="grey lighten-5"
+                        ></v-img>
+                    </v-flex>
+                </v-layout>
+
+                <v-card-actions py-0 px-4 ma-0>
+                    <v-flex class="ma-0 pa-2 justify-center">
+                        <v-btn small raised round color="primary" class="right mx-2" @click="imageDialog = false" dark>Close</v-btn>
+                    </v-flex>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
     </v-container>
     
@@ -197,6 +225,10 @@ export default {
             type: String,
             required: true
         },
+        apiDeletePhoto: {
+            type: String,
+            required: true
+        },
         editable: {
             type: Boolean,
             default: false,
@@ -209,6 +241,7 @@ export default {
     data(){
         return{
             id: null,
+            imageDialog: false,
 
             deletedImages: [],
             url: '',
@@ -316,15 +349,16 @@ export default {
                                 this.transaksi_masuk_model = response.data.data[0];
                                 this.devLog(this.transaksi_masuk_model)
                                 this.total_nilai_temp = this.transaksi_masuk_model.total_nilai.toLocaleString("de-DE")
+                                this.devLog('init axio')
                                 this.initPhoto()
 
                                 if(this.transaksi_masuk_model.biaya_tambahan.length > 0){
                                     this.getBiayaTambahan();
                                 }
 
-                                if (this.transaksi_masuk_model.bukti_transfer.photo_path) {
-                                    this.updatePhoto();
-                                }
+                                // if (this.transaksi_masuk_model.bukti_transfer.photo_path) {
+                                //     this.updatePhoto();
+                                // }
                             }
                         }
                     }).catch((err)=>{
@@ -335,7 +369,6 @@ export default {
             }else{
                 setInterval(this.getNow(), 1000);
             }
-
         },
 
         getBiayaTambahan(){
@@ -439,13 +472,16 @@ export default {
 
         putData(){
             this.devLog(this.api+this.id)
-            this.devLog(JSON.stringify(this.transaksi_masuk_model));
-            this.devLog(this.transaksi_masuk_model);
 
             this.devLog('this.switch_harga ' + this.switch_harga);
             this.devLog('this.total_nilai_temp_float ' + this.total_nilai_temp_float);
 
-            this.transaksi_masuk_model.total_nilai = parseFloat(this.total_nilai_temp_float);
+            if(this.total_nilai_temp_float){
+                this.transaksi_masuk_model.total_nilai = this.total_nilai_temp_float;
+            }
+
+            this.devLog(JSON.stringify(this.transaksi_masuk_model));
+            this.devLog(this.transaksi_masuk_model);
             
             this.$http.put(this.api+this.id, this.transaksi_masuk_model)
             .then(response => {
@@ -457,6 +493,11 @@ export default {
                         this.color = "red";
                         this.snackbar = true;
                     }else{
+                        if (this.deletedImages.length > 0) {
+                            this.devLog('api delete image')
+                            this.removeImageWithAPI(this.deletedImages[0]);
+                            this.devLog("image deleted with api");
+                        }
 
                         this.error_message = 'Berhasil Update Data';
                         this.color = "green";
@@ -473,6 +514,23 @@ export default {
                 this.snackbar = true;
             });
         },  
+
+        removeImageWithAPI(deleteImage) {
+            this.$http.put(this.apiDeletePhoto + this.id, {bukti_transfer: deleteImage})
+            .then((response) => {
+                    this.devLog(JSON.stringify(response));
+                    if (response.status == 200) {
+                        this.devLog(this.model.product_channel_images);
+                    } else {
+                        this.devLog(response)
+                    }
+                })
+            .catch((err) => {
+                this.error_message = err.response.data.message;
+                this.color = "red";
+                this.snackbar = true;
+            });
+        },
 
         getKategori(){
             this.devLog('this.id');
@@ -498,6 +556,7 @@ export default {
         },
 
         initPhoto() {
+            this.devLog(' === init photo')
             this.url = this.transaksi_masuk_model.bukti_transfer.photo_path
         },
         
@@ -522,6 +581,10 @@ export default {
                         let image_url = e.target.result;
 
                         this.transaksi_masuk_model.bukti_transfer = image_url;
+
+                        // this.transaksi_masuk_model.bukti_transfer.push({
+                        //     url: image_url,
+                        // });
                     };
                     reader.readAsDataURL(imageFile);
 
@@ -531,7 +594,7 @@ export default {
         },
 
         removeImage() {
-            this.deletedImages = this.transaksi_masuk_model.bukti_transfer;
+            this.deletedImages.push(this.transaksi_masuk_model.bukti_transfer);
             this.devLog(this.deletedImages);
 
             this.url = '';
@@ -564,7 +627,8 @@ export default {
 
         biayaTambahan(){
             // this.devLog('biaya tambahan')
-            let nilai_trs = null;
+            // let nilai_trs = null;
+            let nilai_trs;
 
             if(!this.switch_harga){
                 nilai_trs = parseFloat(this.transaksi_masuk_model.nilai);
@@ -574,8 +638,20 @@ export default {
 
             this.total_nilai_temp_float = nilai_trs;
             this.total_nilai_temp = nilai_trs.toLocaleString("de-DE");
-            
-        }
+        },
+
+        goEdit(){
+            let mainPath = this.$route.path.split('/');
+            mainPath = mainPath.splice(0, mainPath.length-1).join('/');
+            // this.devLog(mainPath);
+            // this.$router.push(mainPath+'/edit/'+this.id);
+
+             this.$router
+                .push({ path: mainPath+'/edit/'+this.id })
+                .then(() => { this.$router.go() })
+
+
+        },
     }
 }
 </script>
