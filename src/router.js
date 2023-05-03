@@ -65,12 +65,12 @@ routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pengelola-pesanan/:i
 
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar', component: PengelolaKamar, props:{api: api+'/kamar'}});
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/add', component: PengelolaRincianKamar, props:{api: api+'/kamar', editable: true, ubahNomor: true}});
-routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/edit/:id', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: true, ubahNomor: false}});
+routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/edit/:id', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: true, ubahNomor: false, apiDeletePhoto: api + '/kamar-photos/'}});
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/:id', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: false, ubahNomor: false}});
 
 routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk', component: PengelolaTransaksiMasuk, props:{api: api+'/transaksi-masuk'}});
 routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/add', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk', editable: true, apiKategori: api + '/transaksi-masuk-kategori'}});
-routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/edit/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: true, apiKategori: api + '/transaksi-masuk-kategori'}});
+routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/edit/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: true, apiKategori: api + '/transaksi-masuk-kategori', apiDeletePhoto: api + '/transaksi-masuk-photos/'}});
 routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: false, apiKategori: api + '/transaksi-masuk-kategori'}});
 
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar', component: PengelolaTransaksiKeluar, props:{api: api+'/transaksi-keluar'}});

@@ -97,7 +97,7 @@
                             </v-flex>
                         </v-layout>
                         <v-layout justify-end class="pb-4">
-                            <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn">
+                            <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn" @click="imageDialog = true">
                                 <span class="material-symbols-outlined">
                                 photo_camera
                                 </span>
@@ -131,6 +131,52 @@
             </v-flex>
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
+
+        <v-dialog v-model="imageDialog" :lazy="true" max-width="60vw">
+            <v-card class="rounded-card">
+                <v-toolbar dark color="primary" dense flat>
+                </v-toolbar>
+
+                <v-layout row wrap fill-height class="pa-0 ma-0">
+                    <v-flex
+                        v-for="(url, index) in urls"
+                        :key="index"
+                        class="preview-img-flex ma-2 mr-2 mb-2"
+                        shrink
+                    >
+                        <v-layout column>
+                            <v-card elevation-0>
+                                <v-img
+                                    v-if="url"
+                                    :src="url"
+                                    width="350"
+                                    height="200"
+                                    contain
+                                    class="grey lighten-5"
+                                ></v-img>
+                            </v-card>
+                            <v-flex v-if="url" mt-2>
+                                <v-btn
+                                    icon
+                                    small
+                                    class="error my-auto"
+                                    @click="removeImage(index)"
+                                    ><span class="material-icons">
+                                    delete
+                                    </span></v-btn>
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+                </v-layout>
+
+                <v-card-actions py-0 px-4 ma-0>
+                    <v-flex class="ma-0 pa-2 justify-center">
+                        <v-btn raised round color="primary" class="right mx-2" @click="imageDialog = false" dark>Close</v-btn>
+                    </v-flex>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
@@ -157,6 +203,8 @@ export default {
             deletedImages: [],
             urls: [],
             valid: false,
+            imageDialog: false, 
+
             model: {},
             snackbar: '',
             color: '',
@@ -247,11 +295,11 @@ export default {
 
                         this.initPhoto();
 
-                        for (let i = 0; i < this.kos_model.kos_photos.length; i++) {
-                            if (this.kos_model.kos_photos[i].url) {
-                                this.updatePhoto(i);
-                            }
-                        }
+                        // for (let i = 0; i < this.kos_model.kos_photos.length; i++) {
+                        //     if (this.kos_model.kos_photos[i].url) {
+                        //         this.updatePhoto(i);
+                        //     }
+                        // }
                     }
                 }
             }).catch((err)=>{
@@ -280,12 +328,12 @@ export default {
                         this.color = "red";
                         this.snackbar = true;
                     }else{
-                        // if (this.deletedImages.length > 0) {
-                        //     for (let j = 0; j < this.deletedImages.length; j++) {
-                        //         this.removeImageWithAPI(this.deletedImages[j]);
-                        //     }
-                        //     this.devLog("image deleted with api");
-                        // }
+                        if (this.deletedImages.length > 0) {
+                            for (let j = 0; j < this.deletedImages.length; j++) {
+                                this.removeImageWithAPI(this.deletedImages[j]);
+                            }
+                            this.devLog("image deleted with api");
+                        }
 
                         this.error_message = 'Berhasil Update Data';
                         this.color = "green";
@@ -368,7 +416,10 @@ export default {
         },
 
         removeImage(index) {
-            this.deletedImages.push(this.kos_model.kos_photos[index]);
+            if(this.kos_model.kos_photos[index].photo_path){
+                this.deletedImages.push(this.kos_model.kos_photos[index]);
+            }
+            this.devLog('delete image ');
             this.devLog(this.deletedImages);
 
             this.urls[index] = null;
@@ -399,30 +450,30 @@ export default {
             });
         },
 
-        updatePhoto(index) {
-            let url = this.kos_model.kos_photos[index].url;
-            fetch(url)
-                .then((res) => res.blob())
-                .then((blob) => {
-                    this.devLog("index i " + index);
-                    this.readFile(blob, index);
-                });
-        },
+        // updatePhoto(index) {
+        //     let url = this.kos_model.kos_photos[index].url;
+        //     fetch(url)
+        //         .then((res) => res.blob())
+        //         .then((blob) => {
+        //             this.devLog("index i " + index);
+        //             this.readFile(blob, index);
+        //         });
+        // },
 
-        readFile(input, index) {
-            const fr = new FileReader();
-            fr.readAsDataURL(input);
-            this.devLog(fr.result);
-            fr.addEventListener("load", () => {
-                this.devLog(fr);
-                const res = fr.result;
-                this.devLog("index " + index);
-                this.kos_model.kos_photos[index].image_url = res;
+        // readFile(input, index) {
+        //     const fr = new FileReader();
+        //     fr.readAsDataURL(input);
+        //     this.devLog(fr.result);
+        //     fr.addEventListener("load", () => {
+        //         this.devLog(fr);
+        //         const res = fr.result;
+        //         this.devLog("index " + index);
+        //         this.kos_model.kos_photos[index].image_url = res;
 
-                this.devLog("this.kos_model.kos_photos[index]");
-                this.devLog(this.kos_model.kos_photos[index]);
-            });
-        },
+        //         this.devLog("this.kos_model.kos_photos[index]");
+        //         this.devLog(this.kos_model.kos_photos[index]);
+        //     });
+        // },
     }
 }
 </script>

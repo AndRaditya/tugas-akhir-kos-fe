@@ -211,6 +211,12 @@ export default {
     padding: 3.2rem 6.4rem !important;
   }
 
+  .btn-go-edit{
+    background-color: #146C94 !important;
+    font-size: 2.4rem !important;
+    padding: 1.2rem 2.4rem !important;
+  }
+
   .material-icons{
     color: #fff;
     padding: 0.2rem !important;
