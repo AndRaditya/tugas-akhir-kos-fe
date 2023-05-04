@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pt-0">
+    <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start row>
             <v-layout align-start>
                 <p class="main-title">List Transaksi Keluar</p>
@@ -48,6 +48,7 @@ export default {
     },
     data(){
         return{
+            ready: false,
             snackbar: '',
             color: '',
             error_message: '',
@@ -77,7 +78,9 @@ export default {
             ];
         },
         axioData(){ 
-            this.$http.get(this.api)
+            this.$http.get(this.api, {headers : {
+                        Authorization: localStorage.token,
+                    }})
             .then(response => {
                 this.devLog("Login Result Code: " +response.status);
                 if(response.status == 200){
@@ -89,12 +92,14 @@ export default {
                     }else{
                         this.list.datas = response.data.data;
                         this.devLog(this.list.datas);
+                        this.ready = true;
                     }
                 }
             }).catch((err)=>{
-                this.error_message = err.response.data.message;
+                this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
+                this.ready = false;
             });
         },
         tambahKamar(){
@@ -125,7 +130,9 @@ export default {
             this.dialog_konfirmasi_hapus = false;
             this.devLog(this.api+'/'+id_temp)
 
-            this.$http.delete(this.api+'/'+id_temp)
+            this.$http.delete(this.api+'/'+id_temp, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog(JSON.stringify(response));
                     if(response.status == 204){

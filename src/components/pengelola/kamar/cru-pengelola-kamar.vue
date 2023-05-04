@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pa-0">
+    <v-container grid-list-md class="pa-0" v-if="ready">
         <v-layout align-start row>
             <v-layout align-start>
                 <p class="main-title">{{ nav_title }} Kamar</p>
@@ -205,6 +205,7 @@ export default {
 
     data(){
         return{
+            ready: false,
             id: null,
             deletedImages: [],
             urls: [],
@@ -239,8 +240,6 @@ export default {
         this.devLog(this.editable + 'editable');
         this.initData();
         this.initAxio();
-
-        this.devLog(this.api);
     },
     methods:{
         initData(){
@@ -277,7 +276,9 @@ export default {
                 this.devLog('this.id');
                 this.devLog(this.id);
 
-                this.$http.get(this.api+this.id)
+                this.$http.get(this.api+this.id, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                     .then(response => {
                         this.devLog("get user result code: " + response.status);
                         if(response.status == 200){
@@ -288,13 +289,18 @@ export default {
                                 this.devLog(this.kamar_model)
                                 this.getKamarFasilitasAxio();
                                 this.initPhoto();
+                                this.ready = true;
                             }
                         }
                     }).catch((err)=>{
-                        this.error_message = err.response.data.message;
+                        this.error_message = err.response.data;
                         this.color = "red";
                         this.snackbar = true;
+                        this.ready = false;
                     });
+            }else if(localStorage.userLogin){
+                this.devLog('add kamar')
+                this.ready = true;
             }
 
         },
@@ -326,7 +332,9 @@ export default {
 
         getNomorKamar(){
             this.devLog('get nomor kamar')
-            this.$http.get(this.api)
+            this.$http.get(this.api, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog("get user result code: " + response.status);
                     if(response.status == 200){
@@ -341,7 +349,7 @@ export default {
                         }
                     }
                 }).catch((err)=>{
-                    this.error_message = err.response.data.message;
+                    this.error_message = err.response.data;
                     this.color = "red";
                     this.snackbar = true;
                 });
@@ -412,7 +420,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
-                this.error_message = err.response.data.message;
+                this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
             });

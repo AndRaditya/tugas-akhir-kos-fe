@@ -224,7 +224,9 @@ import counterVue from '@/components/counter.vue';
             getData(){
                 this.devLog('get data');
 
-                this.$http.get(this.api+this.id)
+                this.$http.get(this.api+this.id, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog("pembayaran Result Code: " +response.status);
                     if(response.status == 200){
@@ -254,7 +256,9 @@ import counterVue from '@/components/counter.vue';
             },
 
             getPengelola(){
-                this.$http.get(this.apiPengelola)
+                this.$http.get(this.apiPengelola, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog("pengelola Result Code: " +response.status);
                     if(response.status == 200){
@@ -312,7 +316,9 @@ import counterVue from '@/components/counter.vue';
 
                     this.kos_booking_model.status = 'Menunggu Konfirmasi Pembayaran'
 
-                    this.$http.put(this.api+this.kos_booking_model.id, this.kos_booking_model)
+                    this.$http.put(this.api+this.kos_booking_model.id, this.kos_booking_model, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                     .then(response => {
                         this.devLog(response.status);
                         if(response.status == 202){
@@ -338,7 +344,9 @@ import counterVue from '@/components/counter.vue';
             },
 
             uploadPembayaran(){
-                this.$http.post(this.apiPembayaran+this.kos_booking_model.id, this.kos_booking_model)
+                this.$http.post(this.apiPembayaran+this.kos_booking_model.id, this.kos_booking_model, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                     .then(response => {
                         this.devLog(response.status);
                         if(response.status == 200){
@@ -406,7 +414,9 @@ import counterVue from '@/components/counter.vue';
             cancelPesanan(){
                 this.kos_booking_model.status = 'Dibatalkan';
 
-                this.$http.put(this.api+this.kos_booking_model.id, this.kos_booking_model)
+                this.$http.put(this.api+this.kos_booking_model.id, this.kos_booking_model, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog(response.status);
                     if(response.status == 202){

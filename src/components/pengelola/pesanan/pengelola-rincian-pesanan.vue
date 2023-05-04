@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pt-0">
+    <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start>
             <p class="main-title">Rincian Pesanan</p>
         </v-layout>
@@ -130,6 +130,7 @@
         },
         data(){
             return{
+                ready: false,
                 valid: false,
                 id: null,
                 form_pesanan_pengelola: false,
@@ -252,7 +253,9 @@
             getData(){
                 this.devLog('get data');
 
-                this.$http.get(this.api+this.id)
+                this.$http.get(this.api+this.id, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog("get data Result Code: " +response.status);
                     if(response.status == 200){
@@ -265,18 +268,22 @@
                             
                         }else{
                             this.kos_booking_model = response.data.data[0];
-                            this.url_dialog = this.kos_booking_model.bukti_transfer.photo_path;
+                            if(this.kos_booking_model.bukti_transfer){
+                                this.url_dialog = this.kos_booking_model.bukti_transfer.photo_path;
+                            }
                             this.devLog(this.kos_booking_model)
                             this.model_transaksi = true;
+                            this.ready = true;
                             this.getDateAndPrice();
                         }
                     }
                 }).catch((err)=>{
                     this.devLog(err);
-                    this.error_message = 'Data Empty';
+                    this.error_message = err.response;
                     this.color = "red";
                     this.snackbar = true;
                     this.model_transaksi = false;
+                    this.ready = false;
                 });
                 
             },
@@ -308,7 +315,9 @@
                 this.date = tanggalPesanString + ', ' +hoursAndMinutes;
             },
             getKamar(){
-                this.$http.get(this.apiKamarKosong)
+                this.$http.get(this.apiKamarKosong, {headers : {
+                    Authorization: localStorage.token,
+                }})
                 .then(response => {
                     this.devLog("get kamar Result Code: " +response.status);
                     if(response.status == 200){

@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pt-0">
+    <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start row>
             <v-layout align-start>
                 <p class="main-title">{{ nav_title }} Transaksi Keluar</p>
@@ -101,6 +101,7 @@ export default {
     },
     data(){
         return{
+            ready: false,
             id: null,
             valid: false,
             nav_title: "",
@@ -170,7 +171,9 @@ export default {
                 this.devLog('this.id');
                 this.devLog(this.api+this.id);
 
-                this.$http.get(this.api+this.id)
+                this.$http.get(this.api+this.id, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                     .then(response => {
                         this.devLog("get user result code: " + response.status);
                         if(response.status == 200){
@@ -180,14 +183,20 @@ export default {
                                 this.devLog(response.data)
                                 this.transaksi_keluar_model = response.data.data[0];
                                 this.devLog(this.transaksi_keluar_model)
+                                this.ready = true
                             }
                         }
                     }).catch((err)=>{
-                        this.error_message = err.response.data.message;
+                        this.error_message = err.response.data;
                         this.color = "red";
                         this.snackbar = true;
+                        this.ready = false;
                     });
-            }else{
+            }else if(localStorage.userLogin){
+                this.devLog('add trs')
+                this.ready = true;
+            }
+            else{
                 setInterval(this.getNow(), 1000);
             }
 
@@ -219,7 +228,9 @@ export default {
             this.devLog('this.id');
             this.devLog(this.apiKategori);
 
-            this.$http.get(this.apiKategori)
+            this.$http.get(this.apiKategori, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog("get kategori result code: " + response.status);
                     if(response.status == 200){
@@ -270,7 +281,9 @@ export default {
             this.devLog(this.api)
             this.devLog(this.transaksi_keluar_model);
 
-            this.$http.post(this.api, this.transaksi_keluar_model)
+            this.$http.post(this.api, this.transaksi_keluar_model, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then(response => {
                 this.devLog("post data trs: " +response.status);
                 if(response.status == 201){
@@ -301,7 +314,9 @@ export default {
             this.devLog(JSON.stringify(this.transaksi_keluar_model));
             this.devLog(this.transaksi_keluar_model);
 
-            this.$http.put(this.api+this.id, this.transaksi_keluar_model)
+            this.$http.put(this.api+this.id, this.transaksi_keluar_model, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 202){

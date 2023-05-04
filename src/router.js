@@ -69,9 +69,9 @@ routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/edit/:id', component: Pe
 routeArr.push({ title: 'Kamar', icon: '', path: '/kamar/:id', component: PengelolaRincianKamar, props:{api: api+'/kamar/', editable: false, ubahNomor: false}});
 
 routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk', component: PengelolaTransaksiMasuk, props:{api: api+'/transaksi-masuk'}});
-routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/add', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk', editable: true, apiKategori: api + '/transaksi-masuk-kategori'}});
+routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/add', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk', editable: true, apiKategori: api + '/transaksi-masuk-kategori', apiDeletePhoto: api + '/transaksi-masuk-photos/'}});
 routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/edit/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: true, apiKategori: api + '/transaksi-masuk-kategori', apiDeletePhoto: api + '/transaksi-masuk-photos/'}});
-routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: false, apiKategori: api + '/transaksi-masuk-kategori'}});
+routeArr.push({ title: 'Transaksi Masuk', icon: '', path: '/transaksi-masuk/:id', component: PengelolaCruTransaksiMasuk, props:{api: api+'/transaksi-masuk/', editable: false, apiKategori: api + '/transaksi-masuk-kategori', apiDeletePhoto: api + '/transaksi-masuk-photos/'}});
 
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar', component: PengelolaTransaksiKeluar, props:{api: api+'/transaksi-keluar'}});
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/add', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar', editable: true, apiKategori: api + '/transaksi-keluar-kategori'}});
