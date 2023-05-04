@@ -265,7 +265,9 @@
                             
                         }else{
                             this.kos_booking_model = response.data.data[0];
-                            this.url_dialog = this.kos_booking_model.bukti_transfer.photo_path;
+                            if(this.kos_booking_model.bukti_transfer){
+                                this.url_dialog = this.kos_booking_model.bukti_transfer.photo_path;
+                            }
                             this.devLog(this.kos_booking_model)
                             this.model_transaksi = true;
                             this.getDateAndPrice();
