@@ -37,7 +37,7 @@
                 <v-flex>
                     <v-layout>&nbsp;</v-layout>
                     <v-layout justify-end class="pb-8">
-                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn">
+                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn" @click="imageDialog = true">
                         <span class="material-symbols-outlined">
                         photo_camera
                         </span>
@@ -70,8 +70,21 @@
                                     <p class="medium-title paragraph">Fasilitas Kos</p>
                                 </v-layout>
                                 <hr>
-                                <v-layout align-start class="pt-4">
-                                    <p class="regular-text">{{ kos_model.fasilitas }}</p>
+                                <v-layout align-start row>
+                                    <v-flex xs2 class="ma-6 " style="text-align: left">
+                                        <v-layout column>
+                                            <ul v-for="(fasilitas, index) in kos_model.kos_fasilitas.slice(0, 3)" :key="index" class="pl-0 pb-3">
+                                                <li class="bigger-regular-text ma-0 pb-2" v-if="index < 3">{{ fasilitas.name }}</li>
+                                            </ul>
+                                        </v-layout>
+                                    </v-flex>
+                                    <v-flex xs2 class="ma-6 " style="text-align: left">
+                                        <v-layout column>
+                                            <ul v-for="(fasilitas, index) in kos_model.kos_fasilitas.slice(3)" :key="index" class="pl-0 pb-3">
+                                                <li class="bigger-regular-text ma-0 pb-2" >{{ fasilitas.name }}</li>
+                                            </ul>
+                                        </v-layout>
+                                    </v-flex>
                                 </v-layout>
                             </v-card>
                         </v-flex>
@@ -81,7 +94,7 @@
                             <v-flex>
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15812.97476859342!2d110.3904599!3d-7.76396115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sid!4v1681391601193!5m2!1sen!2sid" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </v-flex>
-                            <v-layout align-start column>
+                            <v-layout align-start column class="mb-4">
                                 <!-- class="paragraph sub-title" py-6 -->
                                 <p class="paragraph sub-title"  >Suasana Lingkungan Kos</p>
                                 <div class="d-inline-flex align-center pt-3">
@@ -144,10 +157,11 @@
                         <v-layout row class="pb-4">
                             <v-layout column align-start >
                                     <p class="sub-title">Spesifikasi Kamar</p>
-                                    <v-layout column align-start>
-                                        <!-- <li v-for="location in locations" :key="location" class="pl-0 pb-3">
-                                            {{ location.message }}
-                                        </li> -->
+                                    <v-layout column align-start style="text-align: left" class="ml-6">
+                                        <ul v-for="(spesifikasi, index) in kos_model.kamar_spesifikasi" :key="index" class="pl-0 pb-3">
+                                            <li class="regular-text ma-0 pb-2" v-if="spesifikasi.desc != '3x5'">{{ spesifikasi.desc }}</li>
+                                            <li class="regular-text ma-0 pb-2" v-else>Ukuran Kamar {{ spesifikasi.desc }} m<sup>2</sup></li>
+                                        </ul>
                                     </v-layout>
                             </v-layout>
                             <v-layout justify-end class="mt-0" row fill-height>
@@ -244,7 +258,9 @@
                 <v-flex xs8>
                     <v-card class="card-border card-padding" outlined text-sm-left elevation="0">
                         <p class="bold-regular-text paragraph pb-2">Peraturan Kos</p>
-                        <p class="regular-text paragraph">{{ kos_model.peraturan }}</p>
+                        <v-layout align-start>
+                            <p class="regular-text paragraph">{{ kos_model.peraturan }}</p>
+                        </v-layout>
                     </v-card>
                 </v-flex>
                 <v-flex xs4>
@@ -258,6 +274,42 @@
         </v-layout>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
+        <v-dialog v-model="imageDialog" :lazy="true" max-width="60vw">
+            <v-card class="rounded-card">
+                <v-toolbar dark color="#19A7CE" dense flat>
+                </v-toolbar>
+
+                <v-layout row wrap fill-height class="pa-0 ma-0">
+                    <v-flex
+                        v-for="(url, index) in urls"
+                        :key="index"
+                        class="preview-img-flex ma-2 mr-2 mb-2"
+                        shrink
+                    >
+                        <v-layout column>
+                            <!-- <v-card elevation-0> -->
+                                <v-img
+                                    v-if="url"
+                                    :src="url"
+                                    width="350"
+                                    height="200"
+                                    contain
+                                    class="grey lighten-5"
+                                ></v-img>
+                            <!-- </v-card> -->
+                        </v-layout>
+                    </v-flex>
+                </v-layout>
+
+                <v-card-actions py-0 px-4 ma-0>
+                    <v-flex class="ma-0 pa-2 mt-6 justify-center">
+                        <v-btn elevation="0" class="white--text btn-go-edit" width="30%" @click="imageDialog = false">Close</v-btn>
+                        <!-- raised round color="primary" -->
+                    </v-flex>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
@@ -270,9 +322,22 @@ export default {
         VueperSlides, 
         VueperSlide
     },
+    props:{
+        api: {
+            type: String,
+            default: "no_data",
+        },
+        apiKamar: {
+            type: String,
+            default: "no_data",
+        },
+    },
     name: "landing-page",
     data() {
         return{
+            imageDialog: false,
+            urls: [],
+
             slides: [
                 {
                 title: 'Slide #1',
@@ -350,15 +415,17 @@ export default {
                     }else{
                         this.kos_model = response.data.data[0];
                         this.devLog(this.kos_model)
+                        this.initPhoto();
                         // this.$router.push('/dashboard');
                     }
                 }
             }).catch((err)=>{
-                this.error_message = err.response.data.message;
+                this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
             });
         },
+
         initModel(){
             this.kos_model = {
                 id: null,
@@ -367,6 +434,10 @@ export default {
                 tipe: '',
                 peraturan: '',
                 deskripsi: '',
+
+                kos_fasilitas: [],
+                kamar_spesifikasi: [],
+                kos_photos: [],
             }
 
             this.kos_booking_model = {
@@ -382,6 +453,13 @@ export default {
 
             }
         },
+
+        initPhoto() {
+            this.kos_model.kos_photos.forEach((element) => {
+                this.urls.push(element.photo_path);
+            });
+        },
+
         hargaKamar(){
             let harga_utama = 1500000;
             
@@ -392,6 +470,7 @@ export default {
                 this.harga_kamar = hargaTotal.toLocaleString("de-DE");
             }
         },
+
         validateForm () {
             this.devLog("validating");
             // this.devLog(this.valid);
@@ -444,7 +523,7 @@ export default {
         },
 
         sisaKamar(){
-            this.$http.get(this.API+'/kamar-kosong')
+            this.$http.get(this.apiKamar)
             .then(response => {
                 this.devLog("get kamar kosong result code: " + response.status);
                 if(response.status == 200){

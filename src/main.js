@@ -33,66 +33,42 @@ Vue.mixin({
       }
   },
   methods: {
-      devLog(item){
-          // if ( process.env.NODE_ENV == 'development' ) {
-          //     console.log(item);
-          //   }
-          console.log(item);
-      },
-      updateUserLogin(id){
-        this.devLog('update user login :::' + id)
-        this.$http.get(this.API+"/users/"+id)
-        .then(response => {
-            // this.devLog("Hasil Check User: " +JSON.stringify(response.data));
-            if(response.status == 200){
-                if(!!response.data.data && response.data.data.length > 0){
-                    app.userLogin = response.data.data[0];
-                    localStorage.userLogin = JSON.stringify(app.userLogin);
-                }else{
-                    app.userLogin = false;
+        devLog(item){
+            // if ( process.env.NODE_ENV == 'development' ) {
+            //     console.log(item);
+            //   }
+            console.log(item);
+        },
+        confirm(title, message, options) {
+            return app.confirm(title, message, options);
+        },
+        check_pengelola(){
+            let param_pengelola;
+
+            if(localStorage.userLogin){
+                if(localStorage.userLogin){
+                    let localStorageUser = localStorage.getItem('userLogin');
+                    let user_login = JSON.parse(localStorageUser);
+                    
+                    if(user_login.roles_id == 1){
+                        param_pengelola = true;
+                    }else{
+                        param_pengelola = false;
+                    }
                 }
             }else{
-                alert(JSON.stringify(response));
-                app.userLogin = false;
+                let path = document.URL.split('/');
+
+                let mainPath = path.splice(0, path.length).join('/');
+                // this.$router.push(mainPath + url);
+                param_pengelola = mainPath.includes('pengelola');
+                this.devLog('mainPath');
+                this.devLog(param_pengelola);
             }
-        }).catch((err) => {
-            alert(err)
-            // if(!!err.response){
-            //     this.showErr(err.response,"Failed");
-            // }
-            // else{
-            //     this.showErr({status:"Code Error", statusText: err});
-            // }
-        });
-    },
-
-    check_pengelola(){
-        let param_pengelola;
-
-        if(localStorage.userLogin){
-            if(localStorage.userLogin){
-                let localStorageUser = localStorage.getItem('userLogin');
-                let user_login = JSON.parse(localStorageUser);
-                
-                if(user_login.roles_id == 1){
-                    param_pengelola = true;
-                }else{
-                    param_pengelola = false;
-                }
-            }
-        }else{
-            let path = document.URL.split('/');
-
-            let mainPath = path.splice(0, path.length).join('/');
-            // this.$router.push(mainPath + url);
-            param_pengelola = mainPath.includes('pengelola');
-            this.devLog('mainPath');
-            this.devLog(param_pengelola);
-        }
 
 
-        return param_pengelola;
-    },
+            return param_pengelola;
+        },
   },
 })
 
