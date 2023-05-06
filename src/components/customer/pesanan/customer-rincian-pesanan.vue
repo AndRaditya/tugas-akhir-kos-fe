@@ -1,6 +1,6 @@
 <template>
     <!-- <v-main> -->
-        <v-container grid-list-md class="pt-0">
+        <v-container grid-list-md class="pt-0" v-if="ready">
             <v-layout align-start>
                 <p class="thin-title paragraph">Rincian Pesanan</p>
             </v-layout>
@@ -165,6 +165,7 @@
         },
         data(){
             return{
+                ready: false,
                 user_model:{},
                 kos_booking_model:{},
                 tanggal_mulai: '',
@@ -219,7 +220,9 @@
                     let user_id = kos_booking.users_id;
                     this.kos_booking_model = kos_booking;
 
-                    this.$http.get(this.apiUser+user_id)
+                    this.$http.get(this.apiUser+user_id, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                     .then(response => {
                         this.devLog("get user result code: " + response.status);
                         if(response.status == 200){
@@ -228,7 +231,8 @@
                             }else{
                                 this.user_model = response.data.data[0];
                                 this.devLog(this.user_model)
-                                // this.$router.push('/dashboard');
+                                this.ready = true;
+                                // tfhis.$router.push('/dashboard');
                             }
                         }
                     }).catch((err)=>{
@@ -251,7 +255,10 @@
 
                     this.tanggal_mulai = tglMulai.toLocaleDateString(["ban", "id"], options);
                     this.tanggal_selesai = tglSelesai.toLocaleDateString(["ban", "id"], options);
-                }else{
+                }else if(!localStorage.userLogin){
+                    this.ready = false;
+                }
+                else{
                     this.model_ready = false;
                 }
             },
@@ -276,7 +283,9 @@
                 this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.kos_booking_model));
 
                 if(this.status_kamar_terisi == true){
-                    this.$http.post(this.api, this.kos_booking_model)
+                    this.$http.post(this.api, this.kos_booking_model, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                     .then(response => {
                         this.devLog("Result Code: " +response.status);
                         if(response.status == 201){
@@ -319,7 +328,9 @@
             },
 
             sisaKamar(){
-                this.$http.get(this.apiKamarKosong)
+                this.$http.get(this.apiKamarKosong, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog("get kamar kosong result code: " + response.status);
                     if(response.status == 200){

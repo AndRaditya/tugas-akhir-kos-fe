@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-xs class="pt-0">
+    <v-container grid-list-xs class="pt-0" v-if="ready">
         <v-layout align-start>
             <p class="thin-title paragraph">Rincian Transaksi</p>
         </v-layout>
@@ -71,6 +71,8 @@
         },
         data(){
             return{
+                ready: false,
+
                 kos_booking_model:{},
                 kos_booking_length: [],
                 snackbar: '',
@@ -124,7 +126,9 @@
                     let user_login = JSON.parse(localStorageUser);
                     let user_id = user_login.id;
 
-                    this.$http.get(this.api+user_id)
+                    this.$http.get(this.api+user_id, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                     .then(response => {
                         this.devLog("transaksi Result Code: " +response.status);
                         if(response.status == 200){
@@ -135,6 +139,7 @@
                                 this.snackbar = true;
                                 this.model_transaksi = false;
                             }else{
+                                this.ready = true;
                                 this.kos_booking_model = response.data.data;
                                 this.devLog(this.kos_booking_model)
                                 if(this.kos_booking_model.length > 0){
@@ -150,6 +155,8 @@
                         this.snackbar = true;
                         this.model_transaksi = false;
                     });
+                }else{
+                    this.ready = false;
                 }
             },
             getDateAndPrice(){

@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pt-0">
+    <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start>
             <p class="main-title">Ubah Data Kos</p>
         </v-layout>
@@ -199,6 +199,7 @@ export default {
     },
     data(){
         return{
+            ready: false,
             id : 2,
             deletedImages: [],
             urls: [],
@@ -278,7 +279,9 @@ export default {
         },
 
         initAxio(){
-            this.$http.get(this.api+this.id)
+            this.$http.get(this.api+this.id, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then(response => {
                 this.devLog("Axio: " +response.status);
                 if(response.status == 200){
@@ -292,7 +295,7 @@ export default {
                         this.devLog(this.kos_model)
                         this.getTextKamarSpec();
                         this.getKosFasilitasAxio();
-
+                        this.ready = true;
                         this.initPhoto();
 
                         // for (let i = 0; i < this.kos_model.kos_photos.length; i++) {
@@ -304,7 +307,8 @@ export default {
                 }
             }).catch((err)=>{
                 this.devLog(err);
-                this.error_message = 'Data Empty';
+                this.ready = false;
+                this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
             });

@@ -1,6 +1,6 @@
 <template>
     <v-main>
-        <v-layout align-center justify-center>
+        <v-layout align-center justify-center v-if="ready">
             <v-card class="card-form" elevation="2">
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_profile" autofocus lazy-validation>
                     <v-container column fluid>
@@ -156,6 +156,7 @@
 
         data(){
             return{
+                ready: false,
                 valid: false,
                 model: {},
                 snackbar: '',
@@ -211,7 +212,11 @@
 
                     let user_id = user_login.id;
 
-                    this.$http.get(this.api+user_id)
+                    this.$http.get(this.api+user_id,  {
+                        headers: {
+                            Authorization: localStorage.token,
+                        },
+                    })
                     .then(response => {
                         this.devLog("Login Result Code: " +response.status);
                         if(response.status == 200){
@@ -221,6 +226,7 @@
                                 this.color = "red";
                                 this.snackbar = true;
                             }else{
+                                this.ready = true;
                                 this.user = response.data.data[0];
                                 this.devLog(this.user)
                                 localStorage.token= response.data.api_message;
@@ -234,7 +240,9 @@
                         this.color = "red";
                         this.snackbar = true;
                     });
-
+                }
+                else{
+                    this.ready = false;
                 }
             },
             initModel(){
@@ -278,31 +286,35 @@
             putPassword(){
                 this.devLog("Updating User Password: put to "+ this.API+'/users/'+this.user.id);
                 this.devLog(JSON.stringify(this.user));
-                this.$http.put(this.apiPassword, this.user).then(response => {
-                    this.devLog("Loading "+ this.api + " - Result Status: " + JSON.stringify(response));
-                    
-                    // if(!response.data){
-                        this.devLog('!response data')
-                        if(response.data.api_status == "fail"){
-                            this.devLog('error password')
-                            // this.devLog(JSON.stringify(err));
-                            this.error_message = response.data.message;
-                            this.color = "red";
-                            this.snackbar = true;
+                this.$http.put(this.apiPassword, this.user, {
+                    headers: {
+                        Authorization: localStorage.token,
+                    }})
+                    .then(response => {
+                        this.devLog("Loading "+ this.api + " - Result Status: " + JSON.stringify(response));
+                        
+                        // if(!response.data){
+                            this.devLog('!response data')
+                            if(response.data.api_status == "fail"){
+                                this.devLog('error password')
+                                // this.devLog(JSON.stringify(err));
+                                this.error_message = response.data.message;
+                                this.color = "red";
+                                this.snackbar = true;
 
-                            this.user.not_found = false;
-                            this.devLog("user now: " + JSON.stringify(this.user));
-                        }else{
-                            this.putData();
-                        }
-                    // }
-                }).catch((err) => {
-                    this.devLog('error password')
-                    this.devLog(JSON.stringify(err));
-                    this.error_message = err.response.data.message;
-                    this.color = "red";
-                    this.snackbar = true;
-                });
+                                this.user.not_found = false;
+                                this.devLog("user now: " + JSON.stringify(this.user));
+                            }else{
+                                this.putData();
+                            }
+                        // }
+                    }).catch((err) => {
+                        this.devLog('error password')
+                        this.devLog(JSON.stringify(err));
+                        this.error_message = err.response.data.message;
+                        this.color = "red";
+                        this.snackbar = true;
+                    });
             },
 
                 /// For updating user data
@@ -310,7 +322,9 @@
                 // this.devLog("Updating User : put to "+ this.API+this.id);
                 this.devLog("User : ");
                 this.devLog(this.user);
-                this.$http.put(this.api+this.user.id, this.user)
+                this.$http.put(this.api+this.user.id, this.user,  {headers: {
+                    Authorization: localStorage.token,},
+                })
                 .then(response => {
                     this.devLog(response.status);
                     this.load = false;
@@ -334,9 +348,9 @@
                     }
                 }).catch((err) => {
                     this.devLog(JSON.stringify(err))
-                    // this.error_message = err.response.data.message;
-                    // this.color = "red";
-                    // this.snackbar = true;
+                    this.error_message = err.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
                 });
             },
 

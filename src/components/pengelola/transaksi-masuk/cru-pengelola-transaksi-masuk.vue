@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pt-0">
+    <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start row>
             <v-layout align-start>
                 <p class="main-title">{{ nav_title }} Transaksi Masuk</p>
@@ -240,6 +240,7 @@ export default {
     },
     data(){
         return{
+            ready: false,
             id: null,
             imageDialog: false,
 
@@ -339,13 +340,16 @@ export default {
                 this.devLog('this.id');
                 this.devLog(this.id);
 
-                this.$http.get(this.api+this.id)
+                this.$http.get(this.api+this.id, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                     .then(response => {
                         this.devLog("init axio result code: " + response.status);
                         if(response.status == 200){
                             if(!response.data){
                                 this.devLog('response fail')
                             }else{
+                                this.ready = true;
                                 this.transaksi_masuk_model = response.data.data[0];
                                 this.devLog(this.transaksi_masuk_model)
                                 this.total_nilai_temp = this.transaksi_masuk_model.total_nilai.toLocaleString("de-DE")
@@ -362,11 +366,17 @@ export default {
                             }
                         }
                     }).catch((err)=>{
-                        this.error_message = err.response.data.message;
+                        this.devLog(err)
+                        this.error_message = 'Data Empty';
                         this.color = "red";
                         this.snackbar = true;
+                        this.ready = false;
                     });
-            }else{
+            }else if(localStorage.userLogin){
+                this.devLog('add trs')
+                this.ready = true;
+            }
+            else{
                 setInterval(this.getNow(), 1000);
             }
         },
@@ -444,7 +454,9 @@ export default {
             this.devLog(JSON.stringify(this.transaksi_masuk_model));
             this.devLog(this.transaksi_masuk_model);
 
-            this.$http.post(this.api, this.transaksi_masuk_model)
+            this.$http.post(this.api, this.transaksi_masuk_model, {headers : {
+                        Authorization: localStorage.token,
+                    }})
             .then(response => {
                 this.devLog("post data trs: " +response.status);
                 if(response.status == 201){
@@ -483,7 +495,9 @@ export default {
             this.devLog(JSON.stringify(this.transaksi_masuk_model));
             this.devLog(this.transaksi_masuk_model);
             
-            this.$http.put(this.api+this.id, this.transaksi_masuk_model)
+            this.$http.put(this.api+this.id, this.transaksi_masuk_model, {headers : {
+                        Authorization: localStorage.token,
+                    }})
             .then(response => {
                 this.devLog("update trs masuk: " +response.status);
                 if(response.status == 202){
@@ -516,7 +530,9 @@ export default {
         },  
 
         removeImageWithAPI(deleteImage) {
-            this.$http.put(this.apiDeletePhoto + this.id, {bukti_transfer: deleteImage})
+            this.$http.put(this.apiDeletePhoto + this.id, {bukti_transfer: deleteImage}, {headers : {
+                        Authorization: localStorage.token,
+                    }})
             .then((response) => {
                     this.devLog(JSON.stringify(response));
                     if (response.status == 200) {
@@ -536,7 +552,9 @@ export default {
             this.devLog('this.id');
             this.devLog(this.apiKategori);
 
-            this.$http.get(this.apiKategori)
+            this.$http.get(this.apiKategori, {headers : {
+                        Authorization: localStorage.token,
+                    }})
                 .then(response => {
                     this.devLog("get kategori result code: " + response.status);
                     if(response.status == 200){
@@ -557,7 +575,9 @@ export default {
 
         initPhoto() {
             this.devLog(' === init photo')
-            this.url = this.transaksi_masuk_model.bukti_transfer.photo_path
+            if(this.transaksi_masuk_model.bukti_transfer){
+                this.url = this.transaksi_masuk_model.bukti_transfer.photo_path
+            }
         },
         
         onPickFile() {

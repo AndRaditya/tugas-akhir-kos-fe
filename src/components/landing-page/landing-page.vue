@@ -406,7 +406,7 @@ export default {
         initData(){
             this.initModel();
             this.devLog('init data');
-            this.$http.get(this.api)
+            this.$http.get(this.API+'/landing-page/2')
             .then(response => {
                 this.devLog("get kos result code: " + response.status);
                 if(response.status == 200){

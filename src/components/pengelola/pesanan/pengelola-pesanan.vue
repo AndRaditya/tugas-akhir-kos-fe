@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pt-0">
+    <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start>
             <p class="main-title">Pesanan</p>
         </v-layout>
@@ -75,6 +75,7 @@ export default {
     },
     data(){
         return{
+            ready: false,
             snackbar: '',
             color: '',
             error_message: '',
@@ -112,7 +113,9 @@ export default {
         getData(){
             this.devLog('get data');
 
-            this.$http.get(this.api)
+            this.$http.get(this.api, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then(response => {
                 this.devLog("Login Result Code: " +response.status);
                 if(response.status == 200){
@@ -127,14 +130,16 @@ export default {
                         this.devLog(this.kos_booking_model)
                         this.model_transaksi = true;
                         this.getDateAndPrice();
+                        this.ready = true;
                     }
                 }
             }).catch((err)=>{
                 this.devLog(err);
-                this.error_message = 'Data Empty';
+                this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
                 this.model_transaksi = false;
+                this.ready = false;
             });       
         },
         getDateAndPrice(){

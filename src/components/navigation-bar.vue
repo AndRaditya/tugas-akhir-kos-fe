@@ -119,6 +119,7 @@ export default {
     logout(){
       if(localStorage.userLogin){
         localStorage.removeItem("userLogin");
+        localStorage.removeItem("token");
 
         this.$router
           .push({ path: '/login' })
