@@ -239,4 +239,16 @@ export default {
     font-size: 1.6rem !important;
   }
 
+  .btn-unduh{
+      background-color: #146C94 !important;
+      font-size: 2.4rem !important;
+      padding: 2.8rem 2.4rem !important;
+  }
+
+  .btn-close-dialog{
+      background-color: #DF2E38 !important;
+      font-size: 2.4rem !important;
+      padding: 2.8rem 2.4rem !important;
+  }
+
 </style>

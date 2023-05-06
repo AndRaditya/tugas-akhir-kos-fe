@@ -6,7 +6,7 @@
             </v-layout>
             <v-layout justify-end row>
                 <v-btn color="#146C94" elevation="0" class="white--text mr-2"  @click="tambahData()">Tambah Transaksi</v-btn>
-                <v-btn color="#146C94" elevation="0" class="white--text ml-2"  @click="tambahData()">Unduh Transaksi</v-btn>
+                <v-btn color="#146C94" elevation="0" class="white--text ml-2"  @click="dialog_transaksi = true">Unduh Transaksi</v-btn>
             </v-layout>
         </v-layout>
         <v-flex fill-height class="mt-4">
@@ -34,6 +34,73 @@
                 </v-layout>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="dialog_transaksi" persistent max-width="40vw">
+            <v-card class="pa-4">
+                <p class="bigger-regular-text mb-6 pb-6">Unduh Transaksi Keluar</p>
+                
+                <v-layout row wrap fill-height>
+                    <v-flex xs6 class="px-2">
+                        <v-menu
+                            ref="dialogTrsKeluar"
+                            v-model="menu_trs_keluar_mulai"
+                            :return-value.sync="transaksi_keluar_mulai"
+                            :close-on-content-click="false"
+                            elevation="0"
+                            min-width="0%"
+                        >
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                    v-model="transaksi_keluar_mulai"
+                                    label="Tanggal Mulai"
+                                    append-icon="event"
+                                    readonly
+                                    v-on="on"
+                                    outlined
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="transaksi_keluar_mulai" scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu_trs_keluar_mulai = false">Cancel</v-btn>
+                                <v-btn text color="primary" @click="$refs.dialogTrsKeluar.save(transaksi_keluar_mulai)">OK</v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-flex>
+                    <v-flex xs6 class="px-2">
+                        <v-menu
+                            ref="dialogTrsKeluar2"
+                            v-model="menu_trs_keluar_selesai"
+                            :return-value.sync="transaksi_keluar_selesai"
+                            :close-on-content-click="false"
+                            elevation="0"
+                            min-width="0%"
+                        >
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                    v-model="transaksi_keluar_selesai"
+                                    label="Tanggal Selesai"
+                                    append-icon="event"
+                                    readonly
+                                    v-on="on"
+                                    outlined
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="transaksi_keluar_selesai" scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu_trs_keluar_selesai = false">Cancel</v-btn>
+                                <v-btn text color="primary" @click="$refs.dialogTrsKeluar2.save(transaksi_keluar_selesai)">OK</v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-flex>
+                </v-layout>
+
+                <v-layout justify-center class="pt-4">
+                    <v-btn width="30%" elevation="0" class="white--text btn-close-dialog mr-2" @click="dialog_transaksi = false">Tutup</v-btn>
+                    <v-btn elevation="0" class="white--text btn-unduh ml-2" @click="confirmExport()" width="30%">Unduh</v-btn>
+                </v-layout>
+             </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
@@ -42,6 +109,10 @@ export default {
     name: 'list-transaksi-keluar',
     props:{
         api: {
+            type: String,
+            required: true
+        },
+        apiExport: {
             type: String,
             required: true
         },
@@ -59,6 +130,14 @@ export default {
                 headers: [],
                 datas: [],
             },
+
+            transaksi_keluar_mulai: new Date().toISOString().substr(0, 10),
+            menu_trs_keluar_mulai: false,
+            transaksi_keluar_selesai: new Date().toISOString().substr(0, 10),
+            menu_trs_keluar_selesai: false,
+
+            dialog_transaksi: false,
+
         }
     },
     created(){
@@ -144,6 +223,49 @@ export default {
                         this.color = "red";
                         this.snackbar = true;
                 });
+        },
+
+        confirmExport(){
+            this.exportData('transaksi-keluar', 'Transaksi Keluar')
+        },
+
+        exportData(url, filename){
+            let tanggal_mulai = this.transaksi_keluar_mulai
+            let tanggal_selesai = this.transaksi_keluar_selesai
+            this.devLog(this.apiExport+url+'?tanggal_mulai='+tanggal_mulai+'&tanggal_selesai='+tanggal_selesai);
+
+            let axioUrl = this.apiExport+url+'?tanggal_mulai='+tanggal_mulai+'&tanggal_selesai='+tanggal_selesai;
+
+            this.$http.get(axioUrl, {responseType: 'arraybuffer'})
+            .then((response) => {
+                this.devLog(response);
+                this.devLog("unduh trs result code: " + response.status);
+                if(response.status == 200){
+                    if(!response.data){
+                        this.devLog('response fail')
+                        this.error_message = response;
+                        this.color = "red";
+                        this.snackbar = true;
+                        
+                    }else{
+                        let blob = new Blob([response.data], { type: 'application/pdf' });
+                        let link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = filename+'.pdf';
+                        link.click();
+                    }
+                }
+            }).catch((err)=>{
+                if(!err.response){
+                    this.error_message = err.response;
+                    this.color = "red";
+                    this.snackbar = true;
+                }else{
+                    this.error_message = 'Code Error ' + err;
+                    this.color = "red";
+                    this.snackbar = true;
+                }
+            });
         },
     },
     computed: {

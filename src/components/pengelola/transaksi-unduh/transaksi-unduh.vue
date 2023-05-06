@@ -321,66 +321,9 @@ export default {
                 }
             });
         },
-
-        downloadFile(response, filename) {
-            // It is necessary to create a new blob object with mime-type explicitly set
-            // otherwise only Chrome works like it should
-            var newBlob = new Blob([response.body], {type: 'application/pdf'})
-
-            // IE doesn't allow using a blob object directly as link href
-            // instead it is necessary to use msSaveOrOpenBlob
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(newBlob)
-                return
-            }
-
-            // For other browsers:
-            // Create a link pointing to the ObjectURL containing the blob.
-            const data = window.URL.createObjectURL(newBlob)
-            var link = document.createElement('a')
-            link.href = data
-            link.download = filename + '.pdf'
-            link.click()
-            setTimeout(function () {
-                // For Firefox it is necessary to delay revoking the ObjectURL
-                window.URL.revokeObjectURL(data)
-            }, 100)
-        },
-
-        download(){
-            this.$http.get(this.API + '/generate-pdf', {responseType: 'arraybuffer'})
-            .then((response) => {
-                this.devLog(response);
-                this.devLog("unduh trs langsung result code: " + response.status);
-                if(response.status == 200){
-                    if(!response.data){
-                        this.devLog('response fail')
-                        this.error_message = response;
-                        this.color = "red";
-                        this.snackbar = true;
-                        
-                    }else{
-                        let blob = new Blob([response.data], { type: 'application/pdf' });
-                        let link = document.createElement('a');
-                        link.href = window.URL.createObjectURL(blob);
-                        link.download = 'Document.pdf';
-                        link.click();
-                    }
-                }
-            }).catch((err)=>{
-                this.error_message = err.response.data;
-                this.color = "red";
-                this.snackbar = true;
-            });
-        }
     }
 }
 </script>
 
 <style scoped>
-    .btn-unduh{
-        background-color: #146C94 !important;
-        font-size: 2.4rem !important;
-        padding: 2.8rem 2.4rem !important;
-    }
 </style>
