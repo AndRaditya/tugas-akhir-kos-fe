@@ -40,9 +40,9 @@ Vue.mixin({
 });
 
 let routeArr = [];
-routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage, props: {api: api + '/kos/2', apiKamar: api + '/kamar-kosong'}});
+routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong'}});
 
-routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage, props: {api: api + '/kos/2', apiKamar: api + '/kamar-kosong'}});
+routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong'}});
 routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login, props:{api: api+'/login'}});
 routeArr.push({ title: 'Register', icon: '', path: '/register', component: Register});
 
@@ -78,7 +78,7 @@ routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/ad
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/edit/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: true, apiKategori: api + '/transaksi-keluar-kategori'}});
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: false, apiKategori: api + '/transaksi-keluar-kategori'}});
 
-routeArr.push({ title: 'Transaksi Unduh', icon: '', path: '/transaksi-unduh', component: PengelolaUnduhTransaksi, props:{api: api+'/transaksi-keluar/'}});
+routeArr.push({ title: 'Transaksi Unduh', icon: '', path: '/transaksi-unduh', component: PengelolaUnduhTransaksi, props:{apiExport: api+'/export/'}});
 
 
 routeArr.push({ title: 'Page Not Found', name:'404', path:'*', component: {

@@ -5,8 +5,8 @@
                 <p class="main-title">List Transaksi Keluar</p>
             </v-layout>
             <v-layout justify-end row>
-                <v-btn color="#146C94" elevation="0" class="white--text mr-2"  @click="tambahKamar()">Tambah Transaksi</v-btn>
-                <v-btn color="#146C94" elevation="0" class="white--text ml-2"  @click="tambahKamar()">Unduh Transaksi</v-btn>
+                <v-btn color="#146C94" elevation="0" class="white--text mr-2"  @click="tambahData()">Tambah Transaksi</v-btn>
+                <v-btn color="#146C94" elevation="0" class="white--text ml-2"  @click="tambahData()">Unduh Transaksi</v-btn>
             </v-layout>
         </v-layout>
         <v-flex fill-height class="mt-4">
@@ -97,7 +97,7 @@ export default {
                 this.snackbar = true;
             });
         },
-        tambahKamar(){
+        tambahData(){
             this.$router.push(this.$route.path+"/add");
         },
         detailItem(item){

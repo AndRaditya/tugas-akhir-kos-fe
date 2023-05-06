@@ -420,7 +420,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
-                this.error_message = err.response.data.message;
+                this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
             });

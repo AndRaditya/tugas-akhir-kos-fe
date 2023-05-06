@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pt-0">
+    <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start>
             <p class="main-title">Unduh Transaksi</p>
         </v-layout>
@@ -62,7 +62,7 @@
                         </v-menu>
                     </v-flex>
                     <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn-unduh" ref="form_profile" type="submit" width="75%">Unduh</v-btn>
+                        <v-btn elevation="0" class="white--text btn-unduh" @click="confirmExport('transaksi_masuk')" width="75%">Unduh</v-btn>
                     </v-flex>
                 </v-layout>
             </v-flex>
@@ -125,7 +125,7 @@
                         </v-menu>
                     </v-flex>
                     <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn-unduh" ref="form_profile" type="submit" width="75%">Unduh</v-btn>
+                        <v-btn elevation="0" class="white--text btn-unduh" @click="confirmExport('transaksi_keluar')" width="75%">Unduh</v-btn>
                     </v-flex>
                 </v-layout>
             </v-flex>
@@ -188,12 +188,10 @@
                         </v-menu>
                     </v-flex>
                     <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn-unduh" ref="form_profile" type="submit" width="75%">Unduh</v-btn>
+                        <v-btn elevation="0" class="white--text btn-unduh" @click="confirmExport('transaksi_semua')" width="75%">Unduh</v-btn>
                     </v-flex>
                 </v-layout>
             </v-flex>
-
-
         </v-layout>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
     </v-container>
@@ -203,13 +201,14 @@
 export default {
     name: 'transaksi-unduh',
     props:{
-        api: {
+        apiExport: {
             type: String,
             required: true
         },
     },
     data(){
         return{
+            ready: false,
             snackbar: '',
             color: '',
             error_message: '',
@@ -229,6 +228,10 @@ export default {
             transaksi_semua_selesai: new Date().toISOString().substr(0, 10),
             menu_trs_semua_selesai: false,
 
+            transaksi_masuk_model:{},
+            transaksi_keluar_model:{},
+            transaksi_semua_model:{},
+
         }
     },
     created(){
@@ -236,9 +239,140 @@ export default {
     },
     methods:{
         initData(){
-            // this.initModel();
+            if(localStorage.userLogin){
+                this.ready = true;
+            }
+            this.initModel();
             // this.getData();
         },
+        
+        initModel(){
+            this.transaksi_masuk_model = {
+                tanggal_mulai : '',
+                tanggal_selesai : '',
+            },
+
+            this.transaksi_keluar_model = {
+                tanggal_mulai : '',
+                tanggal_selesai : '',
+            },
+
+            this.transaksi_semua_model = {
+                tanggal_mulai : '',
+                tanggal_selesai : '',
+            }
+        },
+
+        confirmExport(exporter){
+            if(exporter == 'transaksi_masuk'){
+                this.transaksi_masuk_model.tanggal_mulai = this.transaksi_masuk_mulai;
+                this.transaksi_masuk_model.tanggal_selesai = this.transaksi_masuk_selesai;
+
+                this.exportData(this.transaksi_masuk_model, 'transaksi-masuk', 'Transaksi Masuk')
+            }else if(exporter == 'transaksi_keluar'){
+                this.transaksi_keluar_model.tanggal_mulai = this.transaksi_keluar_mulai;
+                this.transaksi_keluar_model.tanggal_selesai = this.transaksi_keluar_selesai;
+
+                this.exportData(this.transaksi_keluar_model, 'transaksi-keluar', 'Transaksi Keluar')
+            }else if(exporter == 'transaksi_semua'){
+                this.transaksi_semua_model.tanggal_mulai = this.transaksi_semua_mulai;
+                this.transaksi_semua_model.tanggal_selesai = this.transaksi_semua_selesai;
+
+                this.exportData(this.transaksi_semua_model, 'transaksi-semua', 'Semua Transaksi')
+            }
+        },
+
+        exportData(model, url, filename){
+            this.devLog(JSON.stringify(model));
+            let tanggal_mulai = model.tanggal_mulai
+            let tanggal_selesai = model.tanggal_selesai
+            this.devLog(this.apiExport+url+'?tanggal_mulai='+tanggal_mulai+'&tanggal_selesai='+tanggal_selesai);
+
+            let axioUrl = this.apiExport+url+'?tanggal_mulai='+tanggal_mulai+'&tanggal_selesai='+tanggal_selesai;
+
+            this.$http.get(axioUrl, {responseType: 'arraybuffer'})
+            .then((response) => {
+                this.devLog(response);
+                this.devLog("unduh trs result code: " + response.status);
+                if(response.status == 200){
+                    if(!response.data){
+                        this.devLog('response fail')
+                        this.error_message = response;
+                        this.color = "red";
+                        this.snackbar = true;
+                        
+                    }else{
+                        let blob = new Blob([response.data], { type: 'application/pdf' });
+                        let link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = filename+'.pdf';
+                        link.click();
+                    }
+                }
+            }).catch((err)=>{
+                if(!err.response){
+                    this.error_message = err.response;
+                    this.color = "red";
+                    this.snackbar = true;
+                }else{
+                    this.error_message = 'Code Error ' + err;
+                    this.color = "red";
+                    this.snackbar = true;
+                }
+            });
+        },
+
+        downloadFile(response, filename) {
+            // It is necessary to create a new blob object with mime-type explicitly set
+            // otherwise only Chrome works like it should
+            var newBlob = new Blob([response.body], {type: 'application/pdf'})
+
+            // IE doesn't allow using a blob object directly as link href
+            // instead it is necessary to use msSaveOrOpenBlob
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob)
+                return
+            }
+
+            // For other browsers:
+            // Create a link pointing to the ObjectURL containing the blob.
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = filename + '.pdf'
+            link.click()
+            setTimeout(function () {
+                // For Firefox it is necessary to delay revoking the ObjectURL
+                window.URL.revokeObjectURL(data)
+            }, 100)
+        },
+
+        download(){
+            this.$http.get(this.API + '/generate-pdf', {responseType: 'arraybuffer'})
+            .then((response) => {
+                this.devLog(response);
+                this.devLog("unduh trs langsung result code: " + response.status);
+                if(response.status == 200){
+                    if(!response.data){
+                        this.devLog('response fail')
+                        this.error_message = response;
+                        this.color = "red";
+                        this.snackbar = true;
+                        
+                    }else{
+                        let blob = new Blob([response.data], { type: 'application/pdf' });
+                        let link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'Document.pdf';
+                        link.click();
+                    }
+                }
+            }).catch((err)=>{
+                this.error_message = err.response.data;
+                this.color = "red";
+                this.snackbar = true;
+            });
+        }
     }
 }
 </script>
