@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <NavBar msg="Welcome to Your Vue.js App"/>
-    <router-view></router-view>
+    <router-view style="width: 90%" align-center></router-view>
   </v-app>
 </template>
 

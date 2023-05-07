@@ -6,7 +6,7 @@
             </v-layout>
         </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_transaksi_keluar" autofocus lazy-validation>
-            <v-layout row class="mt-6">
+            <v-layout  align-start justify-center row class="mt-6">
                 <v-flex xs6>
                     <v-layout column>
                         <v-layout align-start column>

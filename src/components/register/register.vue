@@ -1,5 +1,5 @@
 <template>
-    <v-main>
+    <v-container grid-list-md>
         <v-layout align-center justify-center>
             <v-card class="card-form" elevation="2">
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_register" autofocus lazy-validation>
@@ -61,7 +61,7 @@
             </v-card>
         </v-layout> 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
-    </v-main>
+    </v-container>
 </template>
 
 <script>

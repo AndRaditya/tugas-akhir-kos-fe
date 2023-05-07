@@ -1,7 +1,7 @@
 <template>
     <v-container grid-list-md class="pa-0" v-if="ready">
         <v-layout align-start row>
-            <v-layout align-start>
+            <v-layout align-start class="mt-4 ml-6">
                 <p class="main-title">{{ nav_title }} Kamar</p>
             </v-layout>
             <v-layout align-end justify-end v-if="!editable">
@@ -9,7 +9,7 @@
             </v-layout>
         </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kamar" autofocus lazy-validation>
-            <v-layout row class="mt-6">
+            <v-layout align-start justify-center  row class="mt-6">
                 <v-flex xs5>
                     <v-layout column>
                         <v-layout align-start column>
