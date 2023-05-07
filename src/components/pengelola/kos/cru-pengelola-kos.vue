@@ -1,10 +1,10 @@
 <template>
-    <v-container grid-list-md class="pt-0" v-if="ready">
-        <v-layout align-start>
-            <p class="main-title">Ubah Data Kos</p>
+    <v-container grid-list-md class="pa-" v-if="ready">
+        <v-layout align-start wrap class="mt-4 ml-6">
+            <p class="main-title ">Ubah Data Kos</p>
         </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kos" autofocus lazy-validation>
-            <v-layout row class="mt-4 pl-2">
+            <v-layout align-start justify-center row class="mt-4 pl-2">
                 <v-flex xs4>
                     <v-layout column>
                         <v-layout column align-start>
@@ -60,13 +60,24 @@
                             label="Masukkan Deskripsi Kos"
                             v-model="kos_model.deskripsi"
                         ></v-textarea>
+                        <v-layout column align-start>
+                            <p class="medium-regular-text">Peraturan Kos</p>
+                        </v-layout>
+                        <v-textarea
+                            outlined
+                            label="Masukkan Peraturan Kos"
+                            v-model="kos_model.peraturan"
+                        ></v-textarea>
                     </v-layout>
                 </v-flex>
                 <v-flex xs7 class="ml-8">
                     <v-layout column>
+                        <v-layout column align-start>
+                            <p class="medium-regular-text">Foto Kos</p>
+                        </v-layout>
                         <v-layout row wrap class="">
                             <v-flex
-                                v-for="(url, index) in urls"
+                                v-for="(url, index) in urls.slice(0, 6)"
                                 :key="index"
                                 class="preview-img-flex ma-2 mr-2 mb-2"
                                 shrink
@@ -76,7 +87,7 @@
                                         <v-img
                                             v-if="url"
                                             :src="url"
-                                            width="275"
+                                            width="310"
                                             height="200"
                                             contain
                                             class="grey lighten-5"
@@ -114,15 +125,6 @@
                             </v-btn>
                             <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
                         </v-layout>
-
-                        <v-layout column align-start>
-                            <p class="medium-regular-text">Peraturan Kos</p>
-                        </v-layout>
-                        <v-textarea
-                            outlined
-                            label="Masukkan Peraturan Kos"
-                            v-model="kos_model.peraturan"
-                        ></v-textarea>
                     </v-layout>
                 </v-flex>
             </v-layout>

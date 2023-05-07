@@ -10,8 +10,8 @@
             </v-layout>
         </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_transaksi_masuk" autofocus lazy-validation>
-            <v-layout row class="mt-6">
-                <v-flex xs6>
+            <v-layout align-start justify-center row class="mt-6">
+                <v-flex xs5>
                     <v-layout column>
                         <v-layout align-start column>
                             <p class="regular-text">Nomor Transaksi</p>
@@ -108,7 +108,7 @@
                 <v-flex xs5 class="ml-6">
                     <v-layout column>
                         <v-layout align-start column>
-                            <p class="regular-text">Nomor Transaksi</p>
+                            <p class="regular-text">Tanggal Transaksi</p>
                         </v-layout>
                         <v-text-field
                             v-model="transaksi_masuk_model.tanggal"

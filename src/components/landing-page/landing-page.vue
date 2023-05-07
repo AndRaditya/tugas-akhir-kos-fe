@@ -523,6 +523,8 @@ export default {
         },
 
         sisaKamar(){
+            this.devLog('api kamar ' + this.apiKamar)
+
             this.$http.get(this.apiKamar)
             .then(response => {
                 this.devLog("get kamar kosong result code: " + response.status);
@@ -544,7 +546,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
-                this.error_message = err.response.data.message;
+                this.error_message = err.response.data.emss;
                 this.color = "red";
                 this.snackbar = true;
             });
