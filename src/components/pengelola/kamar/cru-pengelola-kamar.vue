@@ -84,7 +84,7 @@
                                     <v-img
                                         v-if="url"
                                         :src="url"
-                                        width="275"
+                                        width="250"
                                         height="200"
                                         contain
                                         class="grey lighten-5"
@@ -433,7 +433,9 @@ export default {
             this.devLog(JSON.stringify(this.kamar_model));
             this.devLog(this.kamar_model);
 
-            this.$http.put(this.api+this.id, this.kamar_model)
+            this.$http.put(this.api+this.id, this.kamar_model, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 202){
