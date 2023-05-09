@@ -408,6 +408,10 @@ export default {
                 status: '',
                 total_price: '',
             }
+
+            this.data_sort_model = {
+                sort_data : ''
+            }
         },
 
         getData(){
@@ -614,15 +618,16 @@ export default {
         },
 
         sortData(item){
-            let data = [];
-            data.push({
-                sort_data: item,
-            });
+            // let data = [];
+            // data.push({
+            //     sort_data: item,
+            // });
+            this.data_sort_model.sort_data = item;
 
             this.kos_booking_model = null;
-            this.devLog(JSON.stringify(data));
+            this.devLog(JSON.stringify(this.data_sort_model));
 
-            this.$http.post(this.apiSort, data, {
+            this.$http.post(this.apiSort, this.data_sort_model, {
                     headers : {Authorization: localStorage.token}}
                 )
             .then(response => {
