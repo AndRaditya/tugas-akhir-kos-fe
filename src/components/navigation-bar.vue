@@ -1,7 +1,7 @@
 <template>
       <v-toolbar height="100vh" max-width="100%" elevation="0" class="mb-6 pt-2">
         <v-container style="width: 90%" class="pa-0"> 
-          <v-layout class="px-4 py-4" align-center justify-center>
+          <v-layout class="py-4" align-center justify-center>
               <v-layout justify-start align-center>
                   <img :src="logo" width="100vw" @click="redirect_router('dashboard')" style="cursor: pointer">
                   <p v-if="this.param_pengelola" class="thin-bigger-regular-text paragraph pl-6" style="color: #146C94;">Admin</p>
