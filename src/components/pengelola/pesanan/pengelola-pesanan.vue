@@ -352,8 +352,8 @@ export default {
 
             data_sort: 'Status Menunggu Konfirmasi',
             data_sort_items: ['Status Menunggu Konfirmasi', 'Tanggal Awal - Akhir', 'Tanggal Akhir - Awal', 'Harga Termurah', 'Harga Tertinggi'],
-        
-        }
+            data_sort_model: {},
+        }   
     },
     created(){
         this.initData();
