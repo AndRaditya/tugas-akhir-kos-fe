@@ -84,7 +84,7 @@
                                     <v-img
                                         v-if="url"
                                         :src="url"
-                                        width="250"
+                                        width="251"
                                         height="200"
                                         contain
                                         class="grey lighten-5"
