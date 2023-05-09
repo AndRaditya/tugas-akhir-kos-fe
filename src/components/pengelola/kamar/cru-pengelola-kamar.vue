@@ -84,7 +84,7 @@
                                     <v-img
                                         v-if="url"
                                         :src="url"
-                                        width="275"
+                                        width="251"
                                         height="200"
                                         contain
                                         class="grey lighten-5"
@@ -400,7 +400,9 @@ export default {
             this.devLog(JSON.stringify(this.kamar_model));
             this.devLog(this.kamar_model);
 
-            this.$http.post(this.api, this.kamar_model)
+            this.$http.post(this.api, this.kamar_model, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 201){
@@ -431,7 +433,9 @@ export default {
             this.devLog(JSON.stringify(this.kamar_model));
             this.devLog(this.kamar_model);
 
-            this.$http.put(this.api+this.id, this.kamar_model)
+            this.$http.put(this.api+this.id, this.kamar_model, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 202){
@@ -524,7 +528,9 @@ export default {
 
         removeImageWithAPI(deleteImage) {
             this.devLog(deleteImage);
-            this.$http.put(this.apiDeletePhoto + this.id, {kamar_photos: deleteImage})
+            this.$http.put(this.apiDeletePhoto + this.id, {kamar_photos: deleteImage}, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then((response) => {
                     if(response.status == 202){
                         if(response.data.api_status == "fail"){
