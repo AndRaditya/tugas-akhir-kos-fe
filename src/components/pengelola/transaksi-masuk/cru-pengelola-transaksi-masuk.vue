@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md class="pt-0" v-if="ready">
+    <v-container grid-list-md class="pt-6" v-if="ready">
         <v-layout align-start row>
             <v-layout align-start>
                 <p class="main-title">{{ nav_title }} Transaksi Masuk</p>

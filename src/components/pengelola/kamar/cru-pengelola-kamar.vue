@@ -13,16 +13,29 @@
                 <v-flex xs5>
                     <v-layout column>
                         <v-layout align-start column>
-                            <p class="regular-text">Nomor Kamar</p>
+                            <p class="regular-text">Nama Kos</p>
                         </v-layout>
                         <v-select
-                            v-model="kamar_model.number"
+                            v-model="kamar_model.kos_id"
                             placeholder="Masukkan Nomor Kamar"
                             outlined
-                            :items="nomor_kamar"
+                            :items="listKos"
                             :readonly="!ubahNomor"
                             :rules="requiredRule"
                         ></v-select>
+                        <v-layout align-start column>
+                            <p class="regular-text">Nomor Kamar</p>
+                        </v-layout>
+                        <v-text-field
+                            v-model="kamar_model.number"
+                            label="Masukkan Nama Nomor Kamar"
+                            :readonly="!ubahNomor"
+                            type="number"
+                            hide-spin-buttons
+                            outlined
+                            :rules="requiredRule"
+                        ></v-text-field>
+                            <!-- :rules="[checkDuplicateNomor, rules.required]" -->
                         <v-layout align-start column>
                             <p class="regular-text">Penyewa</p>
                         </v-layout>
@@ -189,6 +202,10 @@ export default {
             type: String,
             default: "no_data",
         },
+        apiListKos: {
+            type: String,
+            default: "no_data",
+        },
         editable: {
             type: Boolean,
             default: false,
@@ -202,6 +219,9 @@ export default {
             default: "Rp.",
 		},
     },
+    watch:{
+
+    },
 
     data(){
         return{
@@ -212,6 +232,7 @@ export default {
             imageDialog: false, 
             
             valid: false,
+            validNumber: true,
             nav_title: "",
             nav_path: [],
 
@@ -233,19 +254,24 @@ export default {
             requiredRule2: [
                 v => v.length>0|| 'This is required',
             ],
+
+            listKos: [],
         }
     },
+
     created(){
         this.id = this.$route.params.id;
         this.devLog(this.editable + 'editable');
         this.initData();
         this.initAxio();
     },
+
     methods:{
         initData(){
             this.initModel();
+            this.initListKos();
             this.getKamarFasilitas();
-            this.getNomorKamar();
+            // this.getNomorKamar();
 
             this.nav_path = this.$route.path.split("/");
             var last = this.nav_path.length -1;
@@ -305,6 +331,28 @@ export default {
 
         },
 
+        initListKos(){
+            this.$http.get(this.apiListKos, {headers : {
+                    Authorization: localStorage.token,
+                }})
+                .then(response => {
+                    this.devLog("get user result code: " + response.status);
+                    if(response.status == 200){
+                        if(!response.data){
+                            this.devLog('response fail')
+                        }else{
+                            this.listKos = response.data;
+                            this.ready = true;
+                        }
+                    }
+                }).catch((err)=>{
+                    this.error_message = err.response.data;
+                    this.color = "red";
+                    this.snackbar = true;
+                    this.ready = false;
+                });
+        },
+
         initModel(){
             this.kamar_model = {
                 id: null,
@@ -314,6 +362,7 @@ export default {
                 nama_penyewa: '',
                 kamar_photos: [],
                 kamar_fasilitas: [],
+                kos_id: '',
             }
             
             this.kamar_model_temp = {
@@ -330,56 +379,72 @@ export default {
             this.kamar_fasiitas_items = ['Kasur ukuran 90x90', 'TV', 'Meja', 'Nakas', 'Lemari', 'Kamar Mandi Dalam', 'Water Heater', 'Kloset Duduk'];
         },
 
-        getNomorKamar(){
-            this.devLog('get nomor kamar')
-            this.$http.get(this.api, {headers : {
-                        Authorization: localStorage.token,
-                    }})
-                .then(response => {
-                    this.devLog("get user result code: " + response.status);
-                    if(response.status == 200){
-                        if(!response.data){
-                            this.devLog('response fail')
-                        }else{
-                            this.kamar_model_temp = response.data.data;
-                            this.devLog(this.kamar_model_temp)
-                            if(this.nav_title == "Tambah"){
-                                this.tambahKamarNomor();
-                            }
-                        }
-                    }
-                }).catch((err)=>{
-                    this.error_message = err.response.data;
-                    this.color = "red";
-                    this.snackbar = true;
-                });
-        },
+        // getNomorKamar(){
+        //     this.devLog('get nomor kamar')
+        //     this.$http.get(this.api, {headers : {
+        //                 Authorization: localStorage.token,
+        //             }})
+        //         .then(response => {
+        //             this.devLog("get nomor kamar result code: " + response.status);
+        //             if(response.status == 200){
+        //                 if(!response.data){
+        //                     this.devLog('response fail')
+        //                 }else{
+        //                     this.kamar_model_temp = response.data.data;
+        //                     this.devLog(this.kamar_model_temp)
+        //                     if(this.nav_title == "Tambah"){
+        //                         this.tambahKamarNomor();
+        //                     }
+        //                 }
+        //             }
+        //         }).catch((err)=>{
+        //             this.error_message = err.response.data;
+        //             this.color = "red";
+        //             this.snackbar = true;
+        //         });
+        // },
 
-        tambahKamarNomor(){
-            const nomor_model  = [];
+        // tambahKamarNomor(){
+        //     const nomor_model  = [];
             
-            for(let i = 0; i < this.kamar_model_temp.length; i++){
-                nomor_model.push(this.kamar_model_temp[i].number)
-            }
+        //     for(let i = 0; i < this.kamar_model_temp.length; i++){
+        //         nomor_model.push(this.kamar_model_temp[i].number)
+        //     }
 
-            this.nomor_kamar = this.nomor_kamar.filter(function(val) {
-                return nomor_model.indexOf(val) == -1;
-            });
+        //     // this.nomor_kamar = this.nomor_kamar.filter(function(val) {
+        //     //     return nomor_model.indexOf(val) == -1;
+        //     // });
 
-            this.devLog('this.nomor_kamar');
-            this.devLog(this.nomor_kamar);
-        },
+        //     this.nomor_kamar = nomor_model;
+
+        //     this.devLog('this.nomor_kamar');
+        //     this.devLog(this.nomor_kamar);
+        // },
+
+        // checkDuplicateNomor(val){
+        //     // this.nomor_kamar.forEach((element) => {
+        //         if(val == this.nomor_kamar[0]){
+        //             return `Nomor Kamar ${val} sudah diambil`;
+        //         }
+        //     // })
+        // },
 
         validateForm () {
             console.log('valid')
             this.devLog("validating");
-            this.valid = (this.$refs.form_data_kamar).validate();
-            this.devLog(this.valid);
-
-            if (this.valid == true) {
-                this.submitForm();
+            if(this.validNumber == true){
+                this.valid = (this.$refs.form_data_kamar).validate();
+                this.devLog(this.valid);
+    
+                if (this.valid == true) {
+                    this.submitForm();
+                }else{
+                    window.scrollTo(0,0);
+                }
             }else{
-                window.scrollTo(0,0);
+                this.error_message = `Nomor Kamar Terduplikat`;
+                this.color = "red";
+                this.snackbar = true;
             }
         },
 
@@ -422,7 +487,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
-                this.error_message = err.response.data;
+                this.error_message = err.response.data.message;
                 this.color = "red";
                 this.snackbar = true;
             });
