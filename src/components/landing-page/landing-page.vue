@@ -7,6 +7,7 @@
                     :key="i"
                     :image="slide.image"
                     :title="slide.title"
+                    :link="slide.link"
                     :content="slide.content" />
             </vueper-slides>
         </v-flex>
@@ -17,19 +18,39 @@
 
             <v-layout column>
                 <v-layout align-center justify-center row>
-                    <v-flex xs6>
-                        <img src="../../assets/Frame1.png" alt="" width="100%">
-                    </v-flex>
-                    <v-flex xs3>
-                        <v-layout column>
-                            <img src="../../assets/Frame1.png" alt="" width="100%">
-                            <img src="../../assets/Frame1.png" alt="" width="100%">
+                    <v-flex xs6 class="pa-0">
+                        <v-layout column class="pa-4">
+                            <v-img
+                                :src="urls_kos[0]"
+                                contain 
+                                width="100%"
+                                class="grey lighten-5"
+                                @click="openDialogImage(url)"
+                            ></v-img>
                         </v-layout>
                     </v-flex>
-                    <v-flex xs3>
-                        <v-layout column>
-                            <img src="../../assets/Frame1.png" alt="" width="100%">
-                            <img src="../../assets/Frame1.png" alt="" width="100%">
+                    <v-flex xs3 class="pa-0">
+                        <v-layout column class="pa-4">
+                            <div v-for="(url, index) in urls_kos.slice(1, 3)" :key="index">
+                                <v-img
+                                    :src="url"
+                                    contain
+                                    class="grey lighten-5 py-2"
+                                    @click="openDialogImage(url)"
+                                ></v-img>
+                            </div>
+                        </v-layout>
+                    </v-flex>
+                    <v-flex xs3 class="pa-0">
+                        <v-layout column class="pa-4">
+                            <div v-for="(url, index) in urls_kos.slice(3, 5)" :key="index">
+                                <v-img
+                                    :src="url"
+                                    contain
+                                    class="grey lighten-5 py-2"
+                                    @click="openDialogImage(url)"
+                                ></v-img>
+                            </div>
                         </v-layout>
                     </v-flex>
                 </v-layout>
@@ -37,7 +58,7 @@
                 <v-flex>
                     <v-layout>&nbsp;</v-layout>
                     <v-layout justify-end class="pb-8">
-                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn" @click="imageDialog = true">
+                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn" @click="imageDialogKos = true">
                         <span class="material-symbols-outlined">
                         photo_camera
                         </span>
@@ -137,122 +158,135 @@
             </v-layout>
 
             <v-card class="card-border card-padding" outlined text-sm-left elevation="0">
-                <v-layout row>
+                <v-layout row justify-space-around>
                     <v-flex xs3>
                         <v-layout column align-start>
-                            <div class="d-flex align-start flex-column">
-                                <div style="background-color: black; height: 200px; width: 100%;"></div>
-                                <div class="d-flex align-start flex-row pt-2">
-                                    <img src="../../assets/Frame1.png" alt="" width="50%">
-                                    <img src="../../assets/Frame1.png" alt="" width="50%">                                 
-                                </div>
-                                <a class="bold-regular-text pt-6 daftar-anchor">Lihat foto kamar lebih lanjut</a>
-                            </div>
-                            <v-layout align-start column class="pt-6">
-                                <p class="bold-regular-text">fasilitas kamar</p>
+                            <v-flex xs12>
+                                <v-flex xs12>
+                                    <v-img
+                                        :src="urls_kamar[0]"
+                                        contain
+                                        class="grey lighten-5"
+                                        @click="openDialogImage(url)"
+                                    ></v-img>   
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-layout row align-start justify-start >
+                                        <v-flex xs6 v-for="(url, index) in urls_kamar.slice(1, 3)" :key="index">
+                                            <v-img
+                                                :src="url"
+                                                contain
+                                                class="grey lighten-5"
+                                                @click="openDialogImage(url)"
+                                            ></v-img>   
+                                        </v-flex>
+                                    </v-layout>
+                                </v-flex>
+                            </v-flex>
+                            <p class="bold-regular-text pt-6 pl-2 daftar-anchor" style="cursor: pointer" @click="imageDialogKamar = true">Lihat foto kamar lebih lanjut</p>
+                            <v-layout align-start column class="pl-2">
+                                <p class="bold-regular-text">Fasilitas kamar</p>
+                                <v-layout column align-start style="text-align: left" class="ml-6">
+                                    <ul v-for="(fasilitas, index) in kamar_fasilitas_model" :key="index" class="pl-0 pb-1">
+                                        <li class="regular-text ma-0 pb-2" >{{ fasilitas }}</li>
+                                    </ul>
+                                </v-layout>
                             </v-layout>
                         </v-layout>
                     </v-flex>
-                    <v-layout column row style="background-color: #FBF9F9;" ml-2 class="card-padding">
-                        <v-layout row class="pb-4">
-                            <v-layout column align-start >
-                                    <p class="sub-title">Spesifikasi Kamar</p>
-                                    <v-layout column align-start style="text-align: left" class="ml-6">
-                                        <ul v-for="(spesifikasi, index) in kos_model.kamar_spesifikasi" :key="index" class="pl-0 pb-3">
-                                            <li class="regular-text ma-0 pb-2" v-if="spesifikasi.desc != '3x5'">{{ spesifikasi.desc }}</li>
-                                            <li class="regular-text ma-0 pb-2" v-else>Ukuran Kamar {{ spesifikasi.desc }} m<sup>2</sup></li>
-                                        </ul>
+                    <v-flex xs9 style="background-color: #FBF9F9;">
+                        <v-layout column ml-2 class="card-padding">
+                            <v-layout row class="pb-4">
+                                <v-layout column align-start >
+                                        <p class="sub-title">Spesifikasi Kamar</p>
+                                        <v-layout column align-start style="text-align: left" class="ml-6">
+                                            <ul v-for="(spesifikasi, index) in kos_model.kamar_spesifikasi" :key="index" class="pl-0 pb-3">
+                                                <li class="regular-text ma-0 pb-2" v-if="spesifikasi.desc != '3x5'">{{ spesifikasi.desc }}</li>
+                                                <li class="regular-text ma-0 pb-2" v-else>Ukuran Kamar {{ spesifikasi.desc }} m<sup>2</sup></li>
+                                            </ul>
+                                        </v-layout>
+                                </v-layout>
+                                <v-layout justify-end class="mt-0" row fill-height>
+                                    <p class="sub-title">Tersisa {{ total_kamar_kosong }} Kamar</p>
+                                </v-layout>
+                            </v-layout>
+                            <hr>
+                            <br>
+                            <v-layout row align-start >
+                                <v-flex xs6>
+                                    <v-layout column v-if="!this.param_pengelola">
+                                        <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_booking" autofocus lazy-validation>
+                                            <v-layout align-start column>
+                                                <p class="regular-text">Masukkan Tanggal Mulai</p>
+                                            </v-layout>
+                                            <v-flex class="pl-0">
+                                                <v-menu
+                                                    ref="dialogTglBooking"
+                                                    v-model="menu_tgl_booking"
+                                                    :return-value.sync="kos_booking_model.tanggal_mulai"
+                                                    :close-on-content-click="false"
+                                                    elevation="0"
+                                                    min-width="0%"
+                                                >
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-text-field
+                                                            label="Tanggal Mulai"
+                                                            append-icon="event"       
+                                                            v-on="on"
+                                                            outlined
+                                                            v-model="kos_booking_model.tanggal_mulai"
+                                                            :rules="[rules.required]"
+                                                            :disabled="!status_kamar_terisi"
+                                                        ></v-text-field>
+                                                    </template>
+                                                    <v-date-picker v-model="kos_booking_model.tanggal_mulai" scrollable>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn text color="primary" @click="menu_tgl_booking = false">Cancel</v-btn>
+                                                        <v-btn text color="primary" @click="$refs.dialogTglBooking.save(kos_booking_model.tanggal_mulai)">OK</v-btn>
+                                                    </v-date-picker>
+                                                </v-menu>
+                                            </v-flex>
+
+                                            <v-text-field
+                                                v-model="kos_booking_model.total_bulan"
+                                                type="number"
+                                                min="1"
+                                                label="Masukkan Jumlah Bulan"
+                                                outlined
+                                                @input="hargaKamar()"
+                                                :disabled="!status_kamar_terisi"
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="kos_booking_model.total_kamar"
+                                                type="number"
+                                                label="Masukkan Jumlah Kamar"
+                                                outlined
+                                                @input="hargaKamar()"
+                                                :rules="kamar_rules"
+                                                :disabled="!status_kamar_terisi"
+                                            ></v-text-field>
+                                            <v-layout row class="pb-6">
+                                                <p style="color:#146C94" class="main-title">Rp{{ harga_kamar }}</p>&nbsp;<p class="pt-4 regular-text">/bulan</p>
+                                            </v-layout>
+                                            <v-btn color="#146C94" type="submit" elevation="0" class="pengelola-btn white--text" width="100%" v-if="status_kamar_terisi">Pesan Sekarang</v-btn>
+                                        </v-form>
                                     </v-layout>
-                            </v-layout>
-                            <v-layout justify-end class="mt-0" row fill-height>
-                                <p class="sub-title">Tersisa {{ total_kamar_kosong }} Kamar</p>
+                                    <v-layout row v-else-if="this.param_pengelola">
+
+                                    </v-layout>
+                                </v-flex>
+                                <v-flex xs6>
+                                    <v-layout column align-end justify-start>
+                                        <p class="pb-2 bold-regular-text paragraph">Butuh Pertanyaan?</p>
+                                        <p class="regular-text">Hubungi Pengelola</p>
+                                        <v-btn color="#19A7CE" outlined elevation="0" class="pengelola-btn" width="50%">Tanya Pengelola</v-btn>
+                                    </v-layout>
+                                </v-flex>
                             </v-layout>
                         </v-layout>
-                        <hr>
-                        <br>
-                        <v-layout row align-start >
-                            <v-flex xs6>
-                                <v-layout column v-if="!this.param_pengelola">
-                                    <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_booking" autofocus lazy-validation>
-                                        <v-layout align-start column>
-                                            <p class="regular-text">Masukkan Tanggal Mulai</p>
-                                        </v-layout>
-                                        <!-- <v-text-field
-                                            v-model="kos_booking_model.tanggal_mulai"
-                                            type="date"
-                                            icon="event"
-                                            placeholder="Placeholder"
-                                            :rules="[rules.required]"
-                                            outlined
-                                        ></v-text-field> -->
-                                        <v-flex class="pl-0">
-                                            <v-menu
-                                                ref="dialogTglBooking"
-                                                v-model="menu_tgl_booking"
-                                                :return-value.sync="kos_booking_model.tanggal_mulai"
-                                                :close-on-content-click="false"
-                                                elevation="0"
-                                                min-width="0%"
-                                            >
-                                                <template v-slot:activator="{ on }">
-                                                    <v-text-field
-                                                        label="Tanggal Mulai"
-                                                        append-icon="event"       
-                                                        v-on="on"
-                                                        outlined
-                                                        v-model="kos_booking_model.tanggal_mulai"
-                                                        :rules="[rules.required]"
-                                                        :disabled="!status_kamar_terisi"
-                                                    ></v-text-field>
-                                                </template>
-                                                <v-date-picker v-model="kos_booking_model.tanggal_mulai" scrollable>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn text color="primary" @click="menu_tgl_booking = false">Cancel</v-btn>
-                                                    <v-btn text color="primary" @click="$refs.dialogTglBooking.save(kos_booking_model.tanggal_mulai)">OK</v-btn>
-                                                </v-date-picker>
-                                            </v-menu>
-                                        </v-flex>
-
-                                        <v-text-field
-                                            v-model="kos_booking_model.total_bulan"
-                                            type="number"
-                                            min="1"
-                                            label="Masukkan Jumlah Bulan"
-                                            outlined
-                                            @input="hargaKamar()"
-                                            :disabled="!status_kamar_terisi"
-                                        ></v-text-field>
-                                        <v-text-field
-                                            v-model="kos_booking_model.total_kamar"
-                                            type="number"
-                                            label="Masukkan Jumlah Kamar"
-                                            outlined
-                                            @input="hargaKamar()"
-                                            :rules="kamar_rules"
-                                            :disabled="!status_kamar_terisi"
-                                        ></v-text-field>
-                                        <v-layout row class="pb-6">
-                                            <p style="color:#146C94" class="main-title">Rp{{ harga_kamar }}</p>&nbsp;<p class="pt-4 regular-text">/bulan</p>
-                                        </v-layout>
-                                        <v-btn color="#146C94" type="submit" elevation="0" class="pengelola-btn white--text" width="100%" v-if="status_kamar_terisi">Pesan Sekarang</v-btn>
-                                    </v-form>
-                                </v-layout>
-                                <v-layout row v-else-if="this.param_pengelola">
-
-                                </v-layout>
-                            </v-flex>
-                            <v-flex xs6>
-                                <v-layout column align-end justify-start>
-                                    <p class="pb-2 bold-regular-text paragraph">Butuh Pertanyaan?</p>
-                                    <p class="regular-text">Hubungi Pengelola</p>
-                                    <v-btn color="#19A7CE" outlined elevation="0" class="pengelola-btn" width="50%">Tanya Pengelola</v-btn>
-                                </v-layout>
-                            </v-flex>
-                        </v-layout>
-                    </v-layout>
+                    </v-flex>
                 </v-layout>
             </v-card>
-            <!-- </v-layout> -->
 
             <v-layout class="px-0 py-4" row> 
                 <v-flex xs8>
@@ -274,14 +308,14 @@
         </v-layout>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
-        <v-dialog v-model="imageDialog" :lazy="true" max-width="60vw">
+        <v-dialog v-model="imageDialogKos" :lazy="true" max-width="60vw">
             <v-card class="rounded-card">
                 <v-toolbar dark color="#19A7CE" dense flat>
                 </v-toolbar>
 
                 <v-layout row wrap fill-height class="pa-0 ma-0">
                     <v-flex
-                        v-for="(url, index) in urls"
+                        v-for="(url, index) in urls_kos"
                         :key="index"
                         class="preview-img-flex ma-2 mr-2 mb-2"
                         shrink
@@ -303,7 +337,43 @@
 
                 <v-card-actions py-0 px-4 ma-0>
                     <v-flex class="ma-0 pa-2 mt-6 justify-center">
-                        <v-btn elevation="0" class="white--text btn-go-edit" width="30%" @click="imageDialog = false">Close</v-btn>
+                        <v-btn elevation="0" class="white--text btn-go-edit" width="30%" @click="imageDialogKos = false">Close</v-btn>
+                        <!-- raised round color="primary" -->
+                    </v-flex>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="imageDialogKamar" :lazy="true" max-width="60vw">
+            <v-card class="rounded-card">
+                <v-toolbar dark color="#19A7CE" dense flat>
+                </v-toolbar>
+
+                <v-layout row wrap fill-height class="pa-0 ma-0">
+                    <v-flex
+                        v-for="(url, index) in urls_kamar"
+                        :key="index"
+                        class="preview-img-flex ma-2 mr-2 mb-2"
+                        shrink
+                    >
+                        <v-layout column>
+                            <!-- <v-card elevation-0> -->
+                                <v-img
+                                    v-if="url"
+                                    :src="url"
+                                    width="350"
+                                    height="200"
+                                    contain
+                                    class="grey lighten-5"
+                                ></v-img>
+                            <!-- </v-card> -->
+                        </v-layout>
+                    </v-flex>
+                </v-layout>
+
+                <v-card-actions py-0 px-4 ma-0>
+                    <v-flex class="ma-0 pa-2 mt-6 justify-center">
+                        <v-btn elevation="0" class="white--text btn-go-edit" width="30%" @click="imageDialogKamar = false">Close</v-btn>
                         <!-- raised round color="primary" -->
                     </v-flex>
                 </v-card-actions>
@@ -331,23 +401,25 @@ export default {
             type: String,
             default: "no_data",
         },
+        apiKamarPhotos: {
+            type: String,
+            default: "no_data",
+        },
+        apiKamarFasilitas: {
+            type: String,
+            default: "no_data",
+        },
     },
     name: "landing-page",
     data() {
         return{
-            imageDialog: false,
-            urls: [],
+            imageDialogKos: false,
+            imageDialogKamar: false,
+            urls_kos: [],
+            urls_kamar: [],
 
-            slides: [
-                {
-                title: 'Slide #1',
-                content: 'Slide 1 content.'
-                },
-                {
-                title: 'Slide #2',
-                content: 'Slide 2 content.'
-                }
-            ],
+            slides: [],
+
             snackbar: '',
             color: '',
             error_message: '',
@@ -359,6 +431,8 @@ export default {
             kos_model:{},
             kos_booking_model:{},
             kamar_model:{},
+            kamar_fasilitas_model:{},
+
             locations : [],
             lengths : [],
             harga_kamar: '',
@@ -403,10 +477,11 @@ export default {
                         { message: '500 m' },
                         { message: '2,5 km' }]
         },
+
         initData(){
             this.initModel();
             this.devLog('init data');
-            this.$http.get(this.API+'/landing-page/2')
+            this.$http.get(this.api)
             .then(response => {
                 this.devLog("get kos result code: " + response.status);
                 if(response.status == 200){
@@ -415,7 +490,8 @@ export default {
                     }else{
                         this.kos_model = response.data.data[0];
                         this.devLog(this.kos_model)
-                        this.initPhoto();
+                        this.getKamarPhotos();
+                        this.getKamarFasilitas();
                         // this.$router.push('/dashboard');
                     }
                 }
@@ -450,14 +526,72 @@ export default {
             }
 
             this.kamar_model = {
-
+                photo_path: '',
             }
         },
 
-        initPhoto() {
-            this.kos_model.kos_photos.forEach((element) => {
-                this.urls.push(element.photo_path);
+        getKamarPhotos(){
+            this.$http.get(this.apiKamarPhotos)
+            .then(response => {
+                this.devLog("get kos result code: " + response.status);
+                if(response.status == 200){
+                    if(!response.data){
+                        this.devLog('response fail')
+                    }else{
+                        this.kamar_model = response.data.data;
+                        this.devLog(this.kamar_model)
+                        this.initPhoto();
+                        this.initSlides();
+                        // this.$router.push('/dashboard');
+                    }
+                }
+            }).catch((err)=>{
+                this.error_message = err.response.data;
+                this.color = "red";
+                this.snackbar = true;
             });
+        },
+
+        getKamarFasilitas(){
+            this.$http.get(this.apiKamarFasilitas)
+            .then(response => {
+                this.devLog("get kos result code: " + response.status);
+                if(response.status == 200){
+                    if(!response.data){
+                        this.devLog('response fail')
+                    }else{
+                        this.kamar_fasilitas_model = response.data.data;
+                        this.devLog(this.kamar_fasilitas_model)
+                        // this.$router.push('/dashboard');
+                    }
+                }
+            }).catch((err)=>{
+                this.error_message = err.response.data;
+                this.color = "red";
+                this.snackbar = true;
+            });
+        },
+
+        initPhoto() {
+            this.devLog('init photo');
+            this.devLog(this.kamar_model);
+
+            this.kos_model.kos_photos.forEach((element) => {
+                this.urls_kos.push(element.photo_path);
+            });
+
+            this.kamar_model.forEach((element) => {
+                this.urls_kamar.push(element.photo_path);
+            })
+        
+        },
+
+        initSlides(){
+            for(let i = 0; i < this.urls_kos.length; i++){
+                this.slides.push({
+                    image: this.urls_kos[i],
+                })
+            }
         },
 
         hargaKamar(){
@@ -515,6 +649,9 @@ export default {
 
             this.kos_booking_model.users_id = user_login.id;
             this.kos_booking_model.total_price = 1500000 * total_bulan * total_kamar;
+            this.kos_booking_model.date = this.getDateTime();
+
+            // this.devLog(this.kos_booking_model);
             localStorage.kosBooking = JSON.stringify(this.kos_booking_model);
 
             this.$router
@@ -565,7 +702,34 @@ export default {
         scrollToView(){
             document.getElementById("main_kos")
                 .scrollIntoView({ behavior: 'smooth' });
-        }
+        },
+
+        getDateTime() {
+            var now     = new Date(); 
+            var year    = now.getFullYear();
+            var month   = now.getMonth()+1; 
+            var day     = now.getDate();
+            var hour    = now.getHours();
+            var minute  = now.getMinutes();
+            var second  = now.getSeconds(); 
+            if(month.toString().length == 1) {
+                month = '0'+month;
+            }
+            if(day.toString().length == 1) {
+                day = '0'+day;
+            }   
+            if(hour.toString().length == 1) {
+                hour = '0'+hour;
+            }
+            if(minute.toString().length == 1) {
+                minute = '0'+minute;
+            }
+            if(second.toString().length == 1) {
+                second = '0'+second;
+            }   
+            var dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;   
+            return dateTime;
+        }, 
     },
     mounted(){
         if(this.checkScroll){

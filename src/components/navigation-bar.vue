@@ -16,10 +16,10 @@
 
               <!-- Customer Navbar -->
               <v-layout justify-end align-center v-else-if="this.is_login_customer && !this.is_login_pengelola && !this.param_pengelola">
-                  <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('dashboard/#main_kos')">Kos</v-btn>
+                  <v-btn color="#146C94" text elevation="0" @click="$router.push('/dashboard/#main_kos')" v-if="!this.param_pengelola">Kos</v-btn>
                   <!-- <router-link :to="{ name: 'Landing Page', hash: '#main_kos' }">Kos</router-link> -->
 
-                  <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan')">Rincian Pesanan</v-btn>
+                  <!-- <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan')">Rincian Pesanan</v-btn> -->
                   <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('transaksi')">Rincian Transaksi</v-btn>
                   <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('profile')" class="create-account-btn mr-2">Hai, {{ username }}</v-btn>
                   <v-btn color="#146C94" elevation="0" @click="logout()" class="create-account-btn white--text ml-2">Keluar</v-btn>

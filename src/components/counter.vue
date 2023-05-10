@@ -41,12 +41,14 @@ export default {
         showRemaining(){
             console.log('timer');
             console.log('start ' + this.start)
-            console.log('end ' + this.end)
+            // console.log('end ' + this.end)
+
+            const endDate = new Date(this.start.getTime() + (30 * 60 * 1000));
 
             const timer = setInterval(() => {
                 const now = new Date();
                 // const end = new Date(2023, 4, 22, 10, 10, 10, 10);
-                const distance = this.end.getTime() - now.getTime();
+                const distance = endDate.getTime() - now.getTime();
 
                 if(distance < 0){
                     clearInterval(timer);
@@ -73,9 +75,6 @@ export default {
         },
         _days(){
             return this._hours * 24
-        },
-        end(){
-            return new Date(this.exp_date)
         },
         start(){
             return new Date(this.start_date)

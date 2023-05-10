@@ -8,6 +8,17 @@
                 <v-layout align-start row> 
                     <v-flex xs7>
                         <v-layout column>
+                            <v-card class="card-regular">
+                                <v-layout row>
+                                    <v-layout align-center>
+                                        <p class="thin-bigger-regular-text paragraph">Silahkan transfer sebelum</p>
+                                    </v-layout>
+                                    <v-layout align-start justify-end>
+                                        <counter-vue :start_date="kos_booking_model.date" :exp_date="kos_booking_model.exp_date" v-if="!expired_status"></counter-vue>
+                                        <p class="bold-bigger-regular-text paragraph waktu-habis-text" v-else-if="expired_status">Waktu Anda Habis</p>
+                                    </v-layout>
+                                </v-layout>
+                            </v-card>
                             <v-card class="card-pesanan">
                                 <v-layout align-start class="pb-4">
                                     <p class="medium-bigger-regular-text paragraph">Rincian Pemesan</p>
@@ -140,15 +151,31 @@
                     </v-layout>
                 </v-card>
             </v-dialog>
-            <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
+            <v-dialog v-model="dialog_pindah_page" persistent max-width="25vw">
+                <v-card class="pa-4">
+                    <p class="medium-regular-text">Jika anda pindah halaman, pesanan batal otomatis</p>
+                    <v-layout justify-center class="pt-4">
+                        <v-btn outlined class="mr-2" @click="closeDialogPindah()">Batal</v-btn>
+                        <v-btn color="red" class="ml-2 white--text" @click="cancelBooking()">Pindah Halaman</v-btn>
+                    </v-layout>
+                </v-card>
+            </v-dialog>
+
+            <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
         </v-container>
     <!-- </v-main> -->
 </template>
 
 <script>
+    import counterVue from '@/components/counter.vue';
+    window.onbeforeunload = function() { alert("Your work will be lost.") };  
+
     export default{
         name:"rincian-pesanan",
+        components:{
+            counterVue
+        },
         props:{
             api: {
                 type: String,
@@ -185,6 +212,10 @@
                 status_kamar_terisi: false,
                 kamar_kosong: [],
                 dialog_kamar_terisi: false,
+                dialog_pindah_page: false,
+
+                expired_status: false,
+
             }
         },
         created(){
@@ -262,6 +293,7 @@
                     this.model_ready = false;
                 }
             },
+
             initModel(){
                 this.user_model = {
                     id: null,
@@ -277,6 +309,8 @@
                     total_kamar: null,
                     tanggal_selesai: '',
                     total_price: null,
+                    date: '',
+                    exp_date: '',
                 }
             },
             submitForm(){
@@ -320,6 +354,7 @@
             cancelBooking(){
                 localStorage.removeItem('kosBooking');
                 this.dialog_konfirmasi_batal = false;
+                this.dialog_pindah_page = false;
         
                 this.$router
                     .push({ path: '/dashboard' })
@@ -356,7 +391,24 @@
                     this.snackbar = true;
                 });
             },
-        }
+
+            callBackFunction(){
+                localStorage.removeItem('kosBooking');
+            },
+
+            closeDialogPindah(e){
+                e.preventDefault();
+                this.dialog_pindah_page = false;
+            },
+        },
+        mounted () {
+            if (window.history && window.history.pushState) {
+                window.onpopstate = function() {
+                    localStorage.removeItem('kosBooking');
+                    alert('Pesanan Anda Akan Hilang');
+                };
+            }
+        },
     }
 </script>
 
