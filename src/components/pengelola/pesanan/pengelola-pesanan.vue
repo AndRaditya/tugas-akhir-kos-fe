@@ -1,8 +1,8 @@
 <template>
-    <v-container grid-list-md class="pt-0" v-if="ready">
+    <v-container grid-list-md class="pt-6" v-if="ready">
         <v-layout row class="mb-6">
             <v-flex xs8>
-                <v-layout column align-start>
+                <v-layout column align-start justify-center>
                     <p class="main-title">Pesanan</p>
                 </v-layout>
             </v-flex>
