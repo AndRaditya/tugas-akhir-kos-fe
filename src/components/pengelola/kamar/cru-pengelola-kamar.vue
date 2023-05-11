@@ -17,11 +17,11 @@
                         </v-layout>
                         <v-select
                             v-model="kamar_model.kos_id"
-                            placeholder="Masukkan Nomor Kamar"
+                            placeholder="Masukkan Nama Kos"
                             outlined
                             :items="listKos"
-                            :readonly="!ubahNomor"
-                            :rules="requiredRule"
+                            :readonly="!editable"
+                            :rules="[(v) => !!v || 'This is required']"
                         ></v-select>
                         <v-layout align-start column>
                             <p class="regular-text">Nomor Kamar</p>
@@ -37,15 +37,6 @@
                         ></v-text-field>
                             <!-- :rules="[checkDuplicateNomor, rules.required]" -->
                         <v-layout align-start column>
-                            <p class="regular-text">Penyewa</p>
-                        </v-layout>
-                        <v-text-field
-                            v-model="kamar_model.nama_penyewa"
-                            placeholder="Masukkan Penyewa Kamar"
-                            outlined
-                            :readonly="!editable"
-                        ></v-text-field>
-                        <v-layout align-start column>
                             <p class="regular-text">Status Kamar</p>
                         </v-layout>
                         <v-select
@@ -55,7 +46,18 @@
                             :items="status_kamar"
                             :readonly="!editable"
                             :rules="requiredRule"
+                            @input="checkStatus()"
                         ></v-select>
+                        <v-layout align-start column>
+                            <p class="regular-text">Penyewa</p>
+                        </v-layout>
+                        <v-text-field
+                            v-model="kamar_model.nama_penyewa"
+                            placeholder="Masukkan Penyewa Kamar"
+                            outlined
+                            :readonly="!editable"
+                            :disabled="penyewa_disabled"
+                        ></v-text-field>
                         <v-layout align-start column>
                             <p class="regular-text">Fasilitas Kamar</p>
                         </v-layout>
@@ -220,7 +222,15 @@ export default {
 		},
     },
     watch:{
-
+        'kamar_model.status'(newVal, oldVal){
+            if(newVal != oldVal){
+                if(newVal == 'Kosong'){
+                    this.penyewa_disabled = true;
+                }else{
+                    this.penyewa_disabled = false;
+                }
+            } 
+        }
     },
 
     data(){
@@ -256,6 +266,8 @@ export default {
             ],
 
             listKos: [],
+            penyewa_disabled: false,
+            penyewa_required: 0,
         }
     },
 
@@ -432,19 +444,29 @@ export default {
         validateForm () {
             console.log('valid')
             this.devLog("validating");
-            if(this.validNumber == true){
-                this.valid = (this.$refs.form_data_kamar).validate();
-                this.devLog(this.valid);
-    
-                if (this.valid == true) {
-                    this.submitForm();
+            this.devLog(this.kamar_model.status);
+            this.devLog(this.kamar_model.nama_penyewa);
+            if(this.kamar_model.status == 'Dipakai'){
+                if(this.kamar_model.nama_penyewa == '' || !this.kamar_model.nama_penyewa){
+                    this.error_message = `Nama Penyewa Harap Diisi`;
+                    this.color = "red";
+                    this.snackbar = true;
                 }else{
-                    window.scrollTo(0,0);
+                    this.validate()
                 }
             }else{
-                this.error_message = `Nomor Kamar Terduplikat`;
-                this.color = "red";
-                this.snackbar = true;
+                this.validate()
+            }
+        },
+
+        validate(){
+            this.valid = (this.$refs.form_data_kamar).validate();
+            this.devLog(this.valid);
+
+            if (this.valid == true) {
+                this.submitForm();
+            }else{
+                window.scrollTo(0,0);
             }
         },
 

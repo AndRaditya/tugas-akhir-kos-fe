@@ -3,8 +3,8 @@
         <v-layout align-start>
             <p class="main-title">Rincian Pesanan</p>
         </v-layout>
-        <v-layout column class="layout-main" mt-6 v-if="this.model_transaksi">
-            <v-card class="card-regular">
+        <v-layout column class="layout-main py-6" mt-6 v-if="this.model_transaksi">
+            <v-card class="card-regular ">
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_pesanan_pengelola" autofocus lazy-validation>
                     <v-layout column>
                         <v-layout row align-start>
@@ -16,8 +16,7 @@
                             </v-flex>
                             <v-flex xs6>
                                 <v-layout justify-end class="mt-0">
-                                    <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Kamar'">{{ kos_booking_model.status }}</p>
-                                    <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking_model.status == 'Menunggu Konfirmasi Pembayaran'">{{ kos_booking_model.status }}</p>
+                                    <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking_model.status }}</p>
                                     <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking_model.status == 'Dibatalkan'">{{ kos_booking_model.status }}</p>
                                     <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking_model.status == 'Terkonfirmasi'">Berhasil</p>
                                 </v-layout>
@@ -40,7 +39,13 @@
                                     <p class="medium-bigger-regular-text">{{ tanggal_mulai }}</p>
                                     <p class="medium-bigger-regular-text">{{ tanggal_selesai }}</p>
                                     <p class="medium-bigger-regular-text">{{ kos_booking_model.total_kamar }} Kamar</p>
-                                    <p class="medium-bigger-regular-text" v-if="kos_booking_model.kamar.length > 0">{{ kos_booking_model.kamar.number}} Kamar</p>
+                                    <v-layout row v-if="kos_booking_model.kamar.length > 0"> 
+                                        <div v-for="(nomor, index) in kos_booking_model.kamar" :key="index">
+                                            <p class="medium-bigger-regular-text" v-if="index+1 < kos_booking_model.kamar.length">{{ nomor.number }}, &nbsp; </p>    
+                                            <p class="medium-bigger-regular-text" v-if="index+1 === kos_booking_model.kamar.length">{{ nomor.number }} </p>    
+                                        </div>
+                                    </v-layout>
+
                                 </v-layout>
                             </v-flex>
                         </v-layout>
@@ -50,17 +55,19 @@
                                 <p class="bold-bigger-regular-text paragraph">Rp{{ total_harga }}</p>
                             </v-layout>
                             
-                            <v-layout align-start column v-if="kos_booking_model.status == 'Menunggu Konfirmasi Kamar'" class="pt-6" >
-                                <v-select
-                                    outlined
-                                    label="Masukkan Nomor Kamar"
-                                    v-model="nomor_kamar"
-                                    :items="nomor_kamar_kosong"
-                                    :rules=[rules.required]
-                                ></v-select>
+                            <v-layout align-start column v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'" class="pt-6" >
+                                <v-layout v-for="index in kos_booking_model.total_kamar" :key="index">
+                                    <v-select
+                                        outlined
+                                        label="Masukkan Nomor Kamar"
+                                        v-model="nomor_kamar[index-1]"
+                                        :items="nomor_kamar_kosong"
+                                        :rules=[rules.required]
+                                    ></v-select>
+                                </v-layout>
                             </v-layout>
 
-                            <v-layout column align-start v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pembayaran'" class="pt-6">
+                            <v-layout column align-start v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'" class="pt-6">
                                 <v-btn color="#146C94" outlined elevation="0" width="30%" @click="imageDialog = true" class="create-account-btn" >Lihat Bukti Transfer</v-btn>
                             </v-layout>
                         </v-layout>
@@ -151,7 +158,7 @@
                 kamar_kosong_model:[],
                 nomor_kamar_kosong: [],
 
-                nomor_kamar: null,
+                nomor_kamar: [],
                 dialog_konfirmasi_batal: false,
 
                 imageDialog: false,
@@ -161,6 +168,8 @@
                     required: value => !!value || 'Required.',
                     min: v => v.length >= 8 || 'Min 8 characters',
                 },
+
+                jumlah_kamar: null,
             }
         },
         created(){
@@ -192,6 +201,7 @@
                     user: {},
 
                     bukti_transfer: [],
+                    nomor_kamar: [],
                 }
             },
             
@@ -212,42 +222,59 @@
             submitForm(item){
                 this.devLog('submit form');
                 this.devLog(item);
-                this.kos_booking_model.nomor_kamar = this.nomor_kamar;
-                if(item === 'Dibatalkan'){
-                    this.kos_booking_model.status = 'Dibatalkan';
-                }else{
-                    if(this.kos_booking_model.status === 'Menunggu Konfirmasi Kamar'){
-                        this.kos_booking_model.status = 'Menunggu Konfirmasi Pembayaran';
+
+                this.kos_booking_model.nomor_kamar = [];
+
+                for(let i = 0; i < this.nomor_kamar.length; i++){
+                    this.kos_booking_model.nomor_kamar.push(this.nomor_kamar[i])
+                }
+
+                function hasDuplicates(array) {
+                    return (new Set(array)).size !== array.length;
+                }
+
+                this.devLog(hasDuplicates(this.kos_booking_model.nomor_kamar))
+
+                if(!hasDuplicates(this.kos_booking_model.nomor_kamar)){
+                    if(item === 'Dibatalkan'){
+                        this.kos_booking_model.status = 'Dibatalkan';
                     }else{
                         this.kos_booking_model.status = 'Terkonfirmasi';
                     }
-                }
-            
-                this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(this.kos_booking_model));
-                this.devLog(JSON.stringify(this.kos_booking_model));
-
-                this.$http.put(this.api+this.id, this.kos_booking_model)
-                .then(response => {
-                    this.devLog("Result Code: " +response.status);
-                    if(response.status == 202){
-                        if(response.data.api_status == "fail"){
-                            this.devLog('response fail')
-                            this.error_message = response.data.api_title;
-                            this.color = "red";
-                            this.snackbar = true;
-                        }else{
-                            this.dialog_konfirmasi_batal = false;
-                            this.$router
-                                .push({ path: '/pengelola/pesanan' })
-                                .then(() => { this.$router.go() })
+                
+                    this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(this.kos_booking_model));
+                    this.devLog(JSON.stringify(this.kos_booking_model));
+                    this.devLog(this.kos_booking_model);
+    
+                    this.$http.put(this.api+this.id, this.kos_booking_model, {headers : {
+                            Authorization: localStorage.token,
+                        }})
+                    .then(response => {
+                        this.devLog("Result Code: " +response.status);
+                        if(response.status == 202){
+                            if(response.data.api_status == "fail"){
+                                this.devLog('response fail')
+                                this.error_message = response.data.api_title;
+                                this.color = "red";
+                                this.snackbar = true;
+                            }else{
+                                this.dialog_konfirmasi_batal = false;
+                                this.$router
+                                    .push({ path: '/pengelola-pesanan' })
+                                    .then(() => { this.$router.go() })
+                            }
                         }
-                    }
-                }).catch((err)=>{
-                    this.error_message = err.response.data.message;
+                    }).catch((err)=>{
+                        this.error_message = err.response.data.message;
+                        this.color = "red";
+                        this.snackbar = true;
+                    });
+                }else{
+                    this.error_message = 'Nomor Kamar Terduplikasi';
                     this.color = "red";
                     this.snackbar = true;
-                });
-
+                }
+            
             },
 
             getData(){
@@ -272,6 +299,7 @@
                                 this.url_dialog = this.kos_booking_model.bukti_transfer.photo_path;
                             }
                             this.devLog(this.kos_booking_model)
+                            this.jumlah_kamar = this.kos_booking_model.total_kamar;
                             this.model_transaksi = true;
                             this.ready = true;
                             this.getDateAndPrice();
@@ -285,8 +313,8 @@
                     this.model_transaksi = false;
                     this.ready = false;
                 });
-                
             },
+
             getDateAndPrice(){
                 this.devLog('get date')
                 
@@ -314,6 +342,7 @@
 
                 this.date = tanggalPesanString + ', ' +hoursAndMinutes;
             },
+
             getKamar(){
                 this.$http.get(this.apiKamarKosong, {headers : {
                     Authorization: localStorage.token,
@@ -341,6 +370,7 @@
                     this.model_transaksi = false;
                 });
             },
+
             getKamarKosong(){
                 this.devLog('kamar kosong model');
                 this.devLog(this.kamar_kosong_model)
