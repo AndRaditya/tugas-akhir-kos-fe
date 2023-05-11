@@ -6,7 +6,7 @@
                     <p class="thin-title paragraph">Rincian Transaksi</p>
                 </v-layout>
             </v-flex>
-            <v-flex xs4>
+            <v-flex xs4 v-if="this.model_transaksi">
                 <v-layout justify-end column>
                     <v-text-field
                         outlined
@@ -52,9 +52,8 @@
                             <h3 class="thin-regular-text paragraph pb-2">{{ kos_booking.kode }}</h3>
                         </v-layout>
                         <v-layout justify-end class="mt-0">
-                            <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Kamar'">Menunggu Pembayaran Customer</p>
-                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Menunggu Konfirmasi Pembayaran'">Menunggu Konfirmasi Pembayaran dari Pengelola</p>
-                            <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
+                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
+                            <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Terkonfirmasi'">{{ kos_booking.status }}</p>
                             <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking.status }}</p>
                         </v-layout>
                     </v-layout>
@@ -95,7 +94,7 @@
         </v-layout>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
-                <v-dialog v-model="dialog_filter" persistent max-width="40vw">
+        <v-dialog v-model="dialog_filter" persistent max-width="40vw">
             <v-card class="pa-4">
                 <p class="medium-bigger-regular-text pb-4">Filter Kamar</p>
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_filter" autofocus lazy-validation>

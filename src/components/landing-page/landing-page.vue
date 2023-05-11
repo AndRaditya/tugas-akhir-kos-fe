@@ -313,7 +313,7 @@
                 <v-toolbar dark color="#19A7CE" dense flat>
                 </v-toolbar>
 
-                <v-layout row wrap fill-height class="pa-0 ma-0">
+                <v-layout row wrap fill-height class="pa-0 ma-0" justify-center>
                     <v-flex
                         v-for="(url, index) in urls_kos"
                         :key="index"
@@ -327,7 +327,7 @@
                                     :src="url"
                                     width="350"
                                     height="200"
-                                    contain
+                                    fill
                                     class="grey lighten-5"
                                 ></v-img>
                             <!-- </v-card> -->
@@ -349,7 +349,7 @@
                 <v-toolbar dark color="#19A7CE" dense flat>
                 </v-toolbar>
 
-                <v-layout row wrap fill-height class="pa-0 ma-0">
+                <v-layout row wrap fill-height class="pa-0 ma-0" justify-center>
                     <v-flex
                         v-for="(url, index) in urls_kamar"
                         :key="index"
@@ -363,7 +363,7 @@
                                     :src="url"
                                     width="350"
                                     height="200"
-                                    contain
+                                    fill
                                     class="grey lighten-5"
                                 ></v-img>
                             <!-- </v-card> -->
@@ -734,6 +734,13 @@ export default {
     mounted(){
         if(this.checkScroll){
             this.scrollToView()
+        }
+
+        window.onload = function() {
+            if(!window.location.hash) {
+                window.location = window.location + '#loaded';
+                window.location.reload();
+            }
         }
     }
 }
