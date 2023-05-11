@@ -251,4 +251,7 @@ export default {
       padding: 2.8rem 2.4rem !important;
   }
 
+  .daftar-anchor{
+      color:#146C94 !important;
+  }
 </style>

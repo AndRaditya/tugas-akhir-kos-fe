@@ -210,8 +210,4 @@
         font-weight: 300;
         font-size: 18px;
     }
-
-    .daftar-anchor{
-        color:#146C94 !important;
-    }
 </style>

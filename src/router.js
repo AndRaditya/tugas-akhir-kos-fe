@@ -40,17 +40,17 @@ Vue.mixin({
 });
 
 let routeArr = [];
-routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong'}});
+routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas'}});
 
-routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong'}});
-routeArr.push({ title: 'Dashboard', icon: '', path: '/pengelola', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong'}});
+routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas'}});
+routeArr.push({ title: 'Dashboard', icon: '', path: '/pengelola', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas'}});
 
 routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login, props:{api: api+'/login'}});
 routeArr.push({ title: 'Register', icon: '', path: '/register', component: Register});
 
 // Customer
-routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pesanan', component: RincianPesananCustomer, props: {api: api + '/kos-booking', apiUser: api + '/users/', apiKamarKosong: api + '/kamar-kosong'}});
-routeArr.push({ title: 'Rincian Transaksi', icon: '', path: '/transaksi', component: RincianTransaksiCustomer, props: {api: api + '/kos-booking-users/'}});
+routeArr.push({ title: 'Rincian Pesanan', icon: '', path: '/pesanan', component: RincianPesananCustomer, props: {api: api + '/kos-booking', apiUser: api + '/users/', apiKamarKosong: api + '/kamar-kosong', apiPengelola: api+'/users-pengelola',}});
+routeArr.push({ title: 'Rincian Transaksi', icon: '', path: '/transaksi', component: RincianTransaksiCustomer, props: {api: api + '/kos-booking-users/', apiSearch: api + '/search/kos-booking', apiFilter: api + '/filter/kos-booking', apiSort: api + '/sort/kos-booking'}});
 routeArr.push({ title: 'Rincian Pembayaran', icon: '', path: '/pembayaran/:id', component: RincianPembayaranCustomer, props:{api: api+'/kos-booking/', apiPengelola: api+'/users-pengelola', apiPembayaran: api+'/kos-booking-pembayaran/'}});
 routeArr.push({ title: 'Profile', icon: '', path: '/profile', component: UserProfile, props:{api: api+'/users/', apiPassword: api+'/users'}});
 

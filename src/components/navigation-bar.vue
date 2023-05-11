@@ -3,11 +3,11 @@
         <v-container style="width: 90%" class="pa-0"> 
           <v-layout class="py-4" align-center justify-center>
               <v-layout justify-start align-center>
-                  <img :src="logo" width="100vw" @click="redirect_router('dashboard')" style="cursor: pointer">
+                  <img :src="logo" width="100vw" @click="redirect_router('dashboard')" style="cursor: pointer" v-if="!this.is_booking">
                   <p v-if="this.param_pengelola" class="thin-bigger-regular-text paragraph pl-6" style="color: #146C94;">Admin</p>
               </v-layout>
 
-              <v-layout justify-end align-center v-if="!this.is_login_customer && !this.is_login_pengelola">
+              <v-layout justify-end align-center v-if="!this.is_login_customer && !this.is_login_pengelola && !this.is_booking">
                   <!-- <v-btn color="#146C94" text elevation="0" @click="redirect_router('dashboard/#main_kos')" v-if="!this.param_pengelola">Kos</v-btn> -->
                   <v-btn color="#146C94" text elevation="0" @click="$router.push('/dashboard/#main_kos')" v-if="!this.param_pengelola">Kos</v-btn>
                   <v-btn color="#146C94" text elevation="0" @click="login()">Masuk</v-btn>
@@ -15,18 +15,18 @@
             </v-layout>
 
               <!-- Customer Navbar -->
-              <v-layout justify-end align-center v-else-if="this.is_login_customer && !this.is_login_pengelola && !this.param_pengelola">
-                  <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('dashboard/#main_kos')">Kos</v-btn>
+              <v-layout justify-end align-center v-else-if="this.is_login_customer && !this.is_login_pengelola && !this.param_pengelola && !this.is_booking">
+                  <v-btn color="#146C94" text elevation="0" @click="$router.push('/dashboard/#main_kos')" v-if="!this.param_pengelola">Kos</v-btn>
                   <!-- <router-link :to="{ name: 'Landing Page', hash: '#main_kos' }">Kos</router-link> -->
 
-                  <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan')">Rincian Pesanan</v-btn>
+                  <!-- <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan')">Rincian Pesanan</v-btn> -->
                   <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('transaksi')">Rincian Transaksi</v-btn>
                   <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('profile')" class="create-account-btn mr-2">Hai, {{ username }}</v-btn>
                   <v-btn color="#146C94" elevation="0" @click="logout()" class="create-account-btn white--text ml-2">Keluar</v-btn>
               </v-layout>
 
               <!-- Pengelola Navbar -->
-              <v-layout justify-end align-center v-else-if="!this.is_login_customer && this.is_login_pengelola && this.param_pengelola">
+              <v-layout justify-end align-center v-else-if="!this.is_login_customer && this.is_login_pengelola && this.param_pengelola && !this.is_booking">
                   <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('kos') ()">Kos</v-btn>
                   <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('kamar') ()">Kamar</v-btn>
                   <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola-pesanan') ()">Pesanan</v-btn>
@@ -66,6 +66,7 @@ export default {
       is_login_pengelola: false,
       username: '',
       param_pengelola: false,
+      is_booking: false,
 
       items: [
         { title: 'Click Me' },
@@ -80,6 +81,7 @@ export default {
 
   created(){
     this.checkLogin();
+    this.checkBooking();
     this.userName();
     this.param_pengelola = this.check_pengelola();
   },  
@@ -94,6 +96,12 @@ export default {
         this.username = splitName[0];
       }
     },  
+
+    checkBooking(){
+      if(localStorage.kosBooking){
+        this.is_booking = true
+      }
+    },
 
     checkLogin(){
       if(localStorage.userLogin){
