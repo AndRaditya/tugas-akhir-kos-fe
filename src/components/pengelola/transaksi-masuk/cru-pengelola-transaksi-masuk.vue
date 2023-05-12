@@ -1,184 +1,203 @@
 <template>
     <v-container grid-list-md class="pt-6" v-if="ready">
-        <v-layout align-start row>
-            <v-layout align-start>
-                <p class="main-title">{{ nav_title }} Transaksi Masuk</p>
-            </v-layout>
-
-            <v-layout align-end justify-end v-if="!editable">
-                <v-btn elevation="0" class="white--text btn-go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
-            </v-layout>
-        </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_transaksi_masuk" autofocus lazy-validation>
-            <v-layout align-start justify-center row class="mt-6">
-                <v-flex xs5>
-                    <v-layout column>
+            <v-layout column>
+                <v-layout align-start justify-center row class="mt-6">
+                    <v-flex xs5>
                         <v-layout align-start column>
-                            <p class="regular-text">Nomor Transaksi</p>
+                            <p class="main-title">{{ nav_title }} Transaksi Masuk</p>
                         </v-layout>
-                        <v-text-field
-                            v-model="transaksi_masuk_model.no"
-                            placeholder="Nomor Transaksi Otomatis Generate"
-                            outlined
-                            disabled
-                        ></v-text-field>
-                        <v-layout align-start column>
-                            <p class="regular-text">Kategori Transaksi</p>
+                    </v-flex>
+                    <v-flex xs5>
+                        <v-layout align-end justify-end v-if="!editable">
+                            <v-btn elevation="0" class="white--text btn-go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
                         </v-layout>
-                        <v-select
-                            v-model="transaksi_masuk_model.transaksi_masuk_kategori_id"
-                            placeholder="Masukkan Kategori Transaksi"
-                            outlined
-                            :readonly="!editable"
-                            :items="kategori_transaksi_masuk"
-                            :rules="requiredRule"
-                        ></v-select>
-                        <v-layout align-start column>
-                            <p class="regular-text">Nilai Transaksi</p>
-                        </v-layout>
-                        <v-text-field
-                            v-model="transaksi_masuk_model.nilai"
-                            label="Masukkan Nilai Transaksi"
-                            :prefix="prefix"
-                            :readonly="!editable"
-                            type="number"
-                            hide-spin-buttons
-                            outlined
-                            :rules="nilaiTrsRule"
-                            @input="biayaTambahan()"
-                        ></v-text-field>
-                        <v-layout align-start column>
-                            <p class="regular-text">Deskripsi Transaksi</p>
-                        </v-layout>
-                        <v-textarea
-                            v-model="transaksi_masuk_model.desc"
-                            label="Masukkan Deskripsi Transaksi"
-                            :readonly="!editable"
-                            outlined
-                            :rules="requiredRule"
-                        ></v-textarea>
-                        <v-layout align-start column>
-                            <p class="regular-text">Total Nilai Transaksi</p>
-                            <p class="medium-bigger-regular-text">Rp{{ total_nilai_temp }}</p>
-                        </v-layout>
-                        <v-layout align-start column>
-                            <p class="regular-text mb-2 mt-6">Upload Bukti Transfer (Opsional)</p>
-                            <p class="thin-smaller-regular-text">di luar transaksi website</p>
-                        </v-layout>
-                        <v-layout v-if="editable">
-                            <v-btn 
-                                color="#146C94" 
-                                width="50%" 
-                                class="white--text" 
-                                elevation="0" 
-                                :loading="isSelecting" 
-                                @click="onPickFile()"
-                            >
-                            Unggah Bukti Transfer
-                            </v-btn>
-                            <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
-                        </v-layout>
-                        <v-layout align-start column class="mb-6">
-                            <p class="medium-regular-text mt-6">{{ fileName }}</p>
-                            <v-card elevation-0>
-                                <v-img
-                                    v-if="url"
-                                    :src="url"
-                                    width="350"
-                                    height="300"
-                                    contain
-                                    class="grey lighten-5"
-                                    @click="imageDialog = true" 
-                                ></v-img>
-                            </v-card>
-                            <v-flex v-if="url && editable" mt-2>
-                                <v-btn
-                                    icon
-                                    small
-                                    class="error my-auto"
-                                    @click="removeImage()"
-                                    ><span class="material-icons">
-                                    delete
-                                    </span></v-btn>
-                            </v-flex>
-                        </v-layout>
-
-                    </v-layout>
-                </v-flex>
-                <v-flex xs5 class="ml-6">
-                    <v-layout column>
-                        <v-layout align-start column>
-                            <p class="regular-text">Tanggal Transaksi</p>
-                        </v-layout>
-                        <v-text-field
-                            v-model="transaksi_masuk_model.tanggal"
-                            outlined
-                            disabled
-                        ></v-text-field>
-                        <v-layout align-start column>
-                            <p class="regular-text">Nama Penyewa</p>
-                        </v-layout>
-                        <v-text-field
-                            v-model="transaksi_masuk_model.nama_penyewa"
-                            label="Masukkan Nama Penyewa"
-                            :readonly="!editable"
-                            outlined
-                        ></v-text-field>
-                        <v-layout align-start column>
-                            <p class="regular-text">Nomor Kamar</p>
-                        </v-layout>
-                        <v-select
-                            v-model="transaksi_masuk_model.nomor_kamar"
-                            placeholder="Masukkan Nomor Kamar"
-                            outlined
-                            :readonly="!editable"
-                            :items="nomor_kamar"
-                        ></v-select>
-                        <v-layout align-start column>
-                            <p class="regular-text">Nomor Pesanan/Booking</p>
-                        </v-layout>
-                        <v-text-field
-                            v-model="transaksi_masuk_model.nomor_booking"
-                            label="Masukkan Nomor Pesanan atau Booking"
-                            :readonly="!editable"
-                            outlined
-                        ></v-text-field>
-                        <v-layout align-start column>
-                            <p class="regular-text paragraph">Pakai Biaya Tambahan</p>
-                            <v-switch
-                                v-model="switch_harga"
-                                label="Biaya Tambahan"
-                            ></v-switch>
-                        </v-layout>
-                        <v-layout column v-if="switch_harga" class="mb-6">
+                    </v-flex>
+                </v-layout>
+                <v-layout align-start justify-center row class="mt-6">
+                    <v-flex xs5>
+                        <v-layout column>
+                            <v-layout align-start column>
+                                <p class="regular-text">Nomor Transaksi</p>
+                            </v-layout>
                             <v-text-field
-                                v-model="transaksi_masuk_model.biaya_tambahan.name"
-                                label="Masukkan Nama Biaya Tambahan"
-                                :readonly="!editable"
+                                v-model="transaksi_masuk_model.no"
+                                placeholder="Nomor Transaksi Otomatis Generate"
                                 outlined
-                                :rules="requiredRule"
+                                disabled
                             ></v-text-field>
+                            <v-layout align-start column>
+                                <p class="regular-text">Kategori Transaksi</p>
+                            </v-layout>
+                            <v-select
+                                v-model="transaksi_masuk_model.transaksi_masuk_kategori_id"
+                                placeholder="Masukkan Kategori Transaksi"
+                                outlined
+                                :readonly="!editable"
+                                :items="kategori_transaksi_masuk"
+                                :rules="requiredRule"
+                                clearable
+                            ></v-select>
+                            <v-layout align-start column>
+                                <p class="regular-text">Nilai Transaksi</p>
+                            </v-layout>
                             <v-text-field
-                                v-model="transaksi_masuk_model.biaya_tambahan.nilai"
-                                label="Masukkan Total Biaya Tambahan"
+                                v-model="transaksi_masuk_model.nilai"
+                                label="Masukkan Nilai Transaksi"
                                 :prefix="prefix"
                                 :readonly="!editable"
                                 type="number"
                                 hide-spin-buttons
                                 outlined
-                                :rules="biayaTambahanRule"
+                                :rules="nilaiTrsRule"
                                 @input="biayaTambahan()"
+                                clearable
                             ></v-text-field>
-                            <v-text-field
-                                v-model="transaksi_masuk_model.biaya_tambahan.desc"
-                                label="Masukkan Deskripsi Biaya Tambahan"
+                            <v-layout align-start column>
+                                <p class="regular-text">Deskripsi Transaksi</p>
+                            </v-layout>
+                            <v-textarea
+                                v-model="transaksi_masuk_model.desc"
+                                label="Masukkan Deskripsi Transaksi"
                                 :readonly="!editable"
                                 outlined
                                 :rules="requiredRule"
-                            ></v-text-field>
+                                clearable
+                            ></v-textarea>
+                            <v-layout align-start column>
+                                <p class="regular-text">Total Nilai Transaksi</p>
+                                <p class="medium-bigger-regular-text">Rp{{ total_nilai_temp }}</p>
+                            </v-layout>
+                            <v-layout align-start column>
+                                <p class="regular-text mb-2 mt-6">Upload Bukti Transfer (Opsional)</p>
+                                <p class="thin-smaller-regular-text">di luar transaksi website</p>
+                            </v-layout>
+                            <v-layout v-if="editable">
+                                <v-btn 
+                                    color="#146C94" 
+                                    width="50%" 
+                                    class="white--text" 
+                                    elevation="0" 
+                                    :loading="isSelecting" 
+                                    @click="onPickFile()"
+                                >
+                                Unggah Bukti Transfer
+                                </v-btn>
+                                <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
+                            </v-layout>
+                            <v-layout align-start column class="mb-6">
+                                <p class="medium-regular-text mt-6">{{ fileName }}</p>
+                                <v-card elevation-0>
+                                    <v-img
+                                        v-if="url"
+                                        :src="url"
+                                        width="350"
+                                        height="300"
+                                        contain
+                                        class="grey lighten-5"
+                                        @click="imageDialog = true" 
+                                    ></v-img>
+                                </v-card>
+                                <v-flex v-if="url && editable" mt-2>
+                                    <v-btn
+                                        icon
+                                        small
+                                        class="error my-auto"
+                                        @click="removeImage()"
+                                        ><span class="material-icons">
+                                        delete
+                                        </span></v-btn>
+                                </v-flex>
+                            </v-layout>
+
                         </v-layout>
-                    </v-layout>
-                </v-flex>
+                    </v-flex>
+                    <v-flex xs5 class="ml-6">
+                        <v-layout column>
+                            <v-layout align-start column>
+                                <p class="regular-text">Tanggal Transaksi</p>
+                            </v-layout>
+                            <v-text-field
+                                v-model="transaksi_masuk_model.tanggal"
+                                outlined
+                                disabled
+                            ></v-text-field>
+                            <v-layout align-start column>
+                                <p class="regular-text">Nama Penyewa</p>
+                            </v-layout>
+                            <v-text-field
+                                v-model="transaksi_masuk_model.nama_penyewa"
+                                label="Nama Penyewa"
+                                readonly
+                                outlined
+                                clearable
+                            ></v-text-field>
+                            <v-layout align-start column>
+                                <p class="regular-text">Nomor Kamar</p>
+                            </v-layout>
+                            <v-select
+                                v-model="transaksi_masuk_model.nomor_kamar"
+                                placeholder="Masukkan Nomor Kamar"
+                                outlined
+                                :readonly="!editable"
+                                :items="nomor_kamar"
+                                :rules="transaksi_masuk_model.transaksi_masuk_kategori_id != 6 ? [fillRule] : []"
+                                :required="transaksi_masuk_model.transaksi_masuk_kategori_id != 6"
+                                @input="selectNamaPenyewa()"
+                                clearable
+                            ></v-select>
+                            <v-layout align-start column>
+                                <p class="regular-text">Nomor Pesanan/Booking</p>
+                            </v-layout>
+                            <v-autocomplete
+                                v-model="transaksi_masuk_model.nomor_booking"
+                                label="Masukkan Nomor Pesanan atau Booking"
+                                :readonly="!editable"
+                                :items="kode_booking"
+                                outlined
+                                 v-bind="attrs"
+                                v-on="listeners"
+                                return-object
+                                hide-selected
+                                clearable
+                            ></v-autocomplete>
+                            <v-layout align-start column class="mt-4">
+                                <p class="regular-text paragraph">Pakai Biaya Tambahan</p>
+                                <v-switch
+                                    v-model="switch_harga"
+                                    label="Biaya Tambahan"
+                                ></v-switch>
+                            </v-layout>
+                            <v-layout column v-if="switch_harga" class="mb-6">
+                                <v-text-field
+                                    v-model="transaksi_masuk_model.biaya_tambahan.name"
+                                    label="Masukkan Nama Biaya Tambahan"
+                                    :readonly="!editable"
+                                    outlined
+                                    :rules="requiredRule"
+                                ></v-text-field>
+                                <v-text-field
+                                    v-model="transaksi_masuk_model.biaya_tambahan.nilai"
+                                    label="Masukkan Total Biaya Tambahan"
+                                    :prefix="prefix"
+                                    :readonly="!editable"
+                                    type="number"
+                                    hide-spin-buttons
+                                    outlined
+                                    :rules="biayaTambahanRule"
+                                    @input="biayaTambahan()"
+                                ></v-text-field>
+                                <v-text-field
+                                    v-model="transaksi_masuk_model.biaya_tambahan.desc"
+                                    label="Masukkan Deskripsi Biaya Tambahan"
+                                    :readonly="!editable"
+                                    outlined
+                                    :rules="requiredRule"
+                                ></v-text-field>
+                            </v-layout>
+                        </v-layout>
+                    </v-flex>
+                </v-layout>
             </v-layout>
             <v-flex class="my-8" v-if="editable">
                 <v-btn elevation="0" class="white--text btn-simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
@@ -229,6 +248,14 @@ export default {
             type: String,
             required: true
         },
+        apiKamarNumber: {
+            type: String,
+            required: true
+        },
+        apiKodeBooking: {
+            type: String,
+            required: true
+        },
         editable: {
             type: Boolean,
             default: false,
@@ -253,11 +280,12 @@ export default {
             switch_harga: false,
 
             transaksi_masuk_model: {},
+            kamar_model: {},
 
             snackbar: '',
             color: '',
             error_message: '',
-            nomor_kamar: [1, 2, 3, 4, 5, 6, 7, 8],
+            nomor_kamar: [],
             kategori_transaksi_masuk: [],
 
             total_nilai_temp: '',
@@ -266,6 +294,8 @@ export default {
             requiredRule: [
                 v => !!v || 'This is required',
             ],
+
+            fillRule: (v) => !!v || 'This field is required',
 
             nilaiTrsRule: [ 
                 v => !!v || "This field is required",
@@ -279,6 +309,7 @@ export default {
 
             isSelecting: false,
             selectedFile: null,
+            kode_booking: [],
             
             fileName: '',
             file: '',
@@ -294,6 +325,8 @@ export default {
         initData(){
             this.initModel();
             this.getKategori();
+            this.getNomorKamar();
+            this.getKodeBooking();
             this.nav_path = this.$route.path.split("/");
             var last = this.nav_path.length -1;
             for (var i = 1; i <= last; i++) {
@@ -331,6 +364,11 @@ export default {
 
                 transaksi_masuk_kategori_id: '',
                 biaya_tambahan: {},
+            }
+
+            this.kamar_model = {
+                number: '',
+                nama_penyewa: '',
             }
         },
 
@@ -414,6 +452,56 @@ export default {
                 item = '0' + item
             }
             return item;
+        },
+
+        getNomorKamar(){
+            this.$http.get(this.apiKamarNumber, {headers : {
+                Authorization: localStorage.token,
+            }})
+            .then(response => {
+                this.devLog("init axio result code: " + response.status);
+                if(response.status == 200){
+                    if(!response.data){
+                        this.devLog('response fail')
+                    }else{
+                        this.ready = true;
+                        this.kamar_model = response.data.data;
+
+                        this.kamar_model.forEach((element) => {
+                            this.nomor_kamar.push(element.number)
+                        });
+                    }
+                }
+            }).catch((err)=>{
+                this.devLog(err)
+                this.error_message = 'Data Empty';
+                this.color = "red";
+                this.snackbar = true;
+                this.ready = false;
+            });
+        },
+
+        getKodeBooking(){
+            this.$http.get(this.apiKodeBooking, {headers : {
+                Authorization: localStorage.token,
+            }})
+            .then(response => {
+                this.devLog("init axio result code: " + response.status);
+                if(response.status == 200){
+                    if(!response.data){
+                        this.devLog('response fail')
+                    }else{
+                        this.ready = true;
+                        this.kode_booking = response.data;
+                    }
+                }
+            }).catch((err)=>{
+                this.devLog(err)
+                this.error_message = 'Data Empty';
+                this.color = "red";
+                this.snackbar = true;
+                this.ready = false;
+            });
         },
 
         validateForm () {
@@ -573,10 +661,29 @@ export default {
                 });        
         },
 
+        nomorKamarRule(){
+            if(this.transaksi_masuk_model.transaksi_masuk_kategori_id != 6){
+                return 'Required'
+            }else{
+                return true;
+            }
+        },
+
         initPhoto() {
             this.devLog(' === init photo')
             if(this.transaksi_masuk_model.bukti_transfer){
                 this.url = this.transaksi_masuk_model.bukti_transfer.photo_path
+            }
+        },
+
+        selectNamaPenyewa(){
+            this.devLog('nama penyewa 1');
+            for(let i = 0; i < this.kamar_model.length ; i++){
+                this.devLog('nama penyewa 2 ');
+                if(this.kamar_model[i].number == this.transaksi_masuk_model.nomor_kamar){
+                    this.devLog('nama penyewa 3');
+                    this.transaksi_masuk_model.nama_penyewa = this.kamar_model[i].nama_penyewa
+                }
             }
         },
         
