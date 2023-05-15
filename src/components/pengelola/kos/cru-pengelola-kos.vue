@@ -324,7 +324,9 @@ export default {
             this.devLog(JSON.stringify(this.kos_model));
             this.devLog(this.kos_model);
 
-            this.$http.put(this.api+this.id, this.kos_model)
+            this.$http.put(this.api+this.id, this.kos_model, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 202){
@@ -347,7 +349,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
-                this.error_message = err.response.data.message;
+                this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
             });
