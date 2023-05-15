@@ -3,8 +3,11 @@ import App from './App.vue'
 import vuetify from '@/plugins/vuetify'
 import router from "./router"
 import Vuelidate from 'vuelidate'
+
 // import LoginPage from './components/login/login'
 import axios from 'axios'
+
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
