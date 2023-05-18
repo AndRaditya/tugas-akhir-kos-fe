@@ -1,180 +1,190 @@
 <template>
     <!-- <v-main> -->
         <v-container grid-list-md class="pt-0" v-if="ready">
-            <v-layout align-start>
-                <p class="thin-title paragraph">Rincian Pesanan</p>
-            </v-layout>
-            <v-layout column class="layout-main" mt-6 v-if="this.model_ready">
-                <v-layout align-start row> 
-                    <v-flex xs7>
-                        <v-layout column>
-                            <v-card class="card-regular">
-                                <v-layout row>
-                                    <v-layout align-center>
-                                        <p class="thin-bigger-regular-text paragraph">Silahkan transfer sebelum</p>
-                                    </v-layout>
-                                    <v-layout align-start justify-end>
-                                        <counter-vue :start_date="kos_booking_model.date" :exp_date="kos_booking_model.exp_date" v-if="!expired_status"></counter-vue>
-                                        <p class="bold-bigger-regular-text paragraph waktu-habis-text" v-else-if="expired_status">Waktu Anda Habis</p>
-                                    </v-layout>
-                                </v-layout>
-                            </v-card>
-                            <v-card class="card-pesanan">
-                                <v-layout column>
-                                    <v-layout align-start class="pb-4">
-                                        <p class="medium-bigger-regular-text paragraph">Rincian Transaksi</p>
-                                    </v-layout>
-                                    <hr>
-                                    <v-layout row align-start class="pt-4">
-                                        <v-flex xs6>
-                                            <v-layout column align-start>
-                                                <p class="thin-regular-text ">Tanggal Pesanan</p>
-                                                <p class="thin-regular-text ">Jumlah Bulan</p>
-                                                <p class="thin-regular-text ">Jumlah Kamar</p>
-                                            </v-layout>
-                                        </v-flex>
-                                        <v-flex xs6>
-                                            <v-layout column align-start class="ma-0">
-                                                <p class="mb-3 medium-regular-text">{{ tanggal_mulai }} &ndash; {{ tanggal_selesai }}</p>
-                                                <p class="mb-3 medium-regular-text">{{ kos_booking_model.total_bulan }} Bulan</p>
-                                                <p class="mb-3 medium-regular-text">{{ kos_booking_model.total_kamar }}  Kamar Kos</p>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-layout>
-                            </v-card>
-                            <v-card class="card-pesanan mb-12">
-                                <v-layout column>
-                                    <v-layout row class="layout-price-bg">
-                                        <v-flex xs6>
-                                            <v-layout column align-start>
-                                                <p class="thin-regular-text ">Harga Kamar Bulanan</p>
-                                                <p class="thin-regular-text ">Biaya Pesanan</p>
-                                            </v-layout>
-                                        </v-flex>
-                                        <v-flex xs6>
-                                            <v-layout column align-start>
-                                                <p class="mb-3 medium-regular-text">Rp1.500.000</p>
-                                                <p style="color: #19A7CE;" class="bold-regular-text">Gratis</p>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-
-                                    <v-layout row align-start class="mt-6">
-                                        <v-flex xs6>
-                                            <v-layout column align-start>
-                                                <p class="thin-regular-text ">Total Biaya</p>
-                                            </v-layout>
-                                        </v-flex>
-                                        <v-flex xs6>
-                                            <v-layout column align-start>
-                                                <p class="mb-3 medium-regular-text">Rp{{ total_price }}</p>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <hr>
-                                    <v-layout row align-start class="mt-6">
-                                        <v-flex xs6>
-                                            <v-layout align-start>
-                                                <p class="thin-regular-text">Transfer Biaya</p>
-                                            </v-layout>
-                                        </v-flex>
-                                        <v-flex xs6>
-                                            <v-layout column align-start>
-                                                <p class="bold-regular-text">{{ pengelola_user_model.bank }}</p>
-                                                <v-layout row class="mt-4">
-                                                    <p class="bold-regular-text" ref="copy_nomor_rekening">{{ pengelola_user_model.rekening }}</p>
-                                                    <span class="material-symbols-outlined pt-1 ml-6" style="cursor: pointer" @click="copyNomorRek(pengelola_user_model.rekening)">
-                                                        content_copy
-                                                    </span>
-                                                </v-layout>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-
-                                    <v-layout align-start column class="pt-6">
-                                        <v-btn 
-                                            color="#146C94" 
-                                            width="35%" 
-                                            class="white--text" 
-                                            elevation="0" 
-                                            :loading="isSelecting" 
-                                            @click="onPickFile()"
-                                        >
-                                        Unggah Bukti Transfer
-                                        </v-btn>
-                                        <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
-                                        <p class="medium-regular-text mt-6">{{ fileName }}</p>
-                                    </v-layout>
-                                    <v-layout column align-start class="py-6">
-                                        <p class="thin-regular-text">Silahkan tekan tombol Bayar di bagian kanan</p>
-                                        <p class="paragraph thin-regular-text">Jika Anda sudah Unggah Bukti Transfer</p>
-                                    </v-layout>
-
-                                    <v-layout column align-start mt-6>
-                                        <p class="paragraph regular-text">Masih Ragu dengan Pesanan Anda?</p>
-                                        <a class="bold-regular-text pt-2 batal-anchor" @click="dialog_batal()">Batalkan Pesanan</a>
-                                    </v-layout>
-                                </v-layout>
-                            </v-card>
+            <div class="cust-rincian-pesanan mb-12" v-if="this.model_ready">
+                <div class="cust-rincian-pesanan__title">
+                    <p class="title__medium paragraph">Rincian Pesanan</p>
+                </div>
+                <div class="cust-rincian-pesanan__counter">
+                    <v-card class="card__regular">
+                        <div class="cust-rincian-pesanan__counter--parent">
+                            <div class="cust-rincian-pesanan__counter--child-1">
+                                <p class="bigger--regular-text__thin paragraph">Silahkan transfer sebelum</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__counter--child-2">
+                                <counter-vue :start_date="kos_booking_model.date" :exp_date="kos_booking_model.exp_date" v-if="!expired_status"></counter-vue>
+                                <p class="bigger--regular-text__bold  paragraph waktu-habis-text" v-else-if="expired_status">Waktu Anda Habis</p>
+                            </div>
+                        </div>
+                    </v-card>
+                </div>
+                <div class="cust-rincian-pesanan__rincian-transaksi">
+                    <v-card class="card-pesanan">
+                        <div class="cust-rincian-pesanan__rincian-transaksi--parent">
+                            <div class="cust-rincian-pesanan__rincian-transaksi--child-1">
+                                <p class="bigger--regular-text__medium paragraph">Rincian Transaksi</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__rincian-transaksi--child-2">
+                                <div class="cust-rincian-pesanan__rincian-transaksi--child-2--line"></div>
+                            </div>
+                            <div class="cust-rincian-pesanan__rincian-transaksi--child-3">
+                                <p class="regular-text__thin  paragraph">Tanggal Pesanan</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__rincian-transaksi--child-4">
+                                <p class="regular-text__medium paragraph">{{ tanggal_mulai }} &ndash; {{ tanggal_selesai }}</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__rincian-transaksi--child-5">
+                                <p class="regular-text__thin  paragraph">Jumlah Bulan</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__rincian-transaksi--child-6">
+                                <p class="regular-text__medium paragraph">{{ kos_booking_model.total_bulan }} Bulan</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__rincian-transaksi--child-7">
+                                <p class="regular-text__thin  paragraph">Jumlah Kamar</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__rincian-transaksi--child-8">
+                                <p class="regular-text__medium paragraph">{{ kos_booking_model.total_kamar }}  Kamar Kos</p>
+                            </div>
+                        </div>
+                    </v-card>
+                </div>
+                <div class="cust-rincian-pesanan__pricing">
+                    <v-card class="card-pesanan">
+                        <div class="cust-rincian-pesanan__pricing__parent">
+                            <div class="cust-rincian-pesanan__pricing--child-1">
+                                <div class="cust-rincian-pesanan__pricing--child-1__title-1">
+                                    <p class="regular-text__thin ">Harga Kamar Bulanan</p>
+                                </div>
+                                <div class="cust-rincian-pesanan__pricing--child-1__title-2">
+                                    <p class="mb-3 regular-text__medium">Rp1.500.000</p>
+                                </div>
+                                <div class="cust-rincian-pesanan__pricing--child-1__title-3">
+                                    <p class="regular-text__thin ">Biaya Pesanan</p>
+                                </div>
+                                <div class="cust-rincian-pesanan__pricing--child-1__title-4">
+                                    <p style="color: #19A7CE;" class="regular-text__bold">Gratis</p>
+                                </div>
+                            </div>
+                            <div class="cust-rincian-pesanan__pricing--child-2">
+                                <div class="cust-rincian-pesanan__pricing--child-2__child-1">
+                                    <p class="regular-text__thin ">Total Biaya</p>
+                                </div>
+                                <div class="cust-rincian-pesanan__pricing--child-2__child-2">
+                                    <p class="mb-3 regular-text__medium">Rp{{ total_price }}</p>
+                                </div>
+                            </div>
+                            <div class="cust-rincian-pesanan__pricing--child-3">
+                                <div class="cust-rincian-pesanan__pricing--child-3--line"></div>
+                            </div>
+                            <div class="cust-rincian-pesanan__pricing--child-4">
+                                <div class="cust-rincian-pesanan__pricing--child-4__transfer-1">
+                                    <p class="regular-text__thin">Transfer Biaya</p>
+                                </div>
+                                <div class="cust-rincian-pesanan__pricing--child-4__transfer-2">
+                                    <p class="regular-text__bold">{{ pengelola_user_model.bank }}</p>
+                                    <div class="cust-rincian-pesanan__pricing--child-4__transfer-2__row">
+                                        <p class="regular-text__bold" ref="copy_nomor_rekening">{{ pengelola_user_model.rekening }}</p>
+                                        <span class="material-symbols-outlined pt-1 ml-6" style="cursor: pointer" @click="copyNomorRek(pengelola_user_model.rekening)">
+                                            content_copy
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cust-rincian-pesanan__pricing--child-5">
+                                <v-btn 
+                                    color="#146C94" 
+                                    class="white--text btn-transfer" 
+                                    elevation="0" 
+                                    :loading="isSelecting" 
+                                    @click="onPickFile()"
+                                >
+                                Unggah Bukti Transfer
+                                </v-btn>
+                                <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
+                                <p class="regular-text__medium mt-6">{{ fileName }}</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__pricing--child-6">
+                                <p class="regular-text__thin paragraph">Silahkan tekan tombol Bayar <br> Jika Anda sudah Unggah Bukti Transfer</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__pricing--child-7">
+                                <p class="paragraph regular-text">Masih Ragu dengan Pesanan Anda?</p>
+                                <a class="regular-text__bold pt-2 batal-anchor" @click="dialog_batal()">Batalkan Pesanan</a>
+                            </div>
+                        </div>
+                    </v-card>
+                </div>
+                <div class="cust-rincian-pesanan__alamat">
+                    <v-card class="card-pesanan">
+                        <v-layout column align-start>
+                            <p class="bigger--regular-text__bold ">Kost Catleya</p>
+                            <div class="d-inline-flex align-center pt-2"><span class="material-symbols-outlined pr-2">
+                            location_on
+                        </span><p class="regular-text__medium paragraph">Depok, Sleman, Yogyakarta</p></div>
                         </v-layout>
-                    </v-flex>
-                    <v-flex xs4 class="ml-4">
-                        <v-layout column>
-                            <v-card class="card-pesanan">
-                                <v-layout column align-start>
-                                    <p class="bold-bigger-regular-text">Kost Catleya</p>
-                                    <div class="d-inline-flex align-center pt-2"><span class="material-symbols-outlined pr-2">
-                                    location_on
-                                </span><p class="medium-regular-text paragraph">Depok, Sleman, Yogyakarta</p></div>
-                                </v-layout>
-                            </v-card>
-                            <v-card class="card-pesanan">
-                                <v-layout column>
-                                    <v-layout align-start class="pb-4">
-                                        <p class="medium-bigger-regular-text paragraph">Rincian Pemesan</p>
-                                    </v-layout>
-                                    <hr>
-                                    <v-layout row align-start class="pt-4">
-                                        <v-layout column align-start>
-                                            <p class="thin-regular-text ">Nama Lengkap</p>
-                                            <p class="thin-regular-text ">Nomor Telepon</p>
-                                            <p class="thin-regular-text ">Email</p>
-                                        </v-layout>
-                                        <v-layout column align-start class="ma-0">
-                                            <p class="mb-3 medium-regular-text">{{ user_model.name }}</p>
-                                            <p class="mb-3 medium-regular-text">{{ user_model.phone_number }}</p>
-                                            <p class="mb-3 medium-regular-text">{{ user_model.email }}</p>
-                                        </v-layout>
-                                    </v-layout>
-                                </v-layout>
-                            </v-card>
-                            <v-card class="card-pesanan">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15812.97476859342!2d110.3904599!3d-7.76396115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sid!4v1681391601193!5m2!1sen!2sid" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                <v-layout align-start>
-                                    <a class="bold-regular-text pt-3 daftar-anchor" @click="dialog_lokasi = true">Lihat lokasi terdekat</a>
-                                </v-layout>
-                            </v-card>
-
-                            <v-card class="card-pesanan">
-                                 <v-layout column align-start>
-                                    <p class="medium-regular-text">Pastikan pesanan Anda sudah benar</p>
-                                    <v-btn color="#146C94" width="30%" class="white--text" @click="submitForm()">Pesan</v-btn>
-                                </v-layout>
-                            </v-card>
+                    </v-card>
+                </div>
+                <div class="cust-rincian-pesanan__pemesan">
+                    <v-card class="card-pesanan cust-rincian-pesanan__pemesan--parent">
+                        <div class="cust-rincian-pesanan__pemesan--parent">
+                            <div class="cust-rincian-pesanan__pemesan--child-1">
+                                <p class="bigger--regular-text__medium  paragraph">Rincian Pemesan</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__pemesan--child-2">
+                                <div class="cust-rincian-pesanan__pemesan--child-2--line">
+                                </div>
+                            </div>
+                            <div class="cust-rincian-pesanan__pemesan--child-3">
+                                <p class="regular-text__thin  paragraph">Nama Lengkap</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__pemesan--child-4">
+                                <p class="regular-text__medium paragraph">{{ user_model.name }}</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__pemesan--child-5">
+                                <p class="regular-text__thin paragraph ">Nomor Telepon</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__pemesan--child-6">
+                                <p class="regular-text__medium paragraph">{{ user_model.phone_number }}</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__pemesan--child-7">
+                                <p class="regular-text__thin  paragraph">Email</p>
+                            </div>
+                            <div class="cust-rincian-pesanan__pemesan--child-8">
+                                <p class="regular-text__medium paragraph">{{ user_model.email }}</p>
+                            </div>
+                        </div>
+                    </v-card>
+                </div>
+                <div class="cust-rincian-pesanan__maps">
+                    <v-card class="card-pesanan">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15812.97476859342!2d110.3904599!3d-7.76396115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sid!4v1681391601193!5m2!1sen!2sid" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <v-layout align-start>
+                            <a class="regular-text__bold pt-3 btn__daftar-anchor" @click="dialog_lokasi = true">Lihat lokasi terdekat</a>
                         </v-layout>
-                    </v-flex>
-                </v-layout>
+                    </v-card>
+                </div>
+                <div class="cust-rincian-pesanan__button">
+                    <v-card class="card-pesanan">
+                        <v-layout column align-start>
+                            <p class="regular-text__medium">Pastikan pesanan Anda sudah benar</p>
+                            <v-btn color="#146C94" class="white--text btn-transfer" @click="submitForm()">Pesan</v-btn>
+                        </v-layout>
+                    </v-card>
+                </div>
+            </div>
+
+            <v-layout align-start v-if="!this.model_ready">
+                <p class="title__medium paragraph">Rincian Pesanan</p>
             </v-layout>
             
-            <v-layout column class="layout-main" mt-6 v-else-if="!this.model_ready">
-                <p class="thin-title">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
-                <p class="thin-sub-title pt-2">Silahkan Cek Rincian Transaksi jika sudah melakukan Pemesanan</p>
+            <v-layout column class="layout-main" mt-6 v-if="!this.model_ready">
+                <p class="title__medium">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
+                <p class="subtitle--thin pt-2">Silahkan Cek Rincian Transaksi jika sudah melakukan Pemesanan</p>
             </v-layout>
+
 
             <v-dialog v-model="dialog_konfirmasi_batal" persistent max-width="25vw">
                 <v-card class="pa-4">
-                    <p class="medium-regular-text">Ingin Membatalkan Pesanan?</p>
+                    <p class="regular-text__medium">Ingin Membatalkan Pesanan?</p>
                     <v-layout justify-center class="pt-4">
                         <v-btn outlined class="mr-2" @click="dialog_konfirmasi_batal = false">Keluar</v-btn>
                         <v-btn color="red" class="ml-2 white--text" @click="cancelBooking()">Batalkan</v-btn>
@@ -184,7 +194,7 @@
 
             <v-dialog v-model="dialog_kamar_terisi" persistent max-width="25vw">
                 <v-card class="pa-4">
-                    <p class="medium-regular-text">Mohon Maaf Kamar sudah terisi</p>
+                    <p class="regular-text__medium">Mohon Maaf Kamar sudah terisi</p>
                     <v-layout justify-center class="pt-4">
                         <v-btn outlined class="mr-2" @click="$router.go(-1);">Keluar</v-btn>
                     </v-layout>
@@ -194,7 +204,7 @@
             <v-dialog v-model="dialog_lokasi" persistent max-width="25vw">
                 <v-card class="pa-4">
                     <v-layout row align-start class="pa-4 pb-0">
-                        <p class="bold-regular-text">Lokasi Terdekat</p>
+                        <p class="regular-text__bold">Lokasi Terdekat</p>
                     </v-layout>
                     <v-layout row align-start class="pa-4">
                         <v-layout align-start column>
@@ -216,7 +226,7 @@
 
             <v-dialog v-model="dialog_pindah_page" persistent max-width="25vw">
                 <v-card class="pa-4">
-                    <p class="medium-regular-text">Jika anda pindah halaman, pesanan batal otomatis</p>
+                    <p class="regular-text__medium">Jika anda pindah halaman, pesanan batal otomatis</p>
                     <v-layout justify-center class="pt-4">
                         <v-btn outlined class="mr-2" @click="closeDialogPindah()">Batal</v-btn>
                         <v-btn color="red" class="ml-2 white--text" @click="cancelBooking()">Pindah Halaman</v-btn>
@@ -289,6 +299,8 @@
 
                 expired_status: false,
                 pengelola_user_model: {},
+
+                interval_time: 2000,
             }
         },
         created(){
@@ -324,6 +336,10 @@
 
                     let user_id = kos_booking.users_id;
                     this.kos_booking_model = kos_booking;
+
+                    let start_date = new Date(this.kos_booking_model.date);
+                    let exp_date = new Date(start_date.getTime() + (30 * 60 * 1000));
+                    this.kos_booking_model.exp_date = exp_date;
 
                     this.$http.get(this.apiUser+user_id, {headers : {
                         Authorization: localStorage.token,
@@ -419,7 +435,7 @@
             },
 
             getStatusExpDate(){
-                if(this.kos_booking_model){
+                if(this.kos_booking_model.exp_date){
                     const timer = setInterval(() => {
                         // const now = this._now;
                         const now = new Date()
@@ -430,7 +446,7 @@
                             clearInterval(timer);
                             this.expired_status = true;
                             clearInterval(this.date_interval);
-                            this.cancelPesanan();
+                            this.cancelBooking();
                             return
                         }
 
@@ -585,16 +601,14 @@
             }
 
             this.devLog('mounted');
-            this.date_interval = setInterval(this.getStatusExpDate,  this.interval_time);
+            if(this.kos_booking_model){
+                this.date_interval = setInterval(this.getStatusExpDate,  this.interval_time);
+            }
         },
     }
 </script>
 
 <style scoped>
-    .card-pesanan{
-        margin-top: 12px;
-        padding: 32px;
-    }
     .layout-price-bg{
         margin: -12px !important;
         padding: 12px;

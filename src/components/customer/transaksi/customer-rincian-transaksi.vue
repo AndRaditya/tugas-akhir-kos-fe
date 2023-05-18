@@ -1,164 +1,166 @@
 <template>
     <v-container grid-list-xs class="pt-0" v-if="ready">
-        <v-layout row class="mb-6">
-            <v-flex xs8>
-                <v-layout align-start>
-                    <p class="thin-title paragraph">Rincian Transaksi</p>
-                </v-layout>
-            </v-flex>
-            <v-flex xs4 v-if="this.model_transaksi">
-                <v-layout justify-end column>
-                    <v-text-field
-                        outlined
-                        label="Masukkan Pencarian"
-                        v-model="keyword_search"
-                        @click:append="xSearch()"
-                        @keydown.enter.prevent="xSearch()"
-                        append-icon="search"
-                        clearable
-                    ></v-text-field>
-                    <v-layout row align-center justify-end wrap>
-                        <v-flex xs6>
-                            <v-layout justify-end>
-                                <v-select
-                                    outlined
-                                    label="Urutkan"
-                                    v-model="data_sort"
-                                    :items="data_sort_items"
-                                    hide-details
-                                ></v-select>
-                            </v-layout>
-                        </v-flex>
-                        <v-flex xs3>
-                            <v-layout justify-end>
-                                <v-btn color="#146C94" class="white--text thin-bigger-regular-text btn-filter" elevation="0" @click="dialog_filter = true">Filter <span class="material-icons" style="color: #fff">
-                                    filter_alt
-                                    </span>
-                                </v-btn>
-                            </v-layout>
-                        </v-flex>
+        <div class="cust-transaksi__header">
+            <div class="cust-transaksi__child-1">
+                <div class="cust-transaksi__child-1__title">
+                    <v-layout align-start>
+                        <p class="title__medium paragraph">Rincian Transaksi</p>
                     </v-layout>
-                </v-layout>
-            </v-flex>
-        </v-layout>
+                </div>
+            </div>
+            <div class="cust-transaksi__child-2">
+                <div class="cust-transaksi__child-2__search">
+                    <v-layout justify-end align-end>
+                        <v-text-field
+                            outlined
+                            label="Masukkan Pencarian"
+                            v-model="keyword_search"
+                            @click:append="xSearch()"
+                            @keydown.enter.prevent="xSearch()"
+                            append-icon="search"
+                            clearable
+                        ></v-text-field>
+                    </v-layout>
+                </div>
+                <div class="cust-transaksi__child-2__sort">
+                    <v-select
+                        outlined
+                        label="Urutkan"
+                        v-model="data_sort"
+                        :items="data_sort_items"
+                        hide-details
+                    ></v-select>
+                </div>
+                <div class="cust-transaksi__child-2__filter">
+                    <v-btn color="#146C94" class="white--text bigger--regular-text__thin btn-filter" elevation="0" @click="dialog_filter = true">Filter <span class="material-icons" style="color: #fff">
+                        filter_alt
+                        </span>
+                    </v-btn>
+                </div>
+            </div>
+        </div>
         <hr>
 
-        <v-layout column class="layout-main" mt-6 v-if="this.model_transaksi">
-            <v-card class="card-regular" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
-                <v-layout column>
-                    <v-layout row align-start>
-                        <v-layout column align-start>
-                            <p class="medium-bigger-regular-text">{{ date[index] }}</p>
-                            <h3 class="thin-regular-text paragraph pb-2">{{ kos_booking.kode }}</h3>
-                        </v-layout>
-                        <v-layout justify-end class="mt-0">
-                            <p class="sudah--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
-                            <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Terkonfirmasi'">{{ kos_booking.status }}</p>
-                            <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking.status }}</p>
-                        </v-layout>
-                    </v-layout>
-                    <hr>
-                    <v-layout row class="mt-6">
-                        <v-flex xs3>
-                            <v-layout column align-start>
-                                <p class="bigger-regular-text">Tanggal Masuk</p>
-                                <p class="bigger-regular-text">Tanggal Selesai</p>
-                                <p class="bigger-regular-text">Total Bulan</p>
-                                <p class="bigger-regular-text">Jumlah Kamar</p>
+        <v-layout column class="layout-main" mt-8 v-if="this.model_transaksi">
+            <v-card class="card__regular" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
+                <div class="cust-transaksi--detail">
+                    <div class="cust-transaksi--detail__child-1">
+                        <div class="cust-transaksi--detail__child-1__header-1">
+                             <v-layout column align-start>
+                                <p class="bigger--regular-text__medium ">{{ date[index] }}</p>
+                                <h3 class="regular-text__thin paragraph pb-2">{{ kos_booking.kode }}</h3>
                             </v-layout>
-                        </v-flex>
-                        <v-flex xs9>
+                        </div>
+                        <div class="cust-transaksi--detail__child-1__header-2">
+                            <p class="pengelola__sudah--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
+                            <p class="pengelola__terkonfirmasi regular-text__medium" v-else-if="kos_booking.status == 'Terkonfirmasi'">{{ kos_booking.status }}</p>
+                            <p class="pengelola__dibatalkan regular-text__medium" v-else-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking.status }}</p>
+                        </div>
+                    </div>
+                    <div class="cust-transaksi--detail__child-2">
+                        <div class="cust-transaksi--detail__child-2--line"></div>
+                    </div>
+                    <div class="cust-transaksi--detail__child-3">
+                        <div class="cust-transaksi--detail__child-3__desc-1">
                             <v-layout column align-start>
-                                <p class="medium-bigger-regular-text">{{ tanggal_mulai[index] }}</p>
-                                <p class="medium-bigger-regular-text">{{ tanggal_selesai[index] }}</p>
-                                <p class="medium-bigger-regular-text">{{ kos_booking.total_bulan }} Bulan</p>
-                                <p class="medium-bigger-regular-text">{{ kos_booking.total_kamar }} Kamar</p>
+                                <p class="bigger--regular-text">Tanggal Masuk</p>
+                                <p class="bigger--regular-text">Tanggal Selesai</p>
+                                <p class="bigger--regular-text">Total Bulan</p>
+                                <p class="bigger--regular-text">Jumlah Kamar</p>
                             </v-layout>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row class="mt-16">
-                        <v-layout column align-start>
-                            <p class="thin-bigger-regular-text">Total Biaya</p>
-                            <p class="bold-bigger-regular-text paragraph">Rp{{ total_harga[index] }}</p>
-                        </v-layout>
-                        <v-layout justify-end v-if="kos_booking.status == 'Menunggu Konfirmasi Kamar'">
-                            <v-btn color="#146C94" width="30%" class="white--text thin-bigger-regular-text" elevation="0" @click="redirectPayment(kos_booking.id)">Lakukan Pembayaran</v-btn>
-                        </v-layout>
-                    </v-layout>
-                </v-layout>
+                        </div>
+                        <div class="cust-transaksi--detail__child-3__desc-2">
+                            <v-layout column align-start>
+                                <p class="bigger--regular-text__medium ">{{ tanggal_mulai[index] }}</p>
+                                <p class="bigger--regular-text__medium ">{{ tanggal_selesai[index] }}</p>
+                                <p class="bigger--regular-text__medium ">{{ kos_booking.total_bulan }} Bulan</p>
+                                <p class="bigger--regular-text__medium ">{{ kos_booking.total_kamar }} Kamar</p>
+                            </v-layout>
+                        </div>
+                    </div>
+                    <div class="cust-transaksi--detail__child-4">
+                        <div class="cust-transaksi--detail__child-4__desc-1">
+                            <v-layout column align-start>
+                                <p class="bigger--regular-text__thin">Total Biaya</p>
+                                <p class="bigger--regular-text__bold  paragraph">Rp{{ total_harga[index] }}</p>
+                            </v-layout>
+                        </div>
+                        <div class="cust-transaksi--detail__child-4__desc-2">
+                        </div>
+                    </div>
+                </div>
             </v-card>
         </v-layout>
         <v-layout column class="layout-main" mt-6 v-else-if="!this.model_transaksi">
-            <p class="thin-title">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
-            <h3 class="thin-sub-title pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
+            <p class="title__medium">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
+            <h3 class="subtitle--thin pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
         </v-layout>
+
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
-        <v-dialog v-model="dialog_filter" persistent max-width="40vw">
+        <v-dialog v-model="dialog_filter" persistent content-class="filter-dialog">
             <v-card class="pa-4">
-                <p class="medium-bigger-regular-text pb-4">Filter Kamar</p>
+                <p class="bigger--regular-text__medium  pb-4">Filter Kamar</p>
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_filter" autofocus lazy-validation>
-                    <v-layout column>
-                        <v-layout align-start column>
-                            <p class="regular-text px-2">Tanggal Pemesanan</p>
-                        </v-layout>
-                        <v-layout row wrap class="pa-4">
-                            <v-flex xs6 class="px-2">
-                                <v-menu
-                                    ref="dialogStartDate"
-                                    v-model="menu_startDate"
-                                    :return-value.sync="filter.date.start_date"
-                                    :close-on-content-click="false"
-                                    elevation="0"
-                                    min-width="0%"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                        <v-text-field
-                                            v-model="filter.date.start_date"
-                                            label="Mulai dari"
-                                            append-icon="event"
-                                            readonly
-                                            v-on="on"
-                                            outlined
-                                            clearable
-                                        ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="filter.date.start_date" scrollable>
-                                        <v-spacer></v-spacer>
-                                        <v-btn text color="primary" @click="menu_startDate = false">Cancel</v-btn>
-                                        <v-btn text color="primary" @click="$refs.dialogStartDate.save(filter.date.start_date)">OK</v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                            </v-flex>
-                            <v-flex xs6 class="px-2">
-                                <v-menu
-                                    ref="dialogEndDate"
-                                    v-model="menu_endDate"
-                                    :return-value.sync="filter.date.end_date"
-                                    :close-on-content-click="false"
-                                    elevation="0"
-                                    min-width="0%"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                        <v-text-field
-                                            v-model="filter.date.end_date"
-                                            label="Sampai"
-                                            append-icon="event"
-                                            readonly
-                                            v-on="on"
-                                            outlined
-                                            clearable
-                                        ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="filter.date.end_date" scrollable>
-                                        <v-spacer></v-spacer>
-                                        <v-btn text color="primary" @click="menu_endDate = false">Cancel</v-btn>
-                                        <v-btn text color="primary" @click="$refs.dialogEndDate.save(filter.date.end_date)">OK</v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                            </v-flex>
-                        </v-layout>
-                    </v-layout>
+                    <div class="filter-dialog__tanggal">
+                        <div class="filter-dialog__tanggal--child-1">
+                            <p class="regular-text">Tanggal Pemesanan</p>
+                        </div>
+                        <div class="filter-dialog__tanggal--child-2">     
+                            <v-menu
+                                ref="dialogStartDate"
+                                v-model="menu_startDate"
+                                :return-value.sync="filter.date.start_date"
+                                :close-on-content-click="false"
+                                elevation="0"
+                                min-width="0%"
+                            >
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                        v-model="filter.date.start_date"
+                                        label="Mulai dari"
+                                        append-icon="event"
+                                        readonly
+                                        v-on="on"
+                                        outlined
+                                        clearable
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker v-model="filter.date.start_date" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu_startDate = false">Cancel</v-btn>
+                                    <v-btn text color="primary" @click="$refs.dialogStartDate.save(filter.date.start_date)">OK</v-btn>
+                                </v-date-picker>
+                            </v-menu>
+                        </div>
+                        <div class="filter-dialog__tanggal--child-3">
+                            <v-menu
+                                ref="dialogEndDate"
+                                v-model="menu_endDate"
+                                :return-value.sync="filter.date.end_date"
+                                :close-on-content-click="false"
+                                elevation="0"
+                                min-width="0%"
+                            >
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                        v-model="filter.date.end_date"
+                                        label="Sampai"
+                                        append-icon="event"
+                                        readonly
+                                        v-on="on"
+                                        outlined
+                                        clearable
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker v-model="filter.date.end_date" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu_endDate = false">Cancel</v-btn>
+                                    <v-btn text color="primary" @click="$refs.dialogEndDate.save(filter.date.end_date)">OK</v-btn>
+                                </v-date-picker>
+                            </v-menu>
+                        </div>
+                    </div>
                     <v-layout column wrap class="pa-4">
                         <!-- <v-flex xs6 class="px-2"> -->
                             <v-layout column justify-start>
@@ -232,8 +234,8 @@
                     </v-layout>
 
                     <v-layout justify-center class="pt-4">
-                        <v-btn width="30%" elevation="0" class="white--text btn-close-dialog mr-2" @click="dialog_filter = false">Tutup</v-btn>
-                        <v-btn elevation="0" class="white--text btn-unduh ml-2" type="submit" width="30%">FILTER</v-btn>
+                        <v-btn elevation="0" class="white--text btn__close-dialog mr-2 filter-dialog__btn" @click="dialog_filter = false">Tutup</v-btn>
+                        <v-btn elevation="0" class="white--text btn__unduh ml-2 filter-dialog__btn" type="submit" >FILTER</v-btn>
                     </v-layout>
                 </v-form>
              </v-card>

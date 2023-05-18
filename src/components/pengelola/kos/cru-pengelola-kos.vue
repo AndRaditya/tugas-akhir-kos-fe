@@ -1,14 +1,14 @@
 <template>
     <v-container grid-list-md class="pa-" v-if="ready">
         <v-layout align-start wrap class="mt-4 ml-6">
-            <p class="main-title ">Ubah Data Kos</p>
+            <p class="title__main ">Ubah Data Kos</p>
         </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kos" autofocus lazy-validation>
             <v-layout align-start justify-center row class="mt-4 pl-2">
                 <v-flex xs4>
                     <v-layout column>
                         <v-layout column align-start>
-                            <p class="medium-regular-text">Tipe Kos</p>
+                            <p class="regular-text__medium">Tipe Kos</p>
                         </v-layout>
                         <v-select
                             outlined
@@ -17,7 +17,7 @@
                             :items="tipe_kos"
                         ></v-select>
                         <v-layout column align-start>
-                            <p class="medium-regular-text">Ukuran Kamar</p>
+                            <p class="regular-text__medium">Ukuran Kamar</p>
                         </v-layout>
                         <v-text-field
                             outlined
@@ -25,16 +25,16 @@
                             v-model="ukuran_kamar"
                         ></v-text-field>
                         <v-layout column align-start>
-                            <p class="medium-regular-text mb-6">Listrik</p>
+                            <p class="regular-text__medium mb-6">Listrik</p>
                             <v-layout>
-                                <p class="thin-regular-text paragraph mr-4">Termasuk Listrik</p>
+                                <p class="regular-text__thin paragraph mr-4">Termasuk Listrik</p>
                                 <v-radio-group row class="ma-0 pa-0 ml-4" v-model="termasuk_listrik">
                                     <v-radio label="Ya" value="Termasuk Listrik"></v-radio>
                                     <v-radio label="Tidak" value="Tidak Termasuk Listrik"></v-radio>
                                 </v-radio-group>
                             </v-layout>
                             <v-layout>
-                                <p class="thin-regular-text mr-6">Jenis Listrik</p>
+                                <p class="regular-text__thin mr-6">Jenis Listrik</p>
                                 <v-radio-group row class="ma-0 pa-0 ml-4" v-model="jenis_listrik">
                                     <v-radio label="Token" value="Listrik Token"></v-radio>
                                     <v-radio label="Meteran" value="Listrik Meteran"></v-radio>
@@ -42,7 +42,7 @@
                             </v-layout>
                         </v-layout>
                         <v-layout column align-start class="mt-4">
-                            <p class="medium-regular-text">Fasilitas Kos</p>
+                            <p class="regular-text__medium">Fasilitas Kos</p>
                         </v-layout>
                         <v-select
                             outlined
@@ -53,7 +53,7 @@
                             :items="kos_fasilitas_items"
                         ></v-select>
                         <v-layout column align-start class="mt-4">
-                            <p class="medium-regular-text">Deskripsi Kos</p>
+                            <p class="regular-text__medium">Deskripsi Kos</p>
                         </v-layout>
                         <v-textarea
                             outlined
@@ -61,7 +61,7 @@
                             v-model="kos_model.deskripsi"
                         ></v-textarea>
                         <v-layout column align-start>
-                            <p class="medium-regular-text">Peraturan Kos</p>
+                            <p class="regular-text__medium">Peraturan Kos</p>
                         </v-layout>
                         <v-textarea
                             outlined
@@ -73,7 +73,7 @@
                 <v-flex xs7 class="ml-8">
                     <v-layout column>
                         <v-layout column align-start>
-                            <p class="medium-regular-text">Foto Kos</p>
+                            <p class="regular-text__medium">Foto Kos</p>
                         </v-layout>
                         <v-layout row wrap class="">
                             <v-flex
@@ -108,7 +108,7 @@
                             </v-flex>
                         </v-layout>
                         <v-layout justify-end class="pb-4">
-                            <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn" @click="imageDialog = true">
+                            <v-btn outlined elevation="0" mx-0 color="#333" class="button__lihat-foto" @click="imageDialog = true">
                                 <span class="material-symbols-outlined">
                                 photo_camera
                                 </span>
@@ -120,7 +120,7 @@
                                 outlined                           
                                 elevation="0" 
                                 @click="onPickFile()" 
-                                class="tambah-foto-btn" >
+                                class="btn__tambah-foto" >
                                 Tambahkan Foto
                             </v-btn>
                             <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
@@ -129,7 +129,7 @@
                 </v-flex>
             </v-layout>
             <v-flex class="my-4">
-                <v-btn elevation="0" class="white--text btn-simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
+                <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
             </v-flex>
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
@@ -323,6 +323,7 @@ export default {
             this.devLog(this.api+this.id)
             this.devLog(JSON.stringify(this.kos_model));
             this.devLog(this.kos_model);
+            this.devLog(this.deletedImages);
 
             this.$http.put(this.api+this.id, this.kos_model, {headers : {
                 Authorization: localStorage.token,
@@ -436,7 +437,9 @@ export default {
         },
 
         removeImageWithAPI(deleteImage) {
-            this.$http.put(this.apiPhoto + this.id, {kos_photos: deleteImage})
+            this.$http.put(this.apiPhoto + this.id, {kos_photos: deleteImage}, {headers : {
+                Authorization: localStorage.token,
+            }})
             .then((response) => {
                     if(response.status == 202){
                         if(response.data.api_status == "fail"){
@@ -457,31 +460,6 @@ export default {
                 this.snackbar = true;
             });
         },
-
-        // updatePhoto(index) {
-        //     let url = this.kos_model.kos_photos[index].url;
-        //     fetch(url)
-        //         .then((res) => res.blob())
-        //         .then((blob) => {
-        //             this.devLog("index i " + index);
-        //             this.readFile(blob, index);
-        //         });
-        // },
-
-        // readFile(input, index) {
-        //     const fr = new FileReader();
-        //     fr.readAsDataURL(input);
-        //     this.devLog(fr.result);
-        //     fr.addEventListener("load", () => {
-        //         this.devLog(fr);
-        //         const res = fr.result;
-        //         this.devLog("index " + index);
-        //         this.kos_model.kos_photos[index].image_url = res;
-
-        //         this.devLog("this.kos_model.kos_photos[index]");
-        //         this.devLog(this.kos_model.kos_photos[index]);
-        //     });
-        // },
     }
 }
 </script>

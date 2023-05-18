@@ -6,12 +6,12 @@
                 <v-layout align-start justify-center row class="mt-6">
                     <v-flex xs5>
                         <v-layout align-start>
-                            <p class="main-title">{{ nav_title }} Transaksi Keluar</p>
+                            <p class="title__main">{{ nav_title }} Transaksi Keluar</p>
                         </v-layout>
                     </v-flex>
                     <v-flex xs5>
                         <v-layout align-end justify-end v-if="!editable">
-                            <v-btn elevation="0" class="white--text btn-go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
+                            <v-btn elevation="0" class="white--text btn__go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
                         </v-layout>
                     </v-flex>
                 </v-layout>
@@ -79,7 +79,7 @@
                 </v-layout>
             </v-layout>
             <v-flex class="my-4" v-if="editable">
-                <v-btn elevation="0" class="white--text btn-simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
+                <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
             </v-flex>
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>

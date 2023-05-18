@@ -5,12 +5,12 @@
                 <v-layout align-start justify-center row class="mt-6">
                     <v-flex xs5>
                         <v-layout align-start column>
-                            <p class="main-title">{{ nav_title }} Transaksi Masuk</p>
+                            <p class="title__main">{{ nav_title }} Transaksi Masuk</p>
                         </v-layout>
                     </v-flex>
                     <v-flex xs5>
                         <v-layout align-end justify-end v-if="!editable">
-                            <v-btn elevation="0" class="white--text btn-go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
+                            <v-btn elevation="0" class="white--text btn__go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
                         </v-layout>
                     </v-flex>
                 </v-layout>
@@ -66,7 +66,7 @@
                             ></v-textarea>
                             <v-layout align-start column>
                                 <p class="regular-text">Total Nilai Transaksi</p>
-                                <p class="medium-bigger-regular-text">Rp{{ total_nilai_temp }}</p>
+                                <p class="bigger--regular-text__medium ">Rp{{ total_nilai_temp }}</p>
                             </v-layout>
                             <v-layout align-start column>
                                 <p class="regular-text mb-2 mt-6">Upload Bukti Transfer (Opsional)</p>
@@ -86,7 +86,7 @@
                                 <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
                             </v-layout>
                             <v-layout align-start column class="mb-6">
-                                <p class="medium-regular-text mt-6">{{ fileName }}</p>
+                                <p class="regular-text__medium mt-6">{{ fileName }}</p>
                                 <v-card elevation-0>
                                     <v-img
                                         v-if="url"
@@ -200,7 +200,7 @@
                 </v-layout>
             </v-layout>
             <v-flex class="my-8" v-if="editable">
-                <v-btn elevation="0" class="white--text btn-simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
+                <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
             </v-flex>
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>

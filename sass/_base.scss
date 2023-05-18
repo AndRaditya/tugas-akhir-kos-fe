@@ -1,0 +1,56 @@
+$bp-biggest: 120em;     // 1920px
+$bp-largest: 80em;     // 1200px
+$bp-large: 68.75em;    // 1100px
+$bp-medium: 56.25em;   // 900px
+$bp-small: 37.5em;     // 600px
+$bp-smallest: 31.25em; // 500px
+$bp-mobile: 25em; //350px
+
+
+:root {
+    font-size: 62.5%;
+    box-sizing: border-box;
+
+
+    --color-primary: #19A7CE;
+    --color-primary-dark: #146C94;
+    --color-secondary: #2c3e50;
+
+    --color-confirm: #519259;
+    --color-cancel: #DF2E38;
+
+    --color-white: #fff;
+    --color-white-dark: #F6F6F6;
+    --color-dark-grey: #333;
+
+    @media only screen and (max-width: $bp-largest) {
+        font-size: 50%;
+    }
+
+    @media only screen and (max-width: $bp-small) {
+        font-size: 25%;
+    }
+}
+
+
+*{
+    font-family: 'Noto Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--color-dark-grey);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+}

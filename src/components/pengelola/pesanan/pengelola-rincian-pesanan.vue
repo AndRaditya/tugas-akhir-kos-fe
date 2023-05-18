@@ -1,24 +1,24 @@
 <template>
     <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start>
-            <p class="main-title">Rincian Pesanan</p>
+            <p class="title__main">Rincian Pesanan</p>
         </v-layout>
         <v-layout column class="layout-main py-6" mt-6 v-if="this.model_transaksi">
-            <v-card class="card-regular ">
+            <v-card class="card__regular ">
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_pesanan_pengelola" autofocus lazy-validation>
                     <v-layout column>
                         <v-layout row align-start>
                             <v-flex xs6>
                                 <v-layout column align-start>
-                                    <p class="bold-bigger-regular-text paragraph pb-4">{{ kos_booking_model.kode }}</p>
-                                    <p class="medium-bigger-regular-text">{{ date }}</p>
+                                    <p class="bigger--regular-text__bold  paragraph pb-4">{{ kos_booking_model.kode }}</p>
+                                    <p class="bigger--regular-text__medium ">{{ date }}</p>
                                 </v-layout>
                             </v-flex>
                             <v-flex xs6>
                                 <v-layout justify-end class="mt-0">
-                                    <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking_model.status }}</p>
-                                    <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking_model.status == 'Dibatalkan'">{{ kos_booking_model.status }}</p>
-                                    <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking_model.status == 'Terkonfirmasi'">Berhasil</p>
+                                    <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking_model.status }}</p>
+                                    <p class="pengelola__dibatalkan regular-text__medium" v-else-if="kos_booking_model.status == 'Dibatalkan'">{{ kos_booking_model.status }}</p>
+                                    <p class="pengelola__terkonfirmasi regular-text__medium" v-else-if="kos_booking_model.status == 'Terkonfirmasi'">Berhasil</p>
                                 </v-layout>
                             </v-flex>
                         </v-layout>
@@ -26,23 +26,23 @@
                         <v-layout row class="mt-6">
                             <v-flex xs3>
                                 <v-layout column align-start>
-                                    <p class="bigger-regular-text">Nama Penyewa</p>
-                                    <p class="bigger-regular-text">Tanggal Masuk</p>
-                                    <p class="bigger-regular-text">Tanggal Selesai</p>
-                                    <p class="bigger-regular-text">Jumlah Kamar</p>
-                                    <p class="bigger-regular-text" v-if="kos_booking_model.kamar.length > 0">Nomor Kamar</p>
+                                    <p class="bigger--regular-text">Nama Penyewa</p>
+                                    <p class="bigger--regular-text">Tanggal Masuk</p>
+                                    <p class="bigger--regular-text">Tanggal Selesai</p>
+                                    <p class="bigger--regular-text">Jumlah Kamar</p>
+                                    <p class="bigger--regular-text" v-if="kos_booking_model.kamar.length > 0">Nomor Kamar</p>
                                 </v-layout>
                             </v-flex>
                             <v-flex xs9>
                                 <v-layout column align-start>
-                                    <p class="medium-bigger-regular-text">{{ kos_booking_model.user.name }}</p>
-                                    <p class="medium-bigger-regular-text">{{ tanggal_mulai }}</p>
-                                    <p class="medium-bigger-regular-text">{{ tanggal_selesai }}</p>
-                                    <p class="medium-bigger-regular-text">{{ kos_booking_model.total_kamar }} Kamar</p>
+                                    <p class="bigger--regular-text__medium ">{{ kos_booking_model.user.name }}</p>
+                                    <p class="bigger--regular-text__medium ">{{ tanggal_mulai }}</p>
+                                    <p class="bigger--regular-text__medium ">{{ tanggal_selesai }}</p>
+                                    <p class="bigger--regular-text__medium ">{{ kos_booking_model.total_kamar }} Kamar</p>
                                     <v-layout row v-if="kos_booking_model.kamar.length > 0"> 
                                         <div v-for="(nomor, index) in kos_booking_model.kamar" :key="index">
-                                            <p class="medium-bigger-regular-text" v-if="index+1 < kos_booking_model.kamar.length">{{ nomor.number }}, &nbsp; </p>    
-                                            <p class="medium-bigger-regular-text" v-if="index+1 === kos_booking_model.kamar.length">{{ nomor.number }} </p>    
+                                            <p class="bigger--regular-text__medium " v-if="index+1 < kos_booking_model.kamar.length">{{ nomor.number }}, &nbsp; </p>    
+                                            <p class="bigger--regular-text__medium " v-if="index+1 === kos_booking_model.kamar.length">{{ nomor.number }} </p>    
                                         </div>
                                     </v-layout>
 
@@ -51,8 +51,8 @@
                         </v-layout>
                         <v-layout column class="mt-16">
                             <v-layout column align-start>
-                                <p class="medium-bigger-regular-text">Total Biaya</p>
-                                <p class="bold-bigger-regular-text paragraph">Rp{{ total_harga }}</p>
+                                <p class="bigger--regular-text__medium ">Total Biaya</p>
+                                <p class="bigger--regular-text__bold  paragraph">Rp{{ total_harga }}</p>
                             </v-layout>
                             
                             <v-layout align-start column v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'" class="pt-6" >
@@ -68,25 +68,25 @@
                             </v-layout>
 
                             <v-layout column align-start v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'" class="pt-6">
-                                <v-btn color="#146C94" outlined elevation="0" width="30%" @click="imageDialog = true" class="create-account-btn" >Lihat Bukti Transfer</v-btn>
+                                <v-btn color="#146C94" outlined elevation="0" width="30%" @click="imageDialog = true" class="" >Lihat Bukti Transfer</v-btn>
                             </v-layout>
                         </v-layout>
 
                         <v-layout row class="mt-16" v-if="kos_booking_model.status != 'Terkonfirmasi' && kos_booking_model.status != 'Dibatalkan'">
-                            <v-btn color="#DF2E38" elevation="0" width="30%" @click="dialog_konfirmasi_batal = true" class="main-btn white--text mr-12" >Batalkan</v-btn>
-                            <v-btn color="#146C94" elevation="0" width="30%" type="submit" class="main-btn ml-12 white--text" >Terima</v-btn>
+                            <v-btn color="#DF2E38" elevation="0" width="30%" @click="dialog_konfirmasi_batal = true" class="btn__main white--text mr-12" >Batalkan</v-btn>
+                            <v-btn color="#146C94" elevation="0" width="30%" type="submit" class="btn__main ml-12 white--text" >Terima</v-btn>
                         </v-layout>
                     </v-layout>
                 </v-form>
             </v-card>
         </v-layout>
         <v-layout column class="layout-main" mt-6 v-else-if="!this.model_transaksi">
-            <p class="thin-title">Belum terdapat transaksi</p>
+            <p class="title__medium">Belum terdapat transaksi</p>
         </v-layout>
         
         <v-dialog v-model="dialog_konfirmasi_batal" persistent max-width="25vw">
             <v-card class="pa-4">
-                <p class="medium-regular-text">Ingin Membatalkan Pesanan?</p>
+                <p class="regular-text__medium">Ingin Membatalkan Pesanan?</p>
                 <v-layout justify-center class="pt-4">
                     <v-btn outlined class="mr-2" @click="dialog_konfirmasi_batal = false">Keluar</v-btn>
                     <v-btn color="red" class="ml-2 white--text" @click="submitForm('Dibatalkan')">Batalkan</v-btn>

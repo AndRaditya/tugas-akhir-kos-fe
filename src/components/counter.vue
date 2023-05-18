@@ -1,21 +1,23 @@
 <template>
-    <v-layout align-start justify-end v-if="loaded">
-        <v-flex shrink>
-            <p class="bold-regular-text paragraph timer-text">{{displayHours}}</p>
-        </v-flex>
-        <v-flex shrink>
-            <p class="bold-regular-text paragraph timer-text">:</p>
-        </v-flex>
-        <v-flex shrink>
-            <p class="bold-regular-text paragraph timer-text">{{displayMinutes}}</p>
-        </v-flex>
-        <v-flex shrink>
-            <p class="bold-regular-text paragraph timer-text">:</p>
-        </v-flex>
-        <v-flex shrink>
-            <p class="bold-regular-text paragraph timer-text">{{displaySeconds}}</p>
-        </v-flex>
-    </v-layout>
+    <div>
+        <v-layout v-if="loaded">
+            <v-flex shrink>
+                <p class="regular-text__bold paragraph timer-text">{{displayHours}}</p>
+            </v-flex>
+            <v-flex shrink>
+                <p class="regular-text__bold paragraph timer-text">:</p>
+            </v-flex>
+            <v-flex shrink>
+                <p class="regular-text__bold paragraph timer-text">{{displayMinutes}}</p>
+            </v-flex>
+            <v-flex shrink>
+                <p class="regular-text__bold paragraph timer-text">:</p>
+            </v-flex>
+            <v-flex shrink>
+                <p class="regular-text__bold paragraph timer-text">{{displaySeconds}}</p>
+            </v-flex>
+        </v-layout>
+    </div>
 </template>
 
 <script>
@@ -39,15 +41,10 @@ export default {
             return num < 10 ? '0' + num : num
         },
         showRemaining(){
-            console.log('timer');
-            console.log('start ' + this.start)
-            // console.log('end ' + this.end)
-
             const endDate = new Date(this.start.getTime() + (30 * 60 * 1000));
 
             const timer = setInterval(() => {
                 const now = new Date();
-                // const end = new Date(2023, 4, 22, 10, 10, 10, 10);
                 const distance = endDate.getTime() - now.getTime();
 
                 if(distance < 0){
@@ -84,8 +81,5 @@ export default {
 </script>
 
 <style scoped>
-    .timer-text{
-        color: #146C94 !important;
-        font-size: 2.4rem !important;
-    }
+
 </style>

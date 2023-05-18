@@ -1,7 +1,7 @@
 <template>
     <v-container grid-list-md class="pt-0">
         <v-flex>
-            <vueper-slides fade :touchable="false" class="px-0">
+            <vueper-slides fade :touchable="false" class="px-0" :fixed-height="true">
                 <vueper-slide
                     v-for="(slide, i) in slides"
                     :key="i"
@@ -11,54 +11,30 @@
                     :content="slide.content" />
             </vueper-slides>
         </v-flex>
-        <v-layout row wrap text-sm-center class="layout-main" id="main_kos">
-            <v-flex xs2 style="background-color: #146C94; border-radius: 6px; margin-bottom: 6px;">
-                <p class="main-title paragraph" style="color: #fff; padding: 8px 12px;">{{ kos_model.tipe }}</p>
-            </v-flex>
+        <v-layout column wrap text-sm-center class="layout-main" id="main_kos">
+            <v-layout align-start class="mb-3">
+                <p class="title__main-tipe paragraph">{{ kos_model.tipe }}</p>
+            </v-layout>
 
             <v-layout column>
-                <v-layout align-center justify-center row>
-                    <v-flex xs6 class="pa-0">
-                        <v-layout column class="pa-4">
-                            <v-img
-                                :src="urls_kos[0]"
-                                contain 
-                                width="100%"
-                                class="grey lighten-5"
-                                @click="openDialogImage(url)"
-                            ></v-img>
-                        </v-layout>
-                    </v-flex>
-                    <v-flex xs3 class="pa-0">
-                        <v-layout column class="pa-4">
-                            <div v-for="(url, index) in urls_kos.slice(1, 3)" :key="index">
-                                <v-img
-                                    :src="url"
-                                    contain
-                                    class="grey lighten-5 py-2"
-                                    @click="openDialogImage(url)"
-                                ></v-img>
-                            </div>
-                        </v-layout>
-                    </v-flex>
-                    <v-flex xs3 class="pa-0">
-                        <v-layout column class="pa-4">
-                            <div v-for="(url, index) in urls_kos.slice(3, 5)" :key="index">
-                                <v-img
-                                    :src="url"
-                                    contain
-                                    class="grey lighten-5 py-2"
-                                    @click="openDialogImage(url)"
-                                ></v-img>
-                            </div>
-                        </v-layout>
-                    </v-flex>
+                <v-layout align-center justify-center wrap>
+                    <div class="image__grid-parent">
+                        <div class="image__grid-child-1" :style="{backgroundImage: `url(${urls_kos[0]})`}"> 
+                        </div>
+                        <div class="image__grid-child-2" :style="{backgroundImage: `url(${urls_kos[1]})`}">
+                        </div>
+                        <div class="image__grid-child-3" :style="{backgroundImage: `url(${urls_kos[2]})`}">
+                        </div>
+                        <div class="image__grid-child-4" :style="{backgroundImage: `url(${urls_kos[3]})`}">
+                        </div>
+                        <div class="image__grid-child-5" :style="{backgroundImage: `url(${urls_kos[4]})`}"> 
+                        </div>
+                    </div>
                 </v-layout>
-
                 <v-flex>
                     <v-layout>&nbsp;</v-layout>
                     <v-layout justify-end class="pb-8">
-                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn" @click="imageDialogKos = true">
+                        <v-btn outlined elevation="0" mx-0 color="#333" class="button__lihat-foto" @click="imageDialogKos = true">
                         <span class="material-symbols-outlined">
                         photo_camera
                         </span>
@@ -69,55 +45,53 @@
             </v-layout>
 
             <v-layout column class="pb-12">
-                <v-layout class="px-0" row>
-                    <v-flex class="px-0 pt-0" xs8 >
-                        <v-flex xs12 pl-0 >
-                            <v-card class="card-border card-padding" outlined text-sm-left elevation="0" >
-                                <v-layout column align-start class="pb-2">
-                                    <p class="main-title paragraph">{{ kos_model.name }}</p>
-                                    <div class="d-inline-flex align-center pt-2"><span class="material-symbols-outlined pr-2">
-                                        location_on
-                                    </span><p class="paragraph sub-title">Depok, Sleman, Yogyakarta</p></div>
-                                </v-layout>
-                                <hr>
-                                <v-layout align-start column class="pt-4">
-                                    <p class="regular-text">{{ kos_model.deskripsi }}</p>
-                                </v-layout>
-                            </v-card>
-                        </v-flex>
-                        <v-flex xs12 pl-0>
-                            <v-card class="card-border card-padding" outlined text-sm-left elevation="0" >
-                                <v-layout align-start class="pb-2">
-                                    <p class="medium-title paragraph">Fasilitas Kos</p>
-                                </v-layout>
-                                <hr>
-                                <v-layout align-start row>
-                                    <v-flex xs2 class="ma-6 " style="text-align: left">
-                                        <v-layout column>
-                                            <ul v-for="(fasilitas, index) in kos_model.kos_fasilitas.slice(0, 3)" :key="index" class="pl-0 pb-3">
-                                                <li class="bigger-regular-text ma-0 pb-2" v-if="index < 3">{{ fasilitas.name }}</li>
-                                            </ul>
-                                        </v-layout>
-                                    </v-flex>
-                                    <v-flex xs2 class="ma-6 " style="text-align: left">
-                                        <v-layout column>
-                                            <ul v-for="(fasilitas, index) in kos_model.kos_fasilitas.slice(3)" :key="index" class="pl-0 pb-3">
-                                                <li class="bigger-regular-text ma-0 pb-2" >{{ fasilitas.name }}</li>
-                                            </ul>
-                                        </v-layout>
-                                    </v-flex>
-                                </v-layout>
-                            </v-card>
-                        </v-flex>
-                    </v-flex>
-                    <v-flex xs4>
-                        <v-card class="card-border card-padding" outlined text-sm-left elevation="0">
+                <div class="landing-content__grid-parent">
+                    <div class="landing-content__grid-child-1">
+                        <v-card class="card__padding"  outlined text-sm-left elevation="0" >
+                            <v-layout column align-start class="pb-2">
+                                <p class="title__main paragraph">{{ kos_model.name }}</p>
+                                <div class="d-inline-flex align-center pt-2"><span class="material-symbols-outlined pr-2">
+                                    location_on
+                                </span><p class="paragraph subtitle">Depok, Sleman, Yogyakarta</p></div>
+                            </v-layout>
+                            <hr>
+                            <v-layout align-start column justify-start class="pt-4">
+                                <p class="regular-text" style="text-align: left; line-height: 2">{{ kos_model.deskripsi }}</p>
+                            </v-layout>
+                        </v-card>
+                    </div>
+                    <div class="landing-content__grid-child-2">
+                        <v-card class="card__padding" outlined text-sm-left elevation="0">
+                            <v-layout align-start class="pb-2">
+                                <p class="title__medium paragraph">Fasilitas Kos</p>
+                            </v-layout>
+                            <hr>
+
+                            <div class="landing-content__grid__fasilitas-kos">
+                                <div class="landing-content__grid__fasilitas-kos--child-1">
+                                    <v-layout column>
+                                        <ul v-for="(fasilitas, index) in kos_model.kos_fasilitas.slice(0, 3)" :key="index" class="pl-0 pb-3">
+                                            <li class="bigger--regular-text ma-0 pb-2" v-if="index < 3">{{ fasilitas.name }}</li>
+                                        </ul>
+                                    </v-layout>
+                                </div>
+                                <div class="landing-content__grid__fasilitas-kos--child-2">
+                                    <v-layout column>
+                                        <ul v-for="(fasilitas, index) in kos_model.kos_fasilitas.slice(3)" :key="index" class="pl-0 pb-3">
+                                            <li class="bigger--regular-text ma-0 pb-2" >{{ fasilitas.name }}</li>
+                                        </ul>
+                                    </v-layout>
+                                </div>
+                            </div>
+                        </v-card>
+                    </div>
+                    <div class="landing-content__grid-child-3">
+                        <v-card class="card__padding"  outlined text-sm-left elevation="0">
                             <v-flex>
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15812.97476859342!2d110.3904599!3d-7.76396115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sid!4v1681391601193!5m2!1sen!2sid" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </v-flex>
                             <v-layout align-start column class="mb-4">
-                                <!-- class="paragraph sub-title" py-6 -->
-                                <p class="paragraph sub-title"  >Suasana Lingkungan Kos</p>
+                                <p class="paragraph subtitle">Suasana Lingkungan Kos</p>
                                 <div class="d-inline-flex align-center pt-3">
                                     <span class="material-symbols-outlined pr-2">
                                         home
@@ -132,183 +106,212 @@
                                 </div>
                             </v-layout>
                             <v-layout align-start class="py-4">
-                                <p class="paragraph sub-title">Lokasi Terdekat Kos</p>
+                                <p class="paragraph subtitle">Lokasi Terdekat Kos</p>
                             </v-layout>
-                            <v-layout row>
-                                <v-layout align-start column>
-                                    <ul v-for="(location, index) in locations" :key="index" class="pl-0 pb-3">
-                                        <p class="regular-text ma-0">{{ location.message }}</p>
-                                    </ul>
-                                </v-layout>
-                                <v-layout justify-end column>
-                                    <ul v-for="(length, index) in lengths" :key="index" class="pl-0 pb-3">
-                                        <p class="regular-text ma-0">{{ length.message }}</p>
-                                    </ul>
-
-                                </v-layout>
+                            <v-layout row align-start>
+                                <v-flex>
+                                    <v-layout align-start column>
+                                        <ul v-for="(location, index) in locations" :key="index" class="pl-0 pb-3">
+                                            <p class="regular-text ma-0">{{ location.message }}</p>
+                                        </ul>
+                                    </v-layout>
+                                </v-flex>
+                                <v-flex>
+                                    <v-layout column align-end>
+                                        <ul v-for="(length, index) in lengths" :key="index" class="pl-0 pb-3">
+                                            <p class="regular-text ma-0">{{ length.message }}</p>
+                                        </ul>
+                                    </v-layout>
+                                </v-flex>
                             </v-layout>
                         </v-card>
-                    </v-flex>
-                </v-layout>
+                    </div>
+                </div>
 
                 <v-layout class="px-0 py-4" align-start column>
-                    <p class="medium-title">Pesan Kamar Anda</p>
+                    <p class="title__medium">Pesan Kamar Anda</p>
                 </v-layout>
                 <hr>
             </v-layout>
 
-            <v-card class="card-border card-padding" outlined text-sm-left elevation="0">
-                <v-layout row justify-space-around>
-                    <v-flex xs3>
-                        <v-layout column align-start>
-                            <v-flex xs12>
-                                <v-flex xs12>
-                                    <v-img
-                                        :src="urls_kamar[0]"
-                                        contain
-                                        class="grey lighten-5"
-                                        @click="openDialogImage(url)"
-                                    ></v-img>   
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-layout row align-start justify-start >
-                                        <v-flex xs6 v-for="(url, index) in urls_kamar.slice(1, 3)" :key="index">
-                                            <v-img
-                                                :src="url"
-                                                contain
-                                                class="grey lighten-5"
-                                                @click="openDialogImage(url)"
-                                            ></v-img>   
-                                        </v-flex>
+            <v-card class="card__border card__padding" outlined text-sm-left elevation="0">
+                <div class="landing-booking__grid">
+                    <!-- FOTO KAMAR, FASILITAS -->
+                    <div class="landing-booking__grid-child-1">
+                        <div class="landing-booking__grid-child-1__parent">
+                            <div class="landing-booking__grid-child-1--child-1">
+                                <div class="landing-booking__grid__foto-kamar__parent">
+                                    <div class="landing-booking__grid__foto-kamar--child-1" :style="{backgroundImage: `url(${urls_kamar[0]})`}">
+                                    </div>
+                                    <div class="landing-booking__grid__foto-kamar--child-2" :style="{backgroundImage: `url(${urls_kamar[1]})`}">
+                                    </div>
+                                    <div class="landing-booking__grid__foto-kamar--child-3" :style="{backgroundImage: `url(${urls_kamar[2]})`}">
+                                    </div>
+                                    <div class="landing-booking__grid__foto-kamar--child-4">
+                                        <p class="regular-text__bold btn__daftar-anchor" style="cursor: pointer; text-align: left" @click="imageDialogKamar = true">Lihat foto kamar lebih lanjut</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="landing-booking__grid-child-1--child-2">
+                                <p class="regular-text__bold" style="text-align: left">Fasilitas Kamar</p>
+                                <div class="landing-booking__grid__kamar-fasilitas--normal">
+                                    <v-layout column align-start style="text-align: left">
+                                        <ul v-for="(fasilitas, index) in array_kamar_fasilitas" :key="index" class="pl-0 pb-1  landing-booking__grid__kamar-fasilitas__bullet">
+                                            <li class="regular-text ma-0 pb-2" >{{ fasilitas }}</li>
+                                        </ul>
                                     </v-layout>
-                                </v-flex>
-                            </v-flex>
-                            <p class="bold-regular-text pt-6 pl-2 daftar-anchor" style="cursor: pointer" @click="imageDialogKamar = true">Lihat foto kamar lebih lanjut</p>
-                            <v-layout align-start column class="pl-2">
-                                <p class="bold-regular-text">Fasilitas kamar</p>
-                                <v-layout column align-start style="text-align: left" class="ml-6">
-                                    <ul v-for="(fasilitas, index) in kamar_fasilitas_model" :key="index" class="pl-0 pb-1">
-                                        <li class="regular-text ma-0 pb-2" >{{ fasilitas }}</li>
-                                    </ul>
-                                </v-layout>
-                            </v-layout>
-                        </v-layout>
-                    </v-flex>
-                    <v-flex xs9 style="background-color: #FBF9F9;">
-                        <v-layout column ml-2 class="card-padding">
-                            <v-layout row class="pb-4">
-                                <v-layout column align-start >
-                                        <p class="sub-title">Spesifikasi Kamar</p>
-                                        <v-layout column align-start style="text-align: left" class="ml-6">
+                                </div>
+                                <div class="landing-booking__grid__kamar-fasilitas__parent">
+                                    <div class="landing-booking__grid__kamar-fasilitas--child-1">
+                                        <v-layout column align-start style="text-align: left">
+                                            <ul v-for="(fasilitas, index) in array_kamar_fasilitas.slice(0, 4)" :key="index" class="pl-0 pb-1 landing-booking__grid__kamar-fasilitas__bullet">
+                                                <li class="regular-text ma-0 pb-2" >{{ fasilitas }}</li>
+                                            </ul>
+                                        </v-layout>
+                                    </div>
+                                    <div class="landing-booking__grid__kamar-fasilitas--child-2">
+                                        <v-layout column align-start style="text-align: left">
+                                            <ul v-for="(fasilitas, index) in array_kamar_fasilitas.slice(4)" :key="index" class="pl-0 pb-1">
+                                                <li class="regular-text ma-0 pb-2" >{{ fasilitas }}</li>
+                                            </ul>
+                                        </v-layout>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- BOOKING -->
+                    <div class="landing-booking__grid-child-2">
+                        <div class="landing-booking__grid-child-2__parent">
+                            <div class="landing-booking__grid-child-2--child-1">
+                                <div class="landing-booking__grid__kamar__parent">
+                                    <div class="landing-booking__grid__kamar--child-1">
+                                        <p class="subtitle" style="text-align: left">Spesifikasi Kamar</p>
+                                        <v-layout column align-start style="text-align: left">
                                             <ul v-for="(spesifikasi, index) in kos_model.kamar_spesifikasi" :key="index" class="pl-0 pb-3">
                                                 <li class="regular-text ma-0 pb-2" v-if="spesifikasi.desc != '3x5'">{{ spesifikasi.desc }}</li>
                                                 <li class="regular-text ma-0 pb-2" v-else>Ukuran Kamar {{ spesifikasi.desc }} m<sup>2</sup></li>
                                             </ul>
                                         </v-layout>
-                                </v-layout>
-                                <v-layout justify-end class="mt-0" row fill-height>
-                                    <p class="sub-title">Tersisa {{ total_kamar_kosong }} Kamar</p>
-                                </v-layout>
-                            </v-layout>
-                            <hr>
-                            <br>
-                            <v-layout row align-start >
-                                <v-flex xs6>
-                                    <v-layout column v-if="!this.param_pengelola">
-                                        <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_booking" autofocus lazy-validation>
-                                            <v-layout align-start column>
-                                                <p class="regular-text">Masukkan Tanggal Mulai</p>
-                                            </v-layout>
-                                            <v-flex class="pl-0">
-                                                <v-menu
-                                                    ref="dialogTglBooking"
-                                                    v-model="menu_tgl_booking"
-                                                    :return-value.sync="kos_booking_model.tanggal_mulai"
-                                                    :close-on-content-click="false"
-                                                    elevation="0"
-                                                    min-width="0%"
-                                                >
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-text-field
-                                                            label="Tanggal Mulai"
-                                                            append-icon="event"       
-                                                            v-on="on"
-                                                            outlined
-                                                            v-model="kos_booking_model.tanggal_mulai"
-                                                            :rules="[rules.required]"
-                                                            :disabled="!status_kamar_terisi"
-                                                        ></v-text-field>
-                                                    </template>
-                                                    <v-date-picker v-model="kos_booking_model.tanggal_mulai" scrollable>
-                                                        <v-spacer></v-spacer>
-                                                        <v-btn text color="primary" @click="menu_tgl_booking = false">Cancel</v-btn>
-                                                        <v-btn text color="primary" @click="$refs.dialogTglBooking.save(kos_booking_model.tanggal_mulai)">OK</v-btn>
-                                                    </v-date-picker>
-                                                </v-menu>
-                                            </v-flex>
+                                    </div>
+                                    <div class="landing-booking__grid__kamar--child-2">
+                                        <v-layout justify-end class="mt-0" row fill-height>
+                                            <p class="subtitle">Tersisa {{ total_kamar_kosong }} Kamar</p>
+                                        </v-layout>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="landing-booking__grid-child-2--child-2">
+                                <div class="landing-booking__grid-child-2--child-2--line"></div>
+                            </div>
+                            <div class="landing-booking__grid-child-2--child-3">
+                                <div class="landing-booking__grid__form-booking__parent">
+                                    <div class="landing-booking__grid__form-booking--child-1">
+                                        <div class="landing-booking__grid__form-booking--child-1__wrapper" v-if="!this.param_pengelola">
+                                            <v-layout column>
+                                                <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_booking" autofocus lazy-validation>
+                                                    <v-layout align-start column>
+                                                        <p class="regular-text">Masukkan Tanggal Mulai</p>
+                                                    </v-layout>
+                                                    <v-flex class="pa-0">
+                                                        <v-menu
+                                                            ref="dialogTglBooking"
+                                                            v-model="menu_tgl_booking"
+                                                            :return-value.sync="kos_booking_model.tanggal_mulai"
+                                                            :close-on-content-click="false"
+                                                            elevation="0"
+                                                            min-width="0%"
+                                                        >
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-text-field
+                                                                    label="Tanggal Mulai"
+                                                                    append-icon="event"       
+                                                                    v-on="on"
+                                                                    outlined
+                                                                    v-model="kos_booking_model.tanggal_mulai"
+                                                                    :rules="[rules.required]"
+                                                                    :disabled="!status_kamar_terisi"
+                                                                ></v-text-field>
+                                                            </template>
+                                                            <v-date-picker v-model="kos_booking_model.tanggal_mulai" scrollable>
+                                                                <v-spacer></v-spacer>
+                                                                <v-btn text color="primary" @click="menu_tgl_booking = false">Cancel</v-btn>
+                                                                <v-btn text color="primary" @click="$refs.dialogTglBooking.save(kos_booking_model.tanggal_mulai)">OK</v-btn>
+                                                            </v-date-picker>
+                                                        </v-menu>
+                                                    </v-flex>
 
-                                            <v-text-field
-                                                v-model="kos_booking_model.total_bulan"
-                                                type="number"
-                                                min="1"
-                                                label="Masukkan Jumlah Bulan"
-                                                outlined
-                                                @input="hargaKamar()"
-                                                :disabled="!status_kamar_terisi"
-                                            ></v-text-field>
-                                            <v-text-field
-                                                v-model="kos_booking_model.total_kamar"
-                                                type="number"
-                                                label="Masukkan Jumlah Kamar"
-                                                outlined
-                                                @input="hargaKamar()"
-                                                :rules="kamar_rules"
-                                                :disabled="!status_kamar_terisi"
-                                            ></v-text-field>
-                                            <v-layout row class="pb-6">
-                                                <p style="color:#146C94" class="main-title">Rp{{ harga_kamar }}</p>&nbsp;<p class="pt-4 regular-text">/bulan</p>
+                                                    <v-text-field
+                                                        v-model="kos_booking_model.total_bulan"
+                                                        type="number"
+                                                        min="1"
+                                                        label="Masukkan Jumlah Bulan"
+                                                        outlined
+                                                        @input="hargaKamar()"
+                                                        :disabled="!status_kamar_terisi"
+                                                    ></v-text-field>
+                                                    <v-text-field
+                                                        v-model="kos_booking_model.total_kamar"
+                                                        type="number"
+                                                        label="Masukkan Jumlah Kamar"
+                                                        outlined
+                                                        @input="hargaKamar()"
+                                                        :rules="kamar_rules"
+                                                        :disabled="!status_kamar_terisi"
+                                                    ></v-text-field>
+                                                    <v-layout row class="pb-6">
+                                                        <p style="color:#146C94" class="title__main">Rp{{ harga_kamar }}</p>&nbsp;<p class="regular-text bulan-text">/bulan</p>
+                                                    </v-layout>
+                                                    <v-btn color="#146C94" type="submit" elevation="0" class="button__lihat-foto white--text" width="100%" v-if="status_kamar_terisi">Pesan Sekarang</v-btn>
+                                                </v-form>
                                             </v-layout>
-                                            <v-btn color="#146C94" type="submit" elevation="0" class="pengelola-btn white--text" width="100%" v-if="status_kamar_terisi">Pesan Sekarang</v-btn>
-                                        </v-form>
-                                    </v-layout>
-                                    <v-layout row v-else-if="this.param_pengelola">
-
-                                    </v-layout>
-                                </v-flex>
-                                <v-flex xs6>
-                                    <v-layout column align-end justify-start>
-                                        <p class="pb-2 bold-regular-text paragraph">Butuh Pertanyaan?</p>
-                                        <p class="regular-text">Hubungi Pengelola</p>
-                                        <v-btn color="#19A7CE" outlined elevation="0" class="pengelola-btn" width="50%">Tanya Pengelola</v-btn>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
-                        </v-layout>
-                    </v-flex>
-                </v-layout>
+                                        </div>
+                                        <div v-else-if="this.param_pengelola" style="display: none"></div>
+                                    </div>
+                                    <div class="landing-booking__grid__form-booking--child-2">
+                                        <div class="landing-booking__grid__form-booking--child-2__wrapper">
+                                            <v-layout column align-end>
+                                                <p class="pb-2 regular-text__bold paragraph">Butuh Pertanyaan?</p>
+                                                <p class="regular-text">Hubungi Pengelola</p>
+                                                <v-btn color="#19A7CE" outlined elevation="0" class="button__lihat-foto">Tanya Pengelola</v-btn>
+                                            </v-layout>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
             </v-card>
 
-            <v-layout class="px-0 py-4" row> 
-                <v-flex xs8>
-                    <v-card class="card-border card-padding" outlined text-sm-left elevation="0">
-                        <p class="bold-regular-text paragraph pb-2">Peraturan Kos</p>
-                        <v-layout align-start>
-                            <p class="regular-text paragraph">{{ kos_model.peraturan }}</p>
-                        </v-layout>
-                    </v-card>
-                </v-flex>
-                <v-flex xs4>
-                    <v-card class="card-border card-padding" outlined text-sm-left elevation="0">
-                        <p class="bold-regular-text paragraph pb-2">Biaya Tambahan</p>
-                        <p class="regular-text paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde facere nesciunt, voluptates quibusdam ipsum exercitationem voluptatibus alias obcaecati esse sunt quasi eligendi minima commodi incidunt, officia repellendus aut rem earum!</p>
-                    </v-card>
-                </v-flex>
+            <hr class="my-6">
+
+            <v-layout class="pb-4" row> 
+                <div class="peraturan-biaya__grid">
+                    <div class="peraturan-biaya__grid--child-1">
+                        <v-card class="card__padding" outlined text-sm-left elevation="0">
+                            <p class="regular-text__bold paragraph">Peraturan Kos</p>
+                            <v-layout align-start column justify-start class="mt-4" style="text-align: left">
+                                <ul v-for="(peraturan, index) in peraturan_kos_hypen" :key="index">
+                                    <li class="regular-text pb-2">{{ peraturan }}</li>
+                                </ul>
+                            </v-layout>
+                        </v-card>
+                    </div>
+                    <div class="peraturan-biaya__grid--child-2">
+                        <v-card class="card__padding" outlined text-sm-left elevation="0">
+                            <p class="regular-text__bold paragraph">Biaya Tambahan</p>
+                            <p class="regular-text paragraph mt-4" style="text-align: left; line-height: 2">Terdapat Biaya Tambahan untuk penambahan kasur, tamu, dan ketentuan lainnya</p>
+                        </v-card>
+                    </div>
+                </div>
             </v-layout>
 
         </v-layout>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
-        <v-dialog v-model="imageDialogKos" :lazy="true" max-width="60vw">
+        <v-dialog v-model="imageDialogKos" :lazy="true" content-class="image-dialog">
             <v-card class="rounded-card">
                 <v-toolbar dark color="#19A7CE" dense flat>
                 </v-toolbar>
@@ -337,14 +340,14 @@
 
                 <v-card-actions py-0 px-4 ma-0>
                     <v-flex class="ma-0 pa-2 mt-6 justify-center">
-                        <v-btn elevation="0" class="white--text btn-go-edit" width="30%" @click="imageDialogKos = false">Close</v-btn>
+                        <v-btn elevation="0" class="white--text btn__go-edit" width="30%" @click="imageDialogKos = false">Close</v-btn>
                         <!-- raised round color="primary" -->
                     </v-flex>
                 </v-card-actions>
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="imageDialogKamar" :lazy="true" max-width="60vw">
+        <v-dialog v-model="imageDialogKamar" :lazy="true" content-class="image-dialog">
             <v-card class="rounded-card">
                 <v-toolbar dark color="#19A7CE" dense flat>
                 </v-toolbar>
@@ -373,7 +376,7 @@
 
                 <v-card-actions py-0 px-4 ma-0>
                     <v-flex class="ma-0 pa-2 mt-6 justify-center">
-                        <v-btn elevation="0" class="white--text btn-go-edit" width="30%" @click="imageDialogKamar = false">Close</v-btn>
+                        <v-btn elevation="0" class="white--text btn__go-edit" width="30%" @click="imageDialogKamar = false">Close</v-btn>
                         <!-- raised round color="primary" -->
                     </v-flex>
                 </v-card-actions>
@@ -452,6 +455,8 @@ export default {
             menu_tgl_booking: false,
 
             param_pengelola: false,
+            peraturan_kos_hypen: [],
+            array_kamar_fasilitas: [],
         }
     },
     created(){
@@ -460,8 +465,19 @@ export default {
         this.hargaKamar();
         this.sisaKamar();
         this.param_pengelola = this.check_pengelola();
+        this.reloadOnce();
     },  
     methods:{
+        reloadOnce(){
+            this.devLog('reload test');
+            window.onload = function () {
+                if (!localStorage.justOnce) {
+                    localStorage.setItem("justOnce", "true");
+                    window.location.reload();
+                }
+            }
+        },
+
         initHeader(){
             this.locations = [{ message: 'Coffee Shop' }, 
                         { message: 'Minimarket' },
@@ -492,6 +508,7 @@ export default {
                         this.devLog(this.kos_model)
                         this.getKamarPhotos();
                         this.getKamarFasilitas();
+                        this.checkHypen();
                         // this.$router.push('/dashboard');
                     }
                 }
@@ -555,13 +572,14 @@ export default {
         getKamarFasilitas(){
             this.$http.get(this.apiKamarFasilitas)
             .then(response => {
-                this.devLog("get kos result code: " + response.status);
+                this.devLog("get kamar fasilitas result code: " + response.status);
                 if(response.status == 200){
                     if(!response.data){
                         this.devLog('response fail')
                     }else{
+                        this.devLog(response.data)
                         this.kamar_fasilitas_model = response.data.data;
-                        this.devLog(this.kamar_fasilitas_model)
+                        this.sliceKamarFasilitas()
                         // this.$router.push('/dashboard');
                     }
                 }
@@ -570,6 +588,20 @@ export default {
                 this.color = "red";
                 this.snackbar = true;
             });
+        },
+
+        sliceKamarFasilitas(){
+            // for(let i = 0; i < this.kamar_fasilitas_model.length; i++){
+            //     this.array_kamar_fasilitas.push(this.kamar_fasilitas_model[i]);
+            // }
+            // this.kamar_fasilitas_model.forEach((element) => {
+            //     this.array_kamar_fasilitas.push(element)
+            // })
+           this.array_kamar_fasilitas = Object.values(this.kamar_fasilitas_model);
+
+            this.devLog('this.array_kamar_fasilitas')
+            this.devLog(this.kamar_fasilitas_model[0])
+            this.devLog(this.array_kamar_fasilitas)
         },
 
         initPhoto() {
@@ -653,6 +685,8 @@ export default {
 
             // this.devLog(this.kos_booking_model);
             localStorage.kosBooking = JSON.stringify(this.kos_booking_model);
+            localStorage.setItem("justOnce", "false");
+
 
             this.$router
                 .push({ path: '/pesanan' })
@@ -699,6 +733,13 @@ export default {
             return param_scroll;
         },
 
+        checkHypen(){
+            var split = this.kos_model.peraturan.split('- ');
+            // this.devLog(split);
+            this.peraturan_kos_hypen = split.filter(item => item);
+            this.devLog(this.peraturan_kos_hypen);
+        },
+
         scrollToView(){
             document.getElementById("main_kos")
                 .scrollIntoView({ behavior: 'smooth' });
@@ -735,23 +776,12 @@ export default {
         if(this.checkScroll){
             this.scrollToView()
         }
-
-        window.onload = function() {
-            if(!window.location.hash) {
-                window.location = window.location + '#loaded';
-                window.location.reload();
-            }
-        }
-    }
+    },
 }
 
 </script>
 
 <style>
-    *{
-        color: #333;
-    }
-
     .container.grid-list-md .layout:not(:only-child){
         margin: auto 0px;
     }
@@ -760,31 +790,7 @@ export default {
         margin-top: 6rem !important;
     }
 
-    .foto-btn{
-        border: thin solid #333
-    }
-    
-    .pengelola-btn{
-        border: thin solid #19A7CE
-    }
-
-    .card-border{
-        padding: 6px;
-    }
-
-    .theme--light.v-sheet.card-border{
+    .theme--light.v-sheet.card__border{
         border: 0.25px solid rgba(3,3,3, .1) ;
     }
-
-    .card-padding{
-        padding: 24px !important;
-    }
-
-    .btn-foto-kamar{
-        margin-top: 12px !important;
-        margin-left: 0px !important;
-    }
-
-
-
 </style>

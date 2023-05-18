@@ -45,7 +45,7 @@ routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage,
 routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas'}});
 routeArr.push({ title: 'Dashboard', icon: '', path: '/pengelola', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas'}});
 
-routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login, props:{api: api+'/login'}});
+routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login, props:{api: api+'/login', apiForgot: api + '/forgot-password'}});
 routeArr.push({ title: 'Register', icon: '', path: '/register', component: Register});
 
 // Customer

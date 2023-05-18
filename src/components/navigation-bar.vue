@@ -1,58 +1,105 @@
 <template>
-      <v-toolbar height="100vh" max-width="100%" elevation="0" class="mb-6 pt-2">
-        <v-container style="width: 90%" class="pa-0"> 
-          <v-layout class="py-4" align-center justify-center>
-              <v-layout justify-start align-center>
-                  <img :src="logo" width="100vw" @click="redirect_router('dashboard')" style="cursor: pointer" v-if="!this.is_booking">
-                  <p v-if="this.param_pengelola" class="thin-bigger-regular-text paragraph pl-6" style="color: #146C94;">Admin</p>
-              </v-layout>
-
-              <v-layout justify-end align-center v-if="!this.is_login_customer && !this.is_login_pengelola && !this.is_booking">
-                  <!-- <v-btn color="#146C94" text elevation="0" @click="redirect_router('dashboard/#main_kos')" v-if="!this.param_pengelola">Kos</v-btn> -->
-                  <v-btn color="#146C94" text elevation="0" @click="$router.push('/dashboard/#main_kos')" v-if="!this.param_pengelola">Kos</v-btn>
-                  <v-btn color="#146C94" text elevation="0" @click="login()">Masuk</v-btn>
-                  <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('register')" class="create-account-btn" v-if="!this.param_pengelola">Buat Akun</v-btn>
+  <div>
+    <v-toolbar height="100vh" max-width="100%" elevation="0" class="mb-6 pt-2">
+      <v-container class="navbar-container pa-0"> 
+        <v-layout class="py-4" align-center justify-center>
+            <v-layout justify-start align-center>
+                <img :src="logo" width="100vw" @click="redirect_router('dashboard')" style="cursor: pointer" v-if="!this.is_booking">
+                <p v-if="this.param_pengelola" class="bigger--regular-text__thin paragraph pl-6" style="color: #146C94;">Admin</p>
+            </v-layout>
+            <v-layout align-center justify-end class="navigation__menu-main">
+              <div v-for=" (btn, index) in items" :key="index" class="menu">
+                <v-btn color="#146C94" text elevation="0" @click="checkLink(btn.link)" v-if="!btn.outline && !btn.filled && btn.title != 'Transaksi'" >{{ btn.title }}</v-btn>
+                <v-btn color="#146C94" outlined elevation="0" @click="checkLink(btn.link)" v-if="btn.outline && !btn.filled && btn.link != 'profile'" class="">{{ btn.title }}</v-btn>
+                <v-menu offset-y v-if="btn.title == 'Transaksi'">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="#146C94" class="mr-2" text elevation="0" v-bind="attrs" v-on="on">
+                      {{ btn.title }} <span class="material-symbols-outlined" style="color: #146C94">expand_more</span>
+                    </v-btn>
+                  </template>
+                  <v-layout column style="background-color: #fff">
+                    <div v-for=" (btn, index) in items_menu" :key="index">
+                      <v-btn color="#146C94" class="ma-2" text elevation="0" @click="checkLink(btn.link)">{{ btn.title }}</v-btn>
+                    </div>
+                  </v-layout>
+                </v-menu>
+                <v-btn color="#146C94" outlined elevation="0" @click="checkLink(btn.link)" v-if="btn.outline && !btn.filled && btn.link == 'profile' && btn.title != 'Transaksi'" class=" mr-2">{{ btn.title }} {{ username }}</v-btn>
+                <v-btn color="#146C94" elevation="0" @click="checkLink(btn.link)" v-if="!btn.outline && btn.filled && btn.title != 'Transaksi'" class=" white--text ml-2">{{ btn.title }}</v-btn>
+              </div>
             </v-layout>
 
-              <!-- Customer Navbar -->
-              <v-layout justify-end align-center v-else-if="this.is_login_customer && !this.is_login_pengelola && !this.param_pengelola && !this.is_booking">
-                  <v-btn color="#146C94" text elevation="0" @click="$router.push('/dashboard/#main_kos')" v-if="!this.param_pengelola">Kos</v-btn>
-                  <!-- <router-link :to="{ name: 'Landing Page', hash: '#main_kos' }">Kos</router-link> -->
 
-                  <!-- <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pesanan')">Rincian Pesanan</v-btn> -->
-                  <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('transaksi')">Rincian Transaksi</v-btn>
-                  <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('profile')" class="create-account-btn mr-2">Hai, {{ username }}</v-btn>
-                  <v-btn color="#146C94" elevation="0" @click="logout()" class="create-account-btn white--text ml-2">Keluar</v-btn>
-              </v-layout>
-
-              <!-- Pengelola Navbar -->
-              <v-layout justify-end align-center v-else-if="!this.is_login_customer && this.is_login_pengelola && this.param_pengelola && !this.is_booking">
-                  <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('kos') ()">Kos</v-btn>
-                  <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('kamar') ()">Kamar</v-btn>
-                  <v-btn color="#146C94" class="mr-2" text elevation="0" @click="redirect_router('pengelola-pesanan') ()">Pesanan</v-btn>
-                  <v-menu offset-y >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn color="#146C94" class="mr-2" text elevation="0" v-bind="attrs" v-on="on" >
-                        Transaksi <span class="material-symbols-outlined" style="color: #146C94">expand_more</span>
-                      </v-btn>
-                    </template>
-                    <v-layout column style="background-color: #fff">
-                      <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('transaksi-masuk') ()">Transaksi Masuk</v-btn>
-                      <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('transaksi-keluar') ()">Transaksi Keluar</v-btn>
-                      <v-btn color="#146C94" class="ma-2" text elevation="0" @click="redirect_router('transaksi-unduh') ()">Unduh Transaksi</v-btn>
-                    </v-layout>
-                  </v-menu>
-
-                  <v-btn color="#146C94" outlined elevation="0" @click="redirect_router('profile')" class="create-account-btn mr-2">Hai, Pengelola {{ username }}</v-btn>
-                  <v-btn color="#146C94" elevation="0" @click="logout()" class="create-account-btn white--text ml-2">Keluar</v-btn>
-              </v-layout>
-          </v-layout>
-        </v-container>
+            <div class="navigation__menu-mobile" v-if="!this.is_booking">
+              <span class="material-icons menu-icons" @click.stop="drawer = !drawer">
+                menu
+              </span>
+            </div>
+        </v-layout>
+      </v-container>
     </v-toolbar>
+
+    <v-navigation-drawer id="app-drawer" fixed temporary v-model="drawer" right>
+      <v-toolbar color="#fff" flat id="drawer-header">
+      </v-toolbar>
+      <v-spacer></v-spacer>
+      
+      <v-list class="pt-0 pb-5" id="drawer-list">
+        <v-list-item-group>
+          <v-list-item v-for="item in items" :key="item.title" class="pa-0">
+
+            <v-list-item-title class="nav-list__title" @click="checkLink(item.link)" v-if="!item.outline && !item.filled && item.link != 'profile' && item.title != 'Transaksi' ">{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="nav-list__title" @click="checkLink(item.link)" v-if="item.outline && !item.filled && item.link != 'profile' && item.title != 'Transaksi' ">{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="nav-list__title" @click="checkLink(item.link)" v-if="item.outline && !item.filled && item.link == 'profile' && item.title != 'Transaksi' ">{{ item.title }} {{ username }} </v-list-item-title>
+            <v-list-item-title class="nav-list__title-keluar" @click="checkLink(item.link)" v-if="!item.outline && item.filled && item.link != 'transaksi'">{{ item.title }} </v-list-item-title>
+            <v-list-group
+              value="false"
+              v-if="item.title == 'Transaksi'"
+            >
+              <template v-slot:activator>
+                  <v-list-item-title class="nav-list__title" @click="checkLink(item.link)">{{ item.title }}</v-list-item-title>
+              </template>
+    
+              <v-list-item
+                v-for="(item_menu, index) in items_menu"
+                :key="index"
+                link
+              >
+                <v-list-item-title class="nav-list__item-menu" @click="checkLink(item_menu.link)">{{ item_menu.title }}</v-list-item-title>
+
+              </v-list-item>
+            </v-list-group>
+
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+
+
+    <!-- <v-navigation-drawer id="app-drawer" fixed temporary v-model="drawer" right>
+        <v-list dense class="pt-0 pb-5" :key="'list-'+listKey" id="drawer-list">
+            <v-list-tile
+                v-for="item in items"
+                :key="item.title+item.name"
+                :to="item.link"
+                :class="item.class"
+                v-model="item.show"
+                @click.stop="item.click()"
+            ><v-list-tile-action :class="`${ item.color }--text`">
+                    <v-icon>@{{ item.icon }}</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content :class="`${ item.color }--text`">
+                    <v-list-tile-title class="pl-2">@{{item.title}}</v-list-tile-title>
+                </v-list-tile-content>
+                <v-list-tile-action class="pa-0 ma-0" v-if="item.expandable">
+                    <v-icon pa-0 ma-0>@{{ item.expandable }}</v-icon>
+                </v-list-tile-action>
+            </v-list-tile>
+        </v-list>
+    </v-navigation-drawer> -->
+  </div>
 </template>
 
 <script>
-
 
 export default {
   name: 'HelloWorld',
@@ -68,25 +115,28 @@ export default {
       param_pengelola: false,
       is_booking: false,
 
-      items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
-      ],
+      items: [],
+      items_menu: [],
+      logo: require('../assets/Frame1.png'), 
+      logo_drawer: '../assets/Frame1.png',
 
-      logo: require('../assets/Frame1.png')
+      drawer: false,
     }
   },
 
   created(){
-    this.checkLogin();
-    this.checkBooking();
-    this.userName();
+    this.initData();
     this.param_pengelola = this.check_pengelola();
   },  
 
   methods:{
+    initData(){
+      this.checkLogin();
+      this.checkBooking();
+      this.userName();
+      this.buttonItems();
+    },
+
     userName(){
       if(localStorage.userLogin){
         let localStorageUser = localStorage.getItem('userLogin');
@@ -151,13 +201,65 @@ export default {
     },
 
     redirect_router(item){
-      // this.$router.push('/'+item);
       this.$router
           .push({ path: '/'+item })
           .then(() => { this.$router.go() })
     },
 
-    
+    dashboardMainKos(){
+      this.$router.push('/dashboard/#main_kos')
+      localStorage.setItem("justOnce", "false");
+    },
+
+    checkLink(item){
+      if(item == 'dashboard'){
+        this.$router.push('/dashboard/#main_kos')
+      }else if(item == 'login'){
+        this.login();
+      }else if(item == 'logout'){
+        this.logout();
+      }else{
+        this.redirect_router(item);
+      }
+
+      localStorage.setItem("justOnce", "false");
+    },
+
+    buttonItems(){
+      if(!this.is_login_customer && !this.is_login_pengelola && !this.is_booking){
+        this.items = [
+          {title: 'Kos', link: 'dashboard', outline: false, filled: false, icon: 'sensor_door'},
+          {title: 'Masuk', link: 'login', outline: false, filled: false, icon: 'login'},
+          {title: 'Buat Akun', link: 'register', outline:true, filled: false, icon: 'account_circle'},
+        ];
+      }
+
+      if(this.is_login_customer && !this.is_login_pengelola && !this.param_pengelola && !this.is_booking){
+        this.items = [
+          {title: 'Kos', link: 'dashboard', outline: false, filled: false, icon: 'sensor_door'},
+          {title: 'Rincian Transaksi', link: 'transaksi', outline: false, filled: false, icon:'receipt'},
+          {title: 'Hai, ', link: 'profile', outline: true, filled: false, icon: 'account_circle'},
+          {title: 'Keluar', link: 'logout', outline: false, filled: true},
+        ];
+      }
+
+      if(!this.is_login_customer && this.is_login_pengelola || this.param_pengelola && !this.is_booking){
+        this.items = [
+          {title: 'Kos', link: 'kos', outline: false, filled: false, icon: 'sensor_door'},
+          {title: 'Kamar', link: 'kamar', outline: false, filled: false, icon: 'bed'},
+          {title: 'Pesanan', link: 'pengelola-pesanan', outline: false, filled: false, icon:'receipt'},
+          {title: 'Transaksi', outline: false, filled: false, icon: 'receipt_long'},
+          {title: 'Hai, Pengelola ', link: 'profile', outline: true, filled: false, icon: 'account_circle'},
+          {title: 'Keluar', link: 'logout', outline: false, filled: true},
+        ];
+
+        this.items_menu = [
+          {title: 'Transaksi Masuk', link: 'transaksi-masuk', outline: false, filled: false, icon: 'receipt_long'},
+          {title: 'Transaksi Keluar', link: 'transaksi-keluar', outline: false, filled: false, icon: 'receipt_long'},
+          {title: 'Unduh Transaksi', link: 'transaksi-unduh', outline: false, filled: false, icon: 'file_download'},
+        ]
+      }
+    },
 
 
   }
@@ -184,5 +286,25 @@ export default {
 
   .v-toolbar{
     flex: none;
+  }
+
+  #drawer-header{
+    background: url('../assets/Frame1.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: center;
+    background-position-y: center;
+    background-color: black;
+
+    margin: 3.6rem;
+    margin-bottom: 36px;
+  }
+
+  #app-drawer{
+    width: 50% !important;
+  }
+
+  .v-toolbar--flat{
+    height: 15% !important;
   }
 </style>

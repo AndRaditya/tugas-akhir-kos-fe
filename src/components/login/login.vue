@@ -1,89 +1,103 @@
 <template>
     <v-container grid-list-md>
-        <v-layout align-center justify-center>
-                <v-card class="card-form" elevation="2" v-if="!reset_password_card">
-                    <v-container column fluid>
-                        <v-layout column align-start v-if="!this.param_pengelola">
-                            <p class="title-paragraph">Masuk Sekarang!</p>
-                            <p class="subtitle-paragraph">Nikmati kemudahan memesan kos</p>
-                        </v-layout>
-                        <v-layout column align-start v-if="this.param_pengelola">
-                            <p class="title-paragraph">Selamat Datang Pengelola!</p>
-                            <!-- <p class="subtitle-paragraph">Nikmati kemudahan memesan kos</p> -->
-                        </v-layout>
-                        <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_login" autofocus lazy-validation>
-                            <v-layout column pt-4>
-                                <v-layout column align-start wrap>
-                                    <p class="thin-regular-text">Email</p>
-                                </v-layout>
-                                <v-text-field
-                                    outlined
-                                    label="Masukkan Email"
-                                    v-model="login.email"
-                                    :rules="email_rules"
-                                    @input="checkEmail()"
-                                    :success="email_ok==1 ? true : false"
-                                    :error="email_ok==-1 ? true : false"
-                                    type="email"
-                                    ></v-text-field>
-                                <v-layout column align-start wrap>
-                                    <p class="thin-regular-text">Password</p>
-                                </v-layout>
-                                <v-text-field
-                                    outlined
-                                    label="Masukkan Password"
-                                    :append-icon="!pass.visible ? 'mdi-eye' : 'mdi-eye-off'"
-                                    @click:append="() => (pass.visible = !pass.visible)"
-                                    v-model="login.password"
-                                    @input="checkPass()"
-                                    :success="pass.ok==1 ? true : false"
-                                    :error="pass.ok==-1 ? true : false"
-                                    :rules="pass.rule"
-                                    :type="!pass.visible ? 'password' : 'text'"
-                                ></v-text-field>
-                                <v-layout column align-end class="mb-4">
-                                    <a class="bold-regular-text daftar-anchor" @click="reset_password_card = true">Lupa Password?</a>
-                                </v-layout>
-                                <v-btn color="#146C94" elevation="0" class="white--text mt-4" type="submit">Masuk</v-btn>
+        <div class="login__grid">
+            <div class="login__grid-card">
+                <v-card class="card__form" elevation="2" v-if="!reset_password_card">
+                    <div class="login__grid--form">
+                        <div class="login__grid--form__child-1">
+                            <v-layout column align-start v-if="!this.param_pengelola">
+                                <p class="title__paragraph">Masuk Sekarang!</p>
+                                <p class="subtitle__paragraph">Nikmati kemudahan memesan kos</p>
                             </v-layout>
-                        </v-form>
-                        <v-layout column align-start pt-16 v-if="!this.param_pengelola">
-                            <p class="paragraph medium-regular-text">Belum punya akun?</p>
-                            <a class="bold-regular-text pt-3 daftar-anchor" @click="register()">Daftar Sekarang</a>
-                        </v-layout>
-                    </v-container>
-                </v-card>
-                <v-card class="card-form" elevation="2" v-else-if="reset_password_card">
-                    <v-container column fluid>
-                        <v-layout column align-start>
-                            <p class="title-paragraph">Lupa Password</p>
-                            <p class="subtitle-paragraph"></p>
-                        </v-layout>
-                        <v-form @submit.prevent="requestReset()" v-model="valid" ref="form_reset_pass" autofocus lazy-validation>
-                            <v-layout column pt-4>
-                                <v-layout column align-start wrap>
-                                    <p class="thin-regular-text">Masukkan Email untuk Login</p>
-                                </v-layout>
-                                <v-text-field
-                                    outlined
-                                    label="Masukkan Email"
-                                    v-model="login.email"
-                                    :rules="email_rules"
-                                    @input="checkEmail()"
-                                    :success="email_ok==1 ? true : false"
-                                    :error="email_ok==-1 ? true : false"
-                                    type="email"
-                                    ></v-text-field>
-                                <v-btn color="#146C94" elevation="0" class="white--text mt-4" type="submit">Reset</v-btn>
+                            <v-layout column align-start v-if="this.param_pengelola">
+                                <p class="title__paragraph">Selamat Datang Pengelola!</p>
                             </v-layout>
-                        </v-form>
-                        <v-layout column align-start pt-16 v-if="!this.param_pengelola">
-                            <p class="paragraph medium-regular-text">Ingat Password Anda?</p>
-                            <a class="bold-regular-text pt-3 daftar-anchor" @click="reset_password_card = false">Login Sekarang</a>
-                        </v-layout>
-                    </v-container>
+                        </div>
+                        <div class="login__grid--form__child-2">
+                            <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_login" autofocus lazy-validation>
+                                <v-layout column pt-4>
+                                    <v-layout column align-start wrap>
+                                        <p class="regular-text__thin">Email</p>
+                                    </v-layout>
+                                    <v-text-field
+                                        outlined
+                                        label="Masukkan Email"
+                                        v-model="login.email"
+                                        :rules="email_rules"
+                                        @input="checkEmail()"
+                                        :success="email_ok==1 ? true : false"
+                                        :error="email_ok==-1 ? true : false"
+                                        type="email"
+                                        ></v-text-field>
+                                    <v-layout column align-start wrap>
+                                        <p class="regular-text__thin">Password</p>
+                                    </v-layout>
+                                    <v-text-field
+                                        outlined
+                                        label="Masukkan Password"
+                                        :append-icon="!pass.visible ? 'mdi-eye' : 'mdi-eye-off'"
+                                        @click:append="() => (pass.visible = !pass.visible)"
+                                        v-model="login.password"
+                                        @input="checkPass()"
+                                        :success="pass.ok==1 ? true : false"
+                                        :error="pass.ok==-1 ? true : false"
+                                        :rules="pass.rule"
+                                        :type="!pass.visible ? 'password' : 'text'"
+                                    ></v-text-field>
+                                    <v-layout column align-end class="mb-4">
+                                        <a class="regular-text__bold btn__daftar-anchor" @click="reset_password_card = true">Lupa Password?</a>
+                                    </v-layout>
+                                    <v-btn color="#146C94" elevation="0" class="white--text mt-4" type="submit">Masuk</v-btn>
+                                </v-layout>
+                            </v-form>
+                        </div>
+                        <div class="login__grid--form__child-3">
+                            <v-layout column align-start pt-16 v-if="!this.param_pengelola">
+                                <p class="paragraph regular-text__medium">Belum punya akun?</p>
+                                <a class="regular-text__bold pt-3 btn__daftar-anchor" @click="register()">Daftar Sekarang</a>
+                            </v-layout>
+                        </div>
+                    </div>
                 </v-card>
-        </v-layout> 
+                <v-card class="card__form" elevation="2" v-else-if="reset_password_card">
+                    <div class="login__grid--form">
+                        <div class="login__grid--form__child-1">
+                            <v-layout column align-start>
+                                <p class="title__paragraph">Lupa Password</p>
+                                <p class="subtitle__paragraph"></p>
+                            </v-layout>
+                        </div>
+                        <div class="login__grid--form__child-2">
+                            <v-form @submit.prevent="requestReset()" v-model="valid" ref="form_reset_pass" autofocus lazy-validation>
+                                <v-layout column pt-4>
+                                    <v-layout column align-start wrap>
+                                        <p class="regular-text__thin">Masukkan Email untuk Login</p>
+                                    </v-layout>
+                                    <v-text-field
+                                        outlined
+                                        label="Masukkan Email"
+                                        v-model="login.email"
+                                        :rules="email_rules"
+                                        @input="checkEmail()"
+                                        :success="email_ok==1 ? true : false"
+                                        :error="email_ok==-1 ? true : false"
+                                        type="email"
+                                        ></v-text-field>
+                                    <v-btn color="#146C94" elevation="0" class="white--text mt-4" type="submit">Reset</v-btn>
+                                </v-layout>
+                            </v-form>
+                        </div>
+                        <div class="login__grid--form__child-3">
+                            <v-layout column align-start pt-16>
+                                <p class="paragraph regular-text__medium">Ingat Password Anda?</p>
+                                <a class="regular-text__bold pt-3 btn__daftar-anchor" @click="reset_password_card = false">Login Sekarang</a>
+                            </v-layout>
+                        </div>
+                    </div>   
+                </v-card>
+            </div>
+        </div>
+
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
     </v-container>
 </template>
@@ -94,6 +108,10 @@
 
         props: {
             api: {
+                type: String,
+                required: true
+            },
+            apiForgot: {
                 type: String,
                 required: true
             },
@@ -224,6 +242,30 @@
                 }
             },
 
+            sendEmail(){
+                let loginData = {
+                    email: this.login.email,
+                };
+                this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(loginData)) ;
+                this.error_message = 'Loading..';
+                this.color = "green";
+                this.snackbar = true;
+                this.$http.post(this.apiForgot, loginData)
+                .then(response => {
+                    this.devLog("Login Result Code: " +response.status);
+
+                    if(response.status == 200){
+                        this.error_message = response.data;
+                        this.color = "green";
+                        this.snackbar = true;
+                    }
+                }).catch((err)=>{
+                    this.error_message = err.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                });
+            },
+
             register(){
                 this.$router
                     .push({ path: '/register' })
@@ -238,18 +280,12 @@
 </script>
 
 <style scoped>
-    .card-form{
-        width: 28vw;
-        padding: 48px;
-        border-radius: 6px;
-    }
-
-    .title-paragraph{
+    .title__paragraph{
         font-size: 28px;
         font-weight: 600;
     }
 
-    .subtitle-paragraph{
+    .subtitle__paragraph{
         font-weight: 300;
         font-size: 18px;
     }

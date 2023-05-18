@@ -2,7 +2,7 @@
     <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start row>
             <v-layout align-start>
-                <p class="main-title">List Data Kamar</p>
+                <p class="title__main">List Data Kamar</p>
             </v-layout>
             <v-layout justify-end class="mt-0">
                 <v-btn color="#146C94" elevation="0" class="white--text"  @click="tambahKamar()">Tambah Kamar</v-btn>
@@ -26,7 +26,7 @@
 
         <v-dialog v-model="dialog_konfirmasi_hapus" persistent max-width="25vw">
             <v-card class="pa-4">
-                <p class="medium-regular-text">Ingin Menghapus Kamar?</p>
+                <p class="regular-text__medium">Ingin Menghapus Kamar?</p>
                 <v-layout justify-center class="pt-4">
                     <v-btn outlined class="mr-2" @click="closeDialog()">Keluar</v-btn>
                     <v-btn color="red" class="ml-2 white--text" @click="hapusKamar()">Hapus</v-btn>

@@ -1,16 +1,16 @@
 <template>
     <v-container grid-list-md>
         <v-layout align-center justify-center>
-            <v-card class="card-form" elevation="2">
+            <v-card class="card__form" elevation="2">
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_register" autofocus lazy-validation>
                     <v-container column fluid>
                         <v-layout column align-start>
-                            <p class="title-paragraph">Silahkan Daftar!</p>
-                            <p class="subtitle-paragraph">Untuk akses fitur kami secara penuh</p>
+                            <p class="title__paragraph">Silahkan Daftar!</p>
+                            <p class="subtitle__paragraph">Untuk akses fitur kami secara penuh</p>
                         </v-layout>
                         <v-layout column pt-4>
                             <v-layout column align-start>
-                                <p class="thin-regular-text">Nama Lengkap</p>
+                                <p class="regular-text__thin">Nama Lengkap</p>
                             </v-layout>
                             <v-text-field
                                 outlined
@@ -19,7 +19,7 @@
                                 :rules="[rules.required]"
                                 ></v-text-field>
                                 <v-layout column align-start>
-                                    <p class="thin-regular-text">Nomor Telepon</p>
+                                    <p class="regular-text__thin">Nomor Telepon</p>
                                 </v-layout>
                                 <v-text-field
                                 outlined
@@ -28,7 +28,7 @@
                                 :rules="[rules.required]"
                                 ></v-text-field>
                                 <v-layout column align-start>
-                                    <p class="thin-regular-text">Email</p>
+                                    <p class="regular-text__thin">Email</p>
                                 </v-layout>
                                 <v-text-field
                                 outlined
@@ -38,7 +38,7 @@
                                 :rules="[rules.required]"
                                 ></v-text-field>
                                 <v-layout column align-start>
-                                    <p class="thin-regular-text">Password</p>
+                                    <p class="regular-text__thin">Password</p>
                             </v-layout>
                             <v-text-field
                                 outlined
@@ -54,7 +54,21 @@
 
                             <v-btn color="#146C94" elevation="0" class="white--text" ref="form_register" type="submit">Daftar Sekarang</v-btn>
                             <hr class="mt-6">
-                            <v-btn color="#19A7CE" outlined text elevation="0" class="outline-btn mt-6" @click="login()">Sudah Punya Akun? Masuk Sekarang</v-btn>
+
+                            <div class="btn-akun--1">
+                                <v-btn color="#19A7CE" outlined text elevation="0" class="btn__outline mt-6" @click="login()">Sudah Punya Akun? Masuk Sekarang</v-btn>
+                            </div>
+                            <div class="btn-akun--2">
+                                <div class="btn-akun--2__child-1">
+                                    <p class="regular-text__medium paragraph" style="text-align: left">Sudah punya akun?</p>
+                                </div>
+                                <div class="btn-akun--2__child-2">
+                                    <v-layout align-start>
+                                        <v-btn color="#19A7CE" outlined text elevation="0" class="btn__outline" @click="login()">Masuk Sekarang</v-btn>
+                                    </v-layout>
+                                </div>
+                            </div>
+                            
                         </v-layout>
                     </v-container>
                 </v-form>
@@ -165,24 +179,7 @@
 </script>
 
 <style scoped>
-    .card-form{
-        width: 28vw;
-        padding: 48px;
-        border-radius: 6px;
-        margin-bottom: 10rem;
-    }
-
-    .title-paragraph{
-        font-size: 28px;
-        font-weight: 600;
-    }
-
-    .subtitle-paragraph{
-        font-weight: 300;
-        font-size: 18px;
-    }
-
-    .outline-btn{
+    .btn__outline{
         border: thin solid #19A7CE;
     }
 </style>

@@ -3,7 +3,7 @@
         <v-layout row class="mb-6">
             <v-flex xs8>
                 <v-layout column align-start justify-center>
-                    <p class="main-title">Pesanan</p>
+                    <p class="title__main">Pesanan</p>
                 </v-layout>
             </v-flex>
             <v-flex xs4 v-if="this.model_transaksi">
@@ -31,7 +31,7 @@
                         </v-flex>
                         <v-flex xs3>
                             <v-layout justify-end>
-                                <v-btn color="#146C94" class="white--text thin-bigger-regular-text btn-filter" elevation="0" @click="dialog_filter = true">Filter <span class="material-icons" style="color: #fff">
+                                <v-btn color="#146C94" class="white--text bigger--regular-text__thin btn-filter" elevation="0" @click="dialog_filter = true">Filter <span class="material-icons" style="color: #fff">
                                     filter_alt
                                     </span>
                                 </v-btn>
@@ -44,20 +44,20 @@
         </v-layout>
         <hr>
         <v-layout column class="layout-main" mt-6 v-if="this.model_transaksi">
-            <v-card class="card-regular" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
+            <v-card class="card__regular" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
                 <v-layout column>
                     <v-layout row align-start>
                         <v-flex xs6>
                             <v-layout column align-start>
-                                <p class="bold-bigger-regular-text paragraph pb-4">{{ kos_booking.kode }}</p>
-                                <p class="medium-bigger-regular-text">{{ date[index] }}</p>
+                                <p class="bigger--regular-text__bold  paragraph pb-4">{{ kos_booking.kode }}</p>
+                                <p class="bigger--regular-text__medium ">{{ date[index] }}</p>
                             </v-layout>
                         </v-flex>
                         <v-flex xs6>
                             <v-layout justify-end class="mt-0">
-                                <p class="belum--verifikasi-pengelola medium-regular-text" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
-                                <p class="terkonfirmasi-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
-                                <p class="dibatalkan-pengelola medium-regular-text" v-else-if="kos_booking.status == 'Dibatalkan'">Dibatalkan</p>
+                                <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
+                                <p class="pengelola__terkonfirmasi regular-text__medium" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
+                                <p class="pengelola__dibatalkan regular-text__medium" v-else-if="kos_booking.status == 'Dibatalkan'">Dibatalkan</p>
                             </v-layout>
                         </v-flex>
        
@@ -66,24 +66,24 @@
                     <v-layout row class="mt-6">
                         <v-flex xs3>
                             <v-layout column align-start>
-                                <p class="bigger-regular-text">Nama Penyewa</p>
-                                <p class="bigger-regular-text">Tanggal Masuk</p>
-                                <p class="bigger-regular-text">Tanggal Selesai</p>
-                                <p class="bigger-regular-text">Jumlah Kamar</p>
-                                <p class="bigger-regular-text" v-if="kos_booking.kamar.length > 0">Nomor Kamar</p>
+                                <p class="bigger--regular-text">Nama Penyewa</p>
+                                <p class="bigger--regular-text">Tanggal Masuk</p>
+                                <p class="bigger--regular-text">Tanggal Selesai</p>
+                                <p class="bigger--regular-text">Jumlah Kamar</p>
+                                <p class="bigger--regular-text" v-if="kos_booking.kamar.length > 0">Nomor Kamar</p>
 
                             </v-layout>
                         </v-flex>
                         <v-flex xs9>
                             <v-layout column align-start>
-                                <p class="medium-bigger-regular-text">{{ kos_booking.user.name }}</p>
-                                <p class="medium-bigger-regular-text">{{ tanggal_mulai[index] }}</p>
-                                <p class="medium-bigger-regular-text">{{ tanggal_selesai[index] }}</p>
-                                <p class="medium-bigger-regular-text">{{ kos_booking.total_kamar }} Kamar</p>
+                                <p class="bigger--regular-text__medium ">{{ kos_booking.user.name }}</p>
+                                <p class="bigger--regular-text__medium ">{{ tanggal_mulai[index] }}</p>
+                                <p class="bigger--regular-text__medium ">{{ tanggal_selesai[index] }}</p>
+                                <p class="bigger--regular-text__medium ">{{ kos_booking.total_kamar }} Kamar</p>
                                 <v-layout row v-if="kos_booking.kamar.length > 0"> 
                                     <div v-for="(nomor, index) in kos_booking.kamar" :key="index">
-                                        <p class="medium-bigger-regular-text" v-if="index+1 < kos_booking.kamar.length">{{ nomor.number }}, &nbsp; </p>    
-                                        <p class="medium-bigger-regular-text" v-if="index+1 === kos_booking.kamar.length">{{ nomor.number }} </p>    
+                                        <p class="bigger--regular-text__medium " v-if="index+1 < kos_booking.kamar.length">{{ nomor.number }}, &nbsp; </p>    
+                                        <p class="bigger--regular-text__medium " v-if="index+1 === kos_booking.kamar.length">{{ nomor.number }} </p>    
                                     </div>
                                 </v-layout>
 
@@ -92,24 +92,24 @@
                     </v-layout>
                     <v-layout row class="mt-16">
                         <v-layout column align-start>
-                            <p class="medium-bigger-regular-text">Total Biaya</p>
-                            <p class="bold-bigger-regular-text paragraph">Rp{{ total_harga[index] }}</p>
+                            <p class="bigger--regular-text__medium ">Total Biaya</p>
+                            <p class="bigger--regular-text__bold  paragraph">Rp{{ total_harga[index] }}</p>
                         </v-layout>
                         <v-layout justify-end>
-                            <v-btn color="#146C94" width="20%" class="white--text thin-bigger-regular-text" elevation="0" @click="getDetail(kos_booking.id)">Lihat Detail</v-btn>
+                            <v-btn color="#146C94" width="20%" class="white--text bigger--regular-text__thin" elevation="0" @click="getDetail(kos_booking.id)">Lihat Detail</v-btn>
                         </v-layout>
                     </v-layout>
                 </v-layout>
             </v-card>
         </v-layout>
         <v-layout column class="layout-main" mt-6 v-else-if="!this.model_transaksi">
-            <p class="thin-title">Belum terdapat transaksi</p>
+            <p class="title__medium">Belum terdapat transaksi</p>
         </v-layout>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
         <v-dialog v-model="dialog_filter" persistent max-width="40vw">
             <v-card class="pa-4">
-                <p class="medium-bigger-regular-text pb-4">Filter Kamar</p>
+                <p class="bigger--regular-text__medium  pb-4">Filter Kamar</p>
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_filter" autofocus lazy-validation>
                     <v-layout column>
                         <v-layout align-start column>
@@ -293,8 +293,8 @@
                     </v-layout>
 
                     <v-layout justify-center class="pt-4">
-                        <v-btn width="30%" elevation="0" class="white--text btn-close-dialog mr-2" @click="dialog_filter = false">Tutup</v-btn>
-                        <v-btn elevation="0" class="white--text btn-unduh ml-2" type="submit" width="30%">FILTER</v-btn>
+                        <v-btn width="30%" elevation="0" class="white--text btn__close-dialog mr-2" @click="dialog_filter = false">Tutup</v-btn>
+                        <v-btn elevation="0" class="white--text btn__unduh ml-2" type="submit" width="30%">FILTER</v-btn>
                     </v-layout>
                 </v-form>
              </v-card>

@@ -2,10 +2,10 @@
     <v-container grid-list-md class="pa-0" v-if="ready">
         <v-layout align-start row>
             <v-layout align-start class="mt-4 ml-6">
-                <p class="main-title">{{ nav_title }} Kamar</p>
+                <p class="title__main">{{ nav_title }} Kamar</p>
             </v-layout>
             <v-layout align-end justify-end v-if="!editable">
-                <v-btn elevation="0" class="white--text btn-go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
+                <v-btn elevation="0" class="white--text btn__go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
             </v-layout>
         </v-layout>
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kamar" autofocus lazy-validation>
@@ -119,7 +119,7 @@
                         </v-flex>
                     </v-layout>
                     <v-layout justify-end class="pb-4">
-                        <v-btn outlined elevation="0" mx-0 color="#333" class="foto-btn" @click="imageDialog = true">
+                        <v-btn outlined elevation="0" mx-0 color="#333" class="button__lihat-foto" @click="imageDialog = true">
                             <span class="material-symbols-outlined">
                             photo_camera
                             </span>
@@ -131,7 +131,7 @@
                             outlined                           
                             elevation="0" 
                             @click="onPickFile()" 
-                            class="tambah-foto-btn" >
+                            class="btn__tambah-foto" >
                             Tambahkan Foto
                         </v-btn>
                         <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
@@ -139,7 +139,7 @@
                 </v-flex>
             </v-layout>
             <v-flex class="my-4" v-if="editable">
-                <v-btn elevation="0" class="white--text btn-simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
+                <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
             </v-flex>
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>

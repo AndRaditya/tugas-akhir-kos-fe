@@ -1,132 +1,133 @@
 <template>
-    <v-main>
-        <v-layout align-center justify-center v-if="ready">
-            <v-card class="card-form" elevation="2">
-                <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_profile" autofocus lazy-validation>
-                    <v-container column fluid>
-                        <v-layout column align-start>
-                            <p class="title-paragraph">Profil Customer</p>
-                            <p class="subtitle-paragraph">Silahkan Ubah Profil Anda</p>
-                        </v-layout>
-                        <v-layout column pt-4>
+    <v-container>
+        <div class="user-profile__grid">
+            <div class="user-profile__grid--child">
+                <v-card class="card__form" elevation="2">
+                    <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_profile" autofocus lazy-validation>
+                        <v-container column fluid>
                             <v-layout column align-start>
-                                <p class="medium-regular-text">Nama Lengkap</p>
+                                <p class="title__paragraph">Profil Customer</p>
+                                <p class="subtitle__paragraph">Silahkan Ubah Profil Anda</p>
                             </v-layout>
-                            <v-text-field
-                                outlined
-                                label="Masukkan Nama Lengkap"
-                                v-model="user.name"
-                            ></v-text-field>
-                            <v-layout column align-start>
-                                <p class="medium-regular-text">Nomor Telepon</p>
-                            </v-layout>
-                            <v-text-field
-                                outlined
-                                label="Masukkan Nomor Telepon"
-                                v-model="user.phone_number"
-                            ></v-text-field>
-                            <v-layout column align-start>
-                                <p class="medium-regular-text">Email</p>
-                            </v-layout>
-                            <v-text-field
-                                outlined
-                                label="Masukkan Email"
-                                v-model="user.email"
-                                type="email"
-                            ></v-text-field>
-
-                            <v-layout column v-if="this.param_pengelola">
+                            <v-layout column pt-4>
                                 <v-layout column align-start>
-                                    <p class="medium-regular-text">Nama Bank</p>
-                                </v-layout>
-                                <!-- <v-text-field
-                                    outlined
-                                    label="Masukkan Bank"
-                                    v-model="user.bank"
-                                ></v-text-field> -->
-                                <v-select
-                                    outlined
-                                    label="Masukkan Bank"
-                                    v-model="user.bank"
-                                    :items="nama_bank"
-                                ></v-select>
-                                <v-layout column align-start>
-                                    <p class="medium-regular-text">Nomor Rekening</p>
+                                    <p class="regular-text__medium">Nama Lengkap</p>
                                 </v-layout>
                                 <v-text-field
                                     outlined
-                                    label="Masukkan Nomor Rekening"
-                                    v-model="user.rekening"
+                                    label="Masukkan Nama Lengkap"
+                                    v-model="user.name"
                                 ></v-text-field>
-                            </v-layout>
+                                <v-layout column align-start>
+                                    <p class="regular-text__medium">Nomor Telepon</p>
+                                </v-layout>
+                                <v-text-field
+                                    outlined
+                                    label="Masukkan Nomor Telepon"
+                                    v-model="user.phone_number"
+                                ></v-text-field>
+                                <v-layout column align-start>
+                                    <p class="regular-text__medium">Email</p>
+                                </v-layout>
+                                <v-text-field
+                                    outlined
+                                    label="Masukkan Email"
+                                    v-model="user.email"
+                                    type="email"
+                                ></v-text-field>
 
-                            <v-layout column class="py-4">
-                                <p class="thin-regular-text">Ubah Password Anda</p>
-                                <v-layout column align-start>
-                                    <p class="medium-regular-text">Password Lama</p>
+                                <v-layout column v-if="this.param_pengelola">
+                                    <v-layout column align-start>
+                                        <p class="regular-text__medium">Nama Bank</p>
+                                    </v-layout>
+                                    <!-- <v-text-field
+                                        outlined
+                                        label="Masukkan Bank"
+                                        v-model="user.bank"
+                                    ></v-text-field> -->
+                                    <v-select
+                                        outlined
+                                        label="Masukkan Bank"
+                                        v-model="user.bank"
+                                        :items="nama_bank"
+                                    ></v-select>
+                                    <v-layout column align-start>
+                                        <p class="regular-text__medium">Nomor Rekening</p>
+                                    </v-layout>
+                                    <v-text-field
+                                        outlined
+                                        label="Masukkan Nomor Rekening"
+                                        v-model="user.rekening"
+                                    ></v-text-field>
                                 </v-layout>
-                                <!-- v-model="user.password"
-                                :append-icon="model.show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                :rules="[rules.required]"
-                                :type="model.show1 ? 'text' : 'password'"
-                                @click:append="model.show1 = !model.show1" -->
-                                <v-text-field
-                                    outlined
-                                    label="Masukkan Password Lama"
-                                    placeholder="Password Lama"
-                                    :append-icon="pass.old.visible ? 'mdi-eye' : 'mdi-eye-off'"
-                                    @click:append="() => (pass.old.visible = !pass.old.visible)"
-                                    v-model="pass.old.value"
-                                    @input="checkOldPass()"
-                                    :success="pass.old.ok==1 ? true : false"
-                                    :error="pass.old.ok==-1 ? true : false"
-                                    :rules="pass.old.rule"
-                                    :type="!pass.old.visible ? 'password' : 'text'"
-                                    >
-                                </v-text-field>
-                                <v-layout column align-start>
-                                    <p class="medium-regular-text">Password Baru</p>
-                                </v-layout>
-                                <v-text-field
-                                    outlined
-                                    label="Masukkan Password Baru"
-                                    :append-icon="pass.new.visible ? 'mdi-eye' : 'mdi-eye-off'"
-                                    @click:append="() => (pass.new.visible = !pass.new.visible)"
-                                    v-model="pass.new.value"
-                                    @input="checkNewPass()"
-                                    :success="pass.new.ok==1 ? true : false"
-                                    :error="pass.new.ok==-1 ? true : false"
-                                    :rules="pass.new.rule"
-                                    :type="!pass.new.visible ? 'password' : 'text'"
-                                    >
-                                </v-text-field>
-                                <v-layout column align-start>
-                                    <p class="medium-regular-text">Konfirmasi Password Baru</p>
-                                </v-layout>
-                                <v-text-field
-                                    outlined
-                                    label="Konfirmasi Password Baru"
-                                    :append-icon="pass.retype.visible ? 'mdi-eye' : 'mdi-eye-off'"
-                                    @click:append="() => (pass.retype.visible = !pass.retype.visible)"
-                                    v-model="pass.retype.value"
-                                    @input="checkRePass()"
-                                    :success="pass.new.ok==1 ? true : false"
-                                    :error="pass.new.ok==-1 ? true : false"
-                                    :rules="pass.retype.rule"
-                                    :type="!pass.retype.visible ? 'password' : 'text'"
-                                    >
-                                </v-text-field>
-                            </v-layout>
 
-                            <v-btn color="#146C94" elevation="0" class="white--text btn-save-profile" ref="form_profile" type="submit">Simpan</v-btn>
-                        </v-layout>
-                    </v-container>
-                </v-form>
+                                <v-layout column class="py-4">
+                                    <p class="regular-text__thin">Ubah Password Anda</p>
+                                    <v-layout column align-start>
+                                        <p class="regular-text__medium">Password Lama</p>
+                                    </v-layout>
+                                    <!-- v-model="user.password"
+                                    :append-icon="model.show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                    :rules="[rules.required]"
+                                    :type="model.show1 ? 'text' : 'password'"
+                                    @click:append="model.show1 = !model.show1" -->
+                                    <v-text-field
+                                        outlined
+                                        label="Masukkan Password Lama"
+                                        placeholder="Password Lama"
+                                        :append-icon="pass.old.visible ? 'mdi-eye' : 'mdi-eye-off'"
+                                        @click:append="() => (pass.old.visible = !pass.old.visible)"
+                                        v-model="pass.old.value"
+                                        @input="checkOldPass()"
+                                        :success="pass.old.ok==1 ? true : false"
+                                        :error="pass.old.ok==-1 ? true : false"
+                                        :rules="pass.old.rule"
+                                        :type="!pass.old.visible ? 'password' : 'text'"
+                                        >
+                                    </v-text-field>
+                                    <v-layout column align-start>
+                                        <p class="regular-text__medium">Password Baru</p>
+                                    </v-layout>
+                                    <v-text-field
+                                        outlined
+                                        label="Masukkan Password Baru"
+                                        :append-icon="pass.new.visible ? 'mdi-eye' : 'mdi-eye-off'"
+                                        @click:append="() => (pass.new.visible = !pass.new.visible)"
+                                        v-model="pass.new.value"
+                                        @input="checkNewPass()"
+                                        :success="pass.new.ok==1 ? true : false"
+                                        :error="pass.new.ok==-1 ? true : false"
+                                        :rules="pass.new.rule"
+                                        :type="!pass.new.visible ? 'password' : 'text'"
+                                        >
+                                    </v-text-field>
+                                    <v-layout column align-start>
+                                        <p class="regular-text__medium">Konfirmasi Password Baru</p>
+                                    </v-layout>
+                                    <v-text-field
+                                        outlined
+                                        label="Konfirmasi Password Baru"
+                                        :append-icon="pass.retype.visible ? 'mdi-eye' : 'mdi-eye-off'"
+                                        @click:append="() => (pass.retype.visible = !pass.retype.visible)"
+                                        v-model="pass.retype.value"
+                                        @input="checkRePass()"
+                                        :success="pass.new.ok==1 ? true : false"
+                                        :error="pass.new.ok==-1 ? true : false"
+                                        :rules="pass.retype.rule"
+                                        :type="!pass.retype.visible ? 'password' : 'text'"
+                                        >
+                                    </v-text-field>
+                                </v-layout>
+
+                                <v-btn color="#146C94" elevation="0" class="white--text btn-save-profile" ref="form_profile" type="submit">Simpan</v-btn>
+                            </v-layout>
+                        </v-container>
+                    </v-form>
             </v-card>
-        </v-layout> 
+            </div>
+        </div>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
-
-    </v-main>
+    </v-container>
 </template>
 
 <script>
@@ -182,7 +183,6 @@
                 //     min: v => v.length >= 8 || 'Min 8 characters',
                 // },
                 pass: {old: passField(), new: passField(), retype: passField()},
-
             }
         },
         created(){
@@ -200,6 +200,7 @@
             this.pass.retype.rule.push(
                 v => v == this.pass.new.value || 'Pasword must be the same with inputed New Password '+this.pass.new.value 
             );
+
             this.initData();
         },
         methods:{
@@ -229,7 +230,7 @@
                                 this.ready = true;
                                 this.user = response.data.data[0];
                                 this.devLog(this.user)
-                                localStorage.token= response.data.api_message;
+                                // localStorage.token= response.data.api_message;
                                 this.devLog("Token: "+ localStorage.token);
                                 this.devLog("Login Result Status: " +response.data.api_status);
                                 // this.$router.push('/dashboard');

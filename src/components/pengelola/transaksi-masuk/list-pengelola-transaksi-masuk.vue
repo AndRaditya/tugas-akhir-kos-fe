@@ -2,7 +2,7 @@
     <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start row>
             <v-layout align-start>
-                <p class="main-title">List Transaksi Masuk</p>
+                <p class="title__main">List Transaksi Masuk</p>
             </v-layout>
             <v-layout justify-end row>
                 <v-btn color="#146C94" elevation="0" class="white--text mr-2"  @click="tambahData()">Tambah Transaksi</v-btn>
@@ -27,7 +27,7 @@
 
         <v-dialog v-model="dialog_konfirmasi_hapus" persistent max-width="25vw">
             <v-card class="pa-4">
-                <p class="medium-regular-text">Ingin Menghapus Transaksi {{ nomor_trs_temp }}?</p>
+                <p class="regular-text__medium">Ingin Menghapus Transaksi {{ nomor_trs_temp }}?</p>
                 <v-layout justify-center class="pt-4">
                     <v-btn outlined class="mr-2" @click="closeDialog()">Keluar</v-btn>
                     <v-btn color="red" class="ml-2 white--text" @click="hapusTransaksi()">Hapus</v-btn>
@@ -37,7 +37,7 @@
 
         <v-dialog v-model="dialog_transaksi" persistent max-width="40vw">
             <v-card class="pa-4">
-                <p class="bigger-regular-text mb-6 pb-6">Unduh Transaksi Masuk</p>
+                <p class="bigger--regular-text mb-6 pb-6">Unduh Transaksi Masuk</p>
                 
                 <v-layout row wrap fill-height>
                     <v-flex xs6 class="px-2">
@@ -95,8 +95,8 @@
                 </v-layout>
 
                 <v-layout justify-center class="pt-4">
-                    <v-btn width="30%" elevation="0" class="white--text btn-close-dialog mr-2" @click="dialog_transaksi = false">Tutup</v-btn>
-                    <v-btn elevation="0" class="white--text btn-unduh ml-2" @click="confirmExport()" width="30%">Unduh</v-btn>
+                    <v-btn width="30%" elevation="0" class="white--text btn__close-dialog mr-2" @click="dialog_transaksi = false">Tutup</v-btn>
+                    <v-btn elevation="0" class="white--text btn__unduh ml-2" @click="confirmExport()" width="30%">Unduh</v-btn>
                 </v-layout>
              </v-card>
         </v-dialog>

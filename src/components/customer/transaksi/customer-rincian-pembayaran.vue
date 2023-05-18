@@ -1,43 +1,43 @@
 <template>
     <v-container grid-list-md class="pt-0 container">
         <v-layout align-start column>
-            <p class="thin-title paragraph">Rincian Pembayaran</p>
+            <p class="title__medium paragraph">Rincian Pembayaran</p>
         </v-layout>
         <v-layout column v-if="this.model_pembayaran && this.kos_booking_model.status == 'Menunggu Konfirmasi Kamar' && this.kos_booking_model.ready == true" >
             <v-layout row class="pt-4">
                 <v-flex xs8> 
                     <v-layout align-start column>
-                        <p class="thin-bigger-regular-text">{{ kos_booking_model.kode }}</p>
+                        <p class="bigger--regular-text__thin">{{ kos_booking_model.kode }}</p>
                     </v-layout>
                 </v-flex>
                 <v-flex xs4>
                     <v-layout justify-end class="mt-0" column>
-                        <p class="sudah--verifikasi-pengelola medium-regular-text">Pesanan Menunggu Pembayaran</p>
+                        <p class="pengelola__sudah--verifikasi regular-text__medium">Pesanan Menunggu Pembayaran</p>
                         <p>&nbsp;</p>
                     </v-layout>
                 </v-flex>
             </v-layout>
             <v-form @submit="submitForm" enctype="multipart/form-data">
                 <v-flex style="width: 80%;">
-                    <v-card class="card-regular">
+                    <v-card class="card__regular">
                         <v-layout row>
                             <v-layout align-center>
-                                <p class="thin-bigger-regular-text paragraph">Silahkan transfer sebelum</p>
+                                <p class="bigger--regular-text__thin paragraph">Silahkan transfer sebelum</p>
                             </v-layout>
                             <v-layout align-start justify-end>
                                 <counter-vue :start_date="kos_booking_model.date" :exp_date="kos_booking_model.exp_date" v-if="!expired_status"></counter-vue>
-                                <p class="bold-bigger-regular-text paragraph waktu-habis-text" v-else-if="expired_status">Waktu Anda Habis</p>
+                                <p class="bigger--regular-text__bold  paragraph waktu-habis-text" v-else-if="expired_status">Waktu Anda Habis</p>
                             </v-layout>
                         </v-layout>
                     </v-card>
-                    <v-card class="card-regular">
+                    <v-card class="card__regular">
                         <v-layout row>
                             <v-layout column align-start>
-                                <p class="medium-regular-text">{{ tanggal_mulai }} &ndash; {{ tanggal_selesai }}</p>
-                                <p class="medium-regular-text">{{ kos_booking_model.total_kamar }} Kamar</p>
+                                <p class="regular-text__medium">{{ tanggal_mulai }} &ndash; {{ tanggal_selesai }}</p>
+                                <p class="regular-text__medium">{{ kos_booking_model.total_kamar }} Kamar</p>
                             </v-layout>
                             <v-layout justify-end align-start class="mt-0">
-                                <p class="medium-regular-text">{{ kos_booking_model.total_bulan }} Bulan</p>
+                                <p class="regular-text__medium">{{ kos_booking_model.total_bulan }} Bulan</p>
                                 <p>&nbsp;</p>
                             </v-layout>
                         </v-layout>
@@ -46,31 +46,31 @@
                                 <p class="regular-text">Harga Kamar Bulanan</p>
                             </v-layout>
                             <v-layout justify-end>
-                                <p class="thin-regular-text">Rp1.500.000</p>
+                                <p class="regular-text__thin">Rp1.500.000</p>
                             </v-layout>
                         </v-layout>
                         <hr>
                         <v-layout row class="mt-6">
                             <v-layout align-start>
-                                <p class="paragraph thin-bigger-regular-text">Total Biaya</p>
+                                <p class="paragraph bigger--regular-text__thin">Total Biaya</p>
                             </v-layout>
                             <v-layout justify-end>
-                                <p class="paragraph bold-bigger-regular-text">Rp{{ total_harga }}</p>
+                                <p class="paragraph bigger--regular-text__bold ">Rp{{ total_harga }}</p>
                             </v-layout>
                         </v-layout>
                     </v-card>
-                    <v-card class="card-regular" v-if="!expired_status">
+                    <v-card class="card__regular" v-if="!expired_status">
                         <v-layout row >
                             <v-flex xs4>
                                 <v-layout align-start>
-                                    <p class="thin-bigger-regular-text">Transfer Biaya</p>
+                                    <p class="bigger--regular-text__thin">Transfer Biaya</p>
                                 </v-layout>
                             </v-flex>
                             <v-flex xs8>
                                 <v-layout column align-start>
-                                    <p class="bold-bigger-regular-text">{{ user_model.bank }}</p>
+                                    <p class="bigger--regular-text__bold ">{{ user_model.bank }}</p>
                                     <v-layout row class="mt-4">
-                                        <p class="bold-bigger-regular-text" ref="copy_nomor_rekening">{{ user_model.rekening }}</p>
+                                        <p class="bigger--regular-text__bold " ref="copy_nomor_rekening">{{ user_model.rekening }}</p>
                                         <span class="material-symbols-outlined pt-1 ml-6" style="cursor: pointer" @click="copyNomorRek(user_model.rekening)">
                                             content_copy
                                         </span>
@@ -91,11 +91,11 @@
                             Unggah Bukti Transfer
                             </v-btn>
                             <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
-                            <p class="medium-regular-text mt-6">{{ fileName }}</p>
+                            <p class="regular-text__medium mt-6">{{ fileName }}</p>
                         </v-layout>
                         <v-layout column align-start class="mt-12">
-                            <p class="thin-regular-text">Silahkan tekan tombol Bayar</p>
-                            <p class="paragraph thin-regular-text">Jika Anda sudah Unggah Bukti Transfer</p>
+                            <p class="regular-text__thin">Silahkan tekan tombol Bayar</p>
+                            <p class="paragraph regular-text__thin">Jika Anda sudah Unggah Bukti Transfer</p>
                         </v-layout>
                     </v-card>
                     <v-layout align-start class="my-12"  v-if="!expired_status">
@@ -106,12 +106,12 @@
             </v-form>
         </v-layout>
         <v-layout column class="layout-main" mt-6 v-else-if="!this.model_pembayaran || this.kos_booking_model.status != 'Menunggu Konfirmasi Kamar'">
-            <p class="thin-title">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
-            <h3 class="thin-sub-title pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
+            <p class="title__medium">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
+            <h3 class="subtitle--thin pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
         </v-layout>
         <v-dialog v-model="errorDialog" max-width="300">
             <v-card>
-                <v-card-text class="subheading">{{ errorText }}</v-card-text>
+                <v-card-text class="title__subheading">{{ errorText }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn @click="errorDialog = false" flat>Got it!</v-btn>

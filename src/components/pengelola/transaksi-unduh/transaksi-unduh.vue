@@ -1,12 +1,12 @@
 <template>
     <v-container grid-list-md class="pt-0" v-if="ready">
         <v-layout align-start>
-            <p class="main-title">Unduh Transaksi</p>
+            <p class="title__main">Unduh Transaksi</p>
         </v-layout>
         <v-layout column class="mt-4">
             <v-flex xs6>
                 <v-layout align-start column>
-                    <p class="medium-bigger-regular-text pb-2">Transaksi Masuk</p>
+                    <p class="bigger--regular-text__medium  pb-2">Transaksi Masuk</p>
                 </v-layout>
                 <v-layout row>
                     <v-flex xs2 sm2 class="pl-0">
@@ -62,14 +62,14 @@
                         </v-menu>
                     </v-flex>
                     <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn-unduh" @click="confirmExport('transaksi_masuk')" width="75%">Unduh</v-btn>
+                        <v-btn elevation="0" class="white--text btn__unduh" @click="confirmExport('transaksi_masuk')" width="75%">Unduh</v-btn>
                     </v-flex>
                 </v-layout>
             </v-flex>
 
             <v-flex xs6>
                 <v-layout align-start column>
-                    <p class="medium-bigger-regular-text pb-2">Transaksi Keluar</p>
+                    <p class="bigger--regular-text__medium  pb-2">Transaksi Keluar</p>
                 </v-layout>
                 <v-layout row>
                     <v-flex xs2 sm2 class="pl-0">
@@ -125,14 +125,14 @@
                         </v-menu>
                     </v-flex>
                     <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn-unduh" @click="confirmExport('transaksi_keluar')" width="75%">Unduh</v-btn>
+                        <v-btn elevation="0" class="white--text btn__unduh" @click="confirmExport('transaksi_keluar')" width="75%">Unduh</v-btn>
                     </v-flex>
                 </v-layout>
             </v-flex>
 
             <v-flex xs6>
                 <v-layout align-start column>
-                    <p class="medium-bigger-regular-text pb-2">Semua Transaksi</p>
+                    <p class="bigger--regular-text__medium  pb-2">Semua Transaksi</p>
                 </v-layout>
                 <v-layout row>
                     <v-flex xs2 sm2 class="pl-0">
@@ -188,7 +188,7 @@
                         </v-menu>
                     </v-flex>
                     <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn-unduh" @click="confirmExport('transaksi_semua')" width="75%">Unduh</v-btn>
+                        <v-btn elevation="0" class="white--text btn__unduh" @click="confirmExport('transaksi_semua')" width="75%">Unduh</v-btn>
                     </v-flex>
                 </v-layout>
             </v-flex>
