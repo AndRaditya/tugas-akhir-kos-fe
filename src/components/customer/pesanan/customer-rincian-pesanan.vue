@@ -181,10 +181,9 @@
                 <p class="subtitle--thin pt-2">Silahkan Cek Rincian Transaksi jika sudah melakukan Pemesanan</p>
             </v-layout>
 
-
-            <v-dialog v-model="dialog_konfirmasi_batal" persistent max-width="25vw">
+            <v-dialog v-model="dialog_konfirmasi_batal" persistent content-class="dialog-pesanan-cust">
                 <v-card class="pa-4">
-                    <p class="regular-text__medium">Ingin Membatalkan Pesanan?</p>
+                    <p class="regular-text__medium" style="text-align: center">Ingin Membatalkan Pesanan?</p>
                     <v-layout justify-center class="pt-4">
                         <v-btn outlined class="mr-2" @click="dialog_konfirmasi_batal = false">Keluar</v-btn>
                         <v-btn color="red" class="ml-2 white--text" @click="cancelBooking()">Batalkan</v-btn>
@@ -192,7 +191,7 @@
                 </v-card>
             </v-dialog>
 
-            <v-dialog v-model="dialog_kamar_terisi" persistent max-width="25vw">
+            <v-dialog v-model="dialog_kamar_terisi" persistent content-class="dialog-pesanan-cust">
                 <v-card class="pa-4">
                     <p class="regular-text__medium">Mohon Maaf Kamar sudah terisi</p>
                     <v-layout justify-center class="pt-4">
@@ -201,26 +200,26 @@
                 </v-card>
             </v-dialog>
 
-            <v-dialog v-model="dialog_lokasi" persistent max-width="25vw">
+            <v-dialog v-model="dialog_lokasi" persistent content-class="dialog-pesanan-cust">
                 <v-card class="pa-4">
-                    <v-layout row align-start class="pa-4 pb-0">
-                        <p class="regular-text__bold">Lokasi Terdekat</p>
-                    </v-layout>
-                    <v-layout row align-start class="pa-4">
-                        <v-layout align-start column>
+                    <div class="dialog-lokasi__grid">
+                        <div class="dialog-lokasi__grid--child-1">
+                            <p class="regular-text__bold">Lokasi Terdekat</p>
+                        </div>
+                        <div class="dialog-lokasi__grid--child-2">
                             <ul v-for="(location, index) in locations" :key="index" class="pl-0 pb-3">
                                 <p class="regular-text ma-0">{{ location.message }}</p>
                             </ul>
-                        </v-layout>
-                        <v-layout justify-end column>
-                            <ul v-for="(length, index) in lengths" :key="index" class="pl-0 pb-3">
+                        </div>
+                        <div class="dialog-lokasi__grid--child-3">
+                             <ul v-for="(length, index) in lengths" :key="index" class="pl-0 pb-3">
                                 <p class="regular-text ma-0">{{ length.message }}</p>
                             </ul>
-                        </v-layout>
-                    </v-layout>
-                    <v-layout justify-center class="pt-4">
-                        <v-btn outlined class="mr-2" @click="dialog_lokasi = false">Batal</v-btn>
-                    </v-layout>
+                        </div>
+                        <div class="dialog-lokasi__grid--child-4">
+                            <v-btn outlined class="mr-2" @click="dialog_lokasi = false">Batal</v-btn>
+                        </div>
+                    </div>
                 </v-card>
             </v-dialog>
 
@@ -460,6 +459,8 @@
                 if(this.kos_booking_model.bukti_transfer){
                     this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.kos_booking_model));
                     this.devLog(JSON.stringify(this.kos_booking_model))
+
+                    this.kos_booking_model.exp_date = '';
 
                     if(this.status_kamar_terisi == true){
                         this.$http.post(this.api, this.kos_booking_model, {headers : {

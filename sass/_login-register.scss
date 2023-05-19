@@ -106,18 +106,18 @@
         grid-template-columns: 0.5fr 1fr 0.5fr;
     }
 
-    @media only screen and (max-width: $bp-small) {
-        grid-template-columns: auto 0.75fr auto;
+    @media only screen and (max-width: $bp-medium) {
+        grid-template-columns: 0.25fr 1fr 0.25fr;
     }
 
-    @media only screen and (max-width: $bp-mobile) {
+    @media only screen and (max-width: $bp-small) {
         grid-template-columns: 1fr;
     }
 
     &--child { 
         grid-area: 1 / 2 / 2 / 3; 
 
-        @media only screen and (max-width: $bp-mobile) {
+        @media only screen and (max-width: $bp-small) {
             grid-area: 1 / 1 / 2 / 2; 
         }
     }

@@ -1,0 +1,295 @@
+.pengelola-pesanan-rincian{
+    &__header{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    &__parent{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+        grid-column-gap: 1.2rem;
+        grid-row-gap: 1.2rem;
+    }
+
+    &--detail{
+        grid-area: 1 / 1 / 2 / 2;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        grid-column-gap: 0px;
+        grid-row-gap: 2.4rem;
+
+        &__child-1{
+            grid-area: 1 / 1 / 2 / 2;
+
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr;
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+
+            @media only screen and (max-width: $bp-smallest) {
+                grid-template-columns: 0.5fr 1fr;
+                grid-column-gap: 8px;
+            }
+            
+            @media only screen and (max-width: $bp-mobile) {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto;
+                grid-row-gap: 8px;
+                grid-column-gap: 0;
+            }
+
+            &__header-1{
+                grid-area: 1 / 1 / 2 / 2;
+
+                text-align: left;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                line-height: 2;
+            }
+
+            &__header-2{
+                grid-area: 1 / 2 / 2 / 3;
+                display: flex;
+                justify-content: flex-end !important;
+                align-items: flex-start !important;
+                
+                
+                @media only screen and (max-width: $bp-mobile) {
+                    grid-area: 2 / 1 / 3 / 2;
+                    justify-content: flex-start !important;
+                    align-items: flex-start !important;
+                }
+            }
+        }
+
+        &__child-2{
+            grid-area: 2 / 1 / 3 / 2;
+
+            &--line{
+                border-bottom: 1px solid rgba(51,51,51,0.29) !important;
+            }
+        }
+
+        &__child-3{
+            grid-area: 3 / 1 / 4 / 2;
+
+            display: grid;
+            grid-template-columns: 0.5fr 1fr;
+            grid-template-rows: repeat(5, auto);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+
+            // @media only screen and (max-width: $bp-smallest) {
+            //     grid-template-columns: 1fr;
+            //     grid-template-rows: repeat(10, auto);
+            // }
+
+            @media only screen and (max-width: $bp-smallest) {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            &--template{
+                display: grid !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                text-align: left;
+            }
+
+            &__desc-1 {
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 1 / 1 / 2 / 2; 
+
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 1 / 1 / 2 / 2; 
+                // }
+            }
+            
+            &__desc-2 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 1 / 2 / 2 / 3; 
+
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 2 / 1 / 3 / 2; 
+                // }
+            }
+            
+            &__desc-3 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 2 / 1 / 3 / 2; 
+
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 3 / 1 / 4 / 2; 
+                // }
+            }
+            
+            &__desc-4 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 2 / 2 / 3 / 3;
+                
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 4 / 1 / 5 / 2; 
+                // }
+            }
+            
+            &__desc-5 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 3 / 1 / 4 / 2; 
+
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 5 / 1 / 6 / 2; 
+                // }
+            }
+            
+            &__desc-6 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 3 / 2 / 4 / 3; 
+
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 6 / 1 / 7 / 2; 
+                // }
+            }
+            
+            &__desc-7 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 4 / 1 / 5 / 2; 
+
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 7 / 1 / 8 / 2; 
+                // }
+            }
+            
+            &__desc-8 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 4 / 2 / 5 / 3; 
+
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 8 / 1 / 9 / 2; 
+                // }
+            }
+
+            &__desc-9 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 5 / 1 / 6 / 2; 
+
+                // @media only screen and (max-width: $bp-smallest) {
+                //     grid-area: 9 / 1 / 10 / 2; 
+                // }
+            }
+            
+            &__desc-10 { 
+                grid-area: 5 / 2 / 6 / 3; 
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+
+                // @media only screen and (max-width: $bp-small) {
+                //     grid-area: 11 / 1 / 12 / 2; 
+                // }
+            }
+        }
+
+        &__child-4{
+            grid-area: 4 / 1 / 5 / 2;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+
+
+        }
+    }
+
+    &--action{
+        grid-area: 2 / 1 / 3 / 2;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 0.25fr);
+        grid-column-gap: 36px;
+        grid-row-gap: 1.2rem;
+
+        &--template{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        &__btn{
+            width: 100%;
+        }
+
+        &--child-1 { 
+            grid-area: 1 / 1 / 2 / 2; 
+            margin-top: 24px;
+            @extend .pengelola-pesanan-rincian--action--template;
+        }
+        
+        &--child-2 { 
+            grid-area: 2 / 1 / 3 / 2; 
+            @extend .pengelola-pesanan-rincian--action--template;
+        }
+        
+        &--child-3 { 
+            grid-area: 3 / 1 / 4 / 2; 
+            margin-top: 24px;
+
+            display: grid;
+            grid-template-columns: repeat(2, 48rem);
+            grid-template-rows: 1fr;
+            grid-column-gap: 48px;
+
+            @media only screen and (max-width: $bp-large) {
+                grid-template-columns: repeat(2, 32rem);
+                grid-column-gap: 36px;
+            }
+
+            @media only screen and (max-width: $bp-small) {
+                grid-template-columns: repeat(2, 1fr);
+                grid-column-gap: 12px;
+            }
+
+            @media only screen and (max-width: $bp-small) {
+                grid-column-gap: 8px;
+            }
+
+            &--1{
+                grid-area: 1 / 1 / 2 / 2; 
+            }
+            
+            &--2{
+                grid-area: 1 / 2 / 2 / 3; 
+            }
+        }
+        
+        &--child-4 { 
+            grid-area: 3 / 2 / 4 / 3; 
+            margin-top: 24px;
+            @extend .pengelola-pesanan-rincian--action--template;
+        }
+    }
+
+    &__dialog{
+        max-width: 40vw;
+
+        @media only screen and (max-width: $bp-large) {
+            max-width: 60vw !important;
+        }
+    
+        @media only screen and (max-width: $bp-small) {
+            max-width: 75vw !important;
+        }
+    
+        @media only screen and (max-width: $bp-smallest) {
+            max-width: 90vw !important;
+        }  
+    }
+}

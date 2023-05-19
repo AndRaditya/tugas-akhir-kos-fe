@@ -1,61 +1,71 @@
 <template>
     <v-container grid-list-md class="pt-0" v-if="ready">
-        <v-layout align-start>
-            <p class="title__main">Rincian Pesanan</p>
-        </v-layout>
+        <div class="pengelola-pesanan-rincian__header">
+            <p class="title__main paragraph">Rincian Pesanan</p>
+        </div>
+
+
         <v-layout column class="layout-main py-6" mt-6 v-if="this.model_transaksi">
-            <v-card class="card__regular ">
+            <v-card class="card__regular">
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_pesanan_pengelola" autofocus lazy-validation>
-                    <v-layout column>
-                        <v-layout row align-start>
-                            <v-flex xs6>
-                                <v-layout column align-start>
-                                    <p class="bigger--regular-text__bold  paragraph pb-4">{{ kos_booking_model.kode }}</p>
-                                    <p class="bigger--regular-text__medium ">{{ date }}</p>
-                                </v-layout>
-                            </v-flex>
-                            <v-flex xs6>
-                                <v-layout justify-end class="mt-0">
+                    <div class="pengelola-pesanan-rincian__parent">
+                        <div class="pengelola-pesanan-rincian--detail">
+                            <div class="pengelola-pesanan-rincian--detail__child-1">
+                                <div class="pengelola-pesanan-rincian--detail__child-1__header-1">
+                                        <p class="bigger--regular-text__bold  paragraph pb-4">{{ kos_booking_model.kode }}</p>
+                                        <p class="bigger--regular-text__medium ">{{ date }}</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-1__header-2">
                                     <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking_model.status }}</p>
                                     <p class="pengelola__dibatalkan regular-text__medium" v-else-if="kos_booking_model.status == 'Dibatalkan'">{{ kos_booking_model.status }}</p>
                                     <p class="pengelola__terkonfirmasi regular-text__medium" v-else-if="kos_booking_model.status == 'Terkonfirmasi'">Berhasil</p>
-                                </v-layout>
-                            </v-flex>
-                        </v-layout>
-                        <hr>
-                        <v-layout row class="mt-6">
-                            <v-flex xs3>
-                                <v-layout column align-start>
+                                </div>
+                            </div>
+                            <div class="pengelola-pesanan-rincian--detail__child-2">
+                                <div class="pengelola-pesanan-rincian--detail__child-2--line"></div>
+                            </div>
+                            <div class="pengelola-pesanan-rincian--detail__child-3">
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-1">
                                     <p class="bigger--regular-text">Nama Penyewa</p>
-                                    <p class="bigger--regular-text">Tanggal Masuk</p>
-                                    <p class="bigger--regular-text">Tanggal Selesai</p>
-                                    <p class="bigger--regular-text">Jumlah Kamar</p>
-                                    <p class="bigger--regular-text" v-if="kos_booking_model.kamar.length > 0">Nomor Kamar</p>
-                                </v-layout>
-                            </v-flex>
-                            <v-flex xs9>
-                                <v-layout column align-start>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-2">
                                     <p class="bigger--regular-text__medium ">{{ kos_booking_model.user.name }}</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-3">
+                                    <p class="bigger--regular-text">Tanggal Masuk</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-4">
                                     <p class="bigger--regular-text__medium ">{{ tanggal_mulai }}</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-5">
+                                    <p class="bigger--regular-text">Tanggal Selesai</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-6">
                                     <p class="bigger--regular-text__medium ">{{ tanggal_selesai }}</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-7">
+                                    <p class="bigger--regular-text">Jumlah Kamar</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-8">
                                     <p class="bigger--regular-text__medium ">{{ kos_booking_model.total_kamar }} Kamar</p>
-                                    <v-layout row v-if="kos_booking_model.kamar.length > 0"> 
-                                        <div v-for="(nomor, index) in kos_booking_model.kamar" :key="index">
-                                            <p class="bigger--regular-text__medium " v-if="index+1 < kos_booking_model.kamar.length">{{ nomor.number }}, &nbsp; </p>    
-                                            <p class="bigger--regular-text__medium " v-if="index+1 === kos_booking_model.kamar.length">{{ nomor.number }} </p>    
-                                        </div>
-                                    </v-layout>
-
-                                </v-layout>
-                            </v-flex>
-                        </v-layout>
-                        <v-layout column class="mt-16">
-                            <v-layout column align-start>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-9">
+                                    <p class="bigger--regular-text" v-if="kos_booking_model.kamar.length > 0">Nomor Kamar</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-10">
+                                    <div v-for="(nomor, index) in kos_booking_model.kamar" :key="index">
+                                        <p class="bigger--regular-text__medium " v-if="index+1 < kos_booking_model.kamar.length">{{ nomor.number }}, &nbsp; </p>    
+                                        <p class="bigger--regular-text__medium " v-if="index+1 === kos_booking_model.kamar.length">{{ nomor.number }} </p>    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pengelola-pesanan-rincian--detail__child-4">
                                 <p class="bigger--regular-text__medium ">Total Biaya</p>
                                 <p class="bigger--regular-text__bold  paragraph">Rp{{ total_harga }}</p>
-                            </v-layout>
-                            
-                            <v-layout align-start column v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'" class="pt-6" >
+                            </div>
+                        </div>
+                        <div class="pengelola-pesanan-rincian--action" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">
+                            <div class="pengelola-pesanan-rincian--action--child-1" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">
                                 <v-layout v-for="index in kos_booking_model.total_kamar" :key="index">
                                     <v-select
                                         outlined
@@ -65,18 +75,20 @@
                                         :rules=[rules.required]
                                     ></v-select>
                                 </v-layout>
-                            </v-layout>
-
-                            <v-layout column align-start v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'" class="pt-6">
-                                <v-btn color="#146C94" outlined elevation="0" width="30%" @click="imageDialog = true" class="" >Lihat Bukti Transfer</v-btn>
-                            </v-layout>
-                        </v-layout>
-
-                        <v-layout row class="mt-16" v-if="kos_booking_model.status != 'Terkonfirmasi' && kos_booking_model.status != 'Dibatalkan'">
-                            <v-btn color="#DF2E38" elevation="0" width="30%" @click="dialog_konfirmasi_batal = true" class="btn__main white--text mr-12" >Batalkan</v-btn>
-                            <v-btn color="#146C94" elevation="0" width="30%" type="submit" class="btn__main ml-12 white--text" >Terima</v-btn>
-                        </v-layout>
-                    </v-layout>
+                            </div>
+                            <div class="pengelola-pesanan-rincian--action--child-2" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">
+                                <v-btn color="#146C94" outlined elevation="0" @click="imageDialog = true" class="" >Lihat Bukti Transfer</v-btn>
+                            </div>
+                            <div class="pengelola-pesanan-rincian--action--child-3" v-if="kos_booking_model.status != 'Terkonfirmasi' && kos_booking_model.status != 'Dibatalkan'">
+                                <div class="pengelola-pesanan-rincian--action--child-3--1">
+                                    <v-btn color="#DF2E38" elevation="0" @click="dialog_konfirmasi_batal = true" class="btn__main white--text pengelola-pesanan-rincian--action__btn" >Batalkan</v-btn>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--action--child-3--2">
+                                    <v-btn color="#146C94" elevation="0" type="submit" class="btn__main white--text pengelola-pesanan-rincian--action__btn" >Terima</v-btn>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                        
                 </v-form>
             </v-card>
         </v-layout>
@@ -84,7 +96,7 @@
             <p class="title__medium">Belum terdapat transaksi</p>
         </v-layout>
         
-        <v-dialog v-model="dialog_konfirmasi_batal" persistent max-width="25vw">
+        <v-dialog v-model="dialog_konfirmasi_batal" persistent content-class="pengelola-pesanan-rincian__dialog">
             <v-card class="pa-4">
                 <p class="regular-text__medium">Ingin Membatalkan Pesanan?</p>
                 <v-layout justify-center class="pt-4">
@@ -94,7 +106,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="imageDialog" :lazy="true" max-width="40vw">
+        <v-dialog v-model="imageDialog" :lazy="true" content-class="pengelola-pesanan-rincian__dialog">
             <v-card class="rounded-card">
                 <v-toolbar dark color="primary" dense flat>
                 </v-toolbar>

@@ -83,6 +83,7 @@
                 v-for="(sublink, i) in item.sublinks"
                 :key="i"
                 link
+                @click="checkLink(sublink.link)"
                 class="text-left align-self-start pl-3"
               >
                 <v-list-item-icon>

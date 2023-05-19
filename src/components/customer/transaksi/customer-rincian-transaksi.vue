@@ -91,6 +91,7 @@
                 </div>
             </v-card>
         </v-layout>
+        
         <v-layout column class="layout-main" mt-6 v-else-if="!this.model_transaksi">
             <p class="title__medium">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
             <h3 class="subtitle--thin pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>

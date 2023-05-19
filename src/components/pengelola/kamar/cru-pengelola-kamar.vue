@@ -1,91 +1,166 @@
 <template>
-    <v-container grid-list-md class="pa-0" v-if="ready">
-        <v-layout align-start row>
-            <v-layout align-start class="mt-4 ml-6">
-                <p class="title__main">{{ nav_title }} Kamar</p>
-            </v-layout>
-            <v-layout align-end justify-end v-if="!editable">
-                <v-btn elevation="0" class="white--text btn__go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
-            </v-layout>
-        </v-layout>
-        <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kamar" autofocus lazy-validation>
-            <v-layout align-start justify-center  row class="mt-6">
-                <v-flex xs5>
-                    <v-layout column>
-                        <v-layout align-start column>
-                            <p class="regular-text">Nama Kos</p>
-                        </v-layout>
-                        <v-select
-                            v-model="kamar_model.kos_id"
-                            placeholder="Masukkan Nama Kos"
-                            outlined
-                            :items="listKos"
-                            :readonly="!editable"
-                            :rules="[(v) => !!v || 'This is required']"
-                        ></v-select>
-                        <v-layout align-start column>
-                            <p class="regular-text">Nomor Kamar</p>
-                        </v-layout>
-                        <v-text-field
-                            v-model="kamar_model.number"
-                            label="Masukkan Nama Nomor Kamar"
-                            :readonly="!ubahNomor"
-                            type="number"
-                            hide-spin-buttons
-                            outlined
-                            :rules="requiredRule"
-                        ></v-text-field>
-                            <!-- :rules="[checkDuplicateNomor, rules.required]" -->
-                        <v-layout align-start column>
-                            <p class="regular-text">Status Kamar</p>
-                        </v-layout>
-                        <v-select
-                            v-model="kamar_model.status"
-                            placeholder="Masukkan Status Kamar"
-                            outlined
-                            :items="status_kamar"
-                            :readonly="!editable"
-                            :rules="requiredRule"
-                            @input="checkStatus()"
-                        ></v-select>
-                        <v-layout align-start column>
-                            <p class="regular-text">Penyewa</p>
-                        </v-layout>
-                        <v-text-field
-                            v-model="kamar_model.nama_penyewa"
-                            placeholder="Masukkan Penyewa Kamar"
-                            outlined
-                            :readonly="!editable"
-                            :disabled="penyewa_disabled"
-                        ></v-text-field>
-                        <v-layout align-start column>
-                            <p class="regular-text">Fasilitas Kamar</p>
-                        </v-layout>
-                        <v-select
-                            v-model="kamar_model.kamar_fasilitas"
-                            placeholder="Masukkan Fasilitas Kamar"
-                            outlined
-                            :items="kamar_fasiitas_items"
-                            :readonly="!editable"
-                            multiple
-                            chips
-                            :rules="requiredRule2"
-                        ></v-select>
-                        <v-layout align-start column>
-                            <p class="regular-text">Harga Kamar</p>
-                        </v-layout>
-                        <v-text-field
-                            v-model="kamar_model.harga"
-                            label="Masukkan Harga Kamar"
-                            :prefix="prefix"
-                            :readonly="!editable"
-                            type="number"
-                            hide-spin-buttons
-                            outlined
-                        ></v-text-field>
+    <v-container grid-list-md v-if="ready">
 
-                    </v-layout>
-                </v-flex>
+        <div class="pengelola-kamar__grid">
+            <div class="pengelola-kamar__grid-1">
+                <div class="pengelola-kamar__grid-1__title-1">
+                    <p class="title__main">{{ nav_title }} Kamar</p>
+                </div>
+                <div class="pengelola-kamar__grid-1__title-2" v-if="!editable">
+                    <v-btn elevation="0" class="white--text btn__go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
+                </div>
+            </div>
+            <div class="pengelola-kamar__grid-2">
+                <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kamar" autofocus lazy-validation>
+                    <div class="pengelola-kamar__grid-2__parent">
+                        <div class="pengelola-kamar__grid-2__form-1">
+                            <v-layout align-start column>
+                                <p class="regular-text">Nama Kos</p>
+                            </v-layout>
+                            <v-select
+                                v-model="kamar_model.kos_id"
+                                placeholder="Masukkan Nama Kos"
+                                outlined
+                                :items="listKos"
+                                :readonly="!editable"
+                                :rules="[(v) => !!v || 'This is required']"
+                            ></v-select>
+                            <v-layout align-start column>
+                                <p class="regular-text">Nomor Kamar</p>
+                            </v-layout>
+                            <v-text-field
+                                v-model="kamar_model.number"
+                                label="Masukkan Nama Nomor Kamar"
+                                :readonly="!ubahNomor"
+                                type="number"
+                                hide-spin-buttons
+                                outlined
+                                :rules="requiredRule"
+                            ></v-text-field>
+                                <!-- :rules="[checkDuplicateNomor, rules.required]" -->
+                            <v-layout align-start column>
+                                <p class="regular-text">Status Kamar</p>
+                            </v-layout>
+                            <v-select
+                                v-model="kamar_model.status"
+                                placeholder="Masukkan Status Kamar"
+                                outlined
+                                :items="status_kamar"
+                                :readonly="!editable"
+                                :rules="requiredRule"
+                                @input="checkStatus()"
+                            ></v-select>
+                            <v-layout align-start column>
+                                <p class="regular-text">Penyewa</p>
+                            </v-layout>
+                            <v-text-field
+                                v-model="kamar_model.nama_penyewa"
+                                placeholder="Masukkan Penyewa Kamar"
+                                outlined
+                                :readonly="!editable"
+                                :disabled="penyewa_disabled"
+                            ></v-text-field>
+                            <v-layout align-start column>
+                                <p class="regular-text">Fasilitas Kamar</p>
+                            </v-layout>
+                            <v-select
+                                v-model="kamar_model.kamar_fasilitas"
+                                placeholder="Masukkan Fasilitas Kamar"
+                                outlined
+                                :items="kamar_fasiitas_items"
+                                :readonly="!editable"
+                                multiple
+                                chips
+                                :rules="requiredRule2"
+                            ></v-select>
+                            <v-layout align-start column>
+                                <p class="regular-text">Harga Kamar</p>
+                            </v-layout>
+                            <v-text-field
+                                v-model="kamar_model.harga"
+                                label="Masukkan Harga Kamar"
+                                :prefix="prefix"
+                                :readonly="!editable"
+                                type="number"
+                                hide-spin-buttons
+                                outlined
+                            ></v-text-field>
+
+                        </div>
+                        <div class="pengelola-kamar__grid-2__form-2">
+                            <div class="pengelola-kamar__grid-2__form-2--child-1">
+                                <p class="regular-text__medium paragraph">Foto Kamar</p>
+                            </div>
+                            <div class="pengelola-kamar__grid-2__form-2--child-2">
+                                <div class="pengelola-kamar__grid-2__form-2--child-2__photo-1" :style="{backgroundImage: `url(${urls[0]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(0)" v-if="urls[0]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-2--child-2__photo-2" :style="{backgroundImage: `url(${urls[1]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(1)" v-if="urls[1]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-2--child-2__photo-3" :style="{backgroundImage: `url(${urls[2]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(2)" v-if="urls[2]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-2--child-2__photo-4" :style="{backgroundImage: `url(${urls[3]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(3)" v-if="urls[3]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-2--child-2__photo-5" :style="{backgroundImage: `url(${urls[4]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(4)" v-if="urls[4]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-2--child-2__photo-6" :style="{backgroundImage: `url(${urls[5]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(5)" v-if="urls[5]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                            </div>
+                            <div class="pengelola-kamar__grid-2__form-2--child-3">
+                                <v-btn outlined elevation="0" mx-0 color="#333" class="button__lihat-foto" @click="imageDialog = true">
+                                    <span class="material-symbols-outlined">
+                                    photo_camera
+                                    </span>
+                                    &nbsp;Lihat Semua Foto
+                                </v-btn>
+                            </div>
+                            <div class="pengelola-kamar__grid-2__form-2--child-4">
+                                <v-btn      
+                                    outlined                           
+                                    elevation="0" 
+                                    @click="onPickFile()" 
+                                    class="btn__tambah-foto" >
+                                    Tambahkan Foto
+                                </v-btn>
+                                <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
+                            </div>
+                        </div>
+                        <div class="pengelola-kamar__grid-2__form-3" v-if="editable">
+                            <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit">Simpan Perubahan</v-btn>
+                        </div>
+                    </div>
+                </v-form>
+            </div>
+        </div>
+
+
+
+      
+            <!-- <v-layout align-start justify-center  row class="mt-6">
+
                 <v-flex xs6 class="ml-8">
                     <v-layout row wrap class="">
                         <v-flex
@@ -118,30 +193,13 @@
                             </v-layout>
                         </v-flex>
                     </v-layout>
-                    <v-layout justify-end class="pb-4">
-                        <v-btn outlined elevation="0" mx-0 color="#333" class="button__lihat-foto" @click="imageDialog = true">
-                            <span class="material-symbols-outlined">
-                            photo_camera
-                            </span>
-                            &nbsp;Lihat Semua Foto
-                        </v-btn>
-                    </v-layout>
-                    <v-layout justify-end class="pb-8">
-                        <v-btn      
-                            outlined                           
-                            elevation="0" 
-                            @click="onPickFile()" 
-                            class="btn__tambah-foto" >
-                            Tambahkan Foto
-                        </v-btn>
-                        <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
-                    </v-layout>
                 </v-flex>
             </v-layout>
             <v-flex class="my-4" v-if="editable">
-                <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
-            </v-flex>
-        </v-form>
+
+            </v-flex> -->
+
+
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
         <v-dialog v-model="imageDialog" :lazy="true" max-width="60vw">

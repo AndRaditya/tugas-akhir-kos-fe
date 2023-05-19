@@ -250,7 +250,15 @@
     &__simpan-perubahan{
         @extend .btn;
         padding: 3.2rem 6.4rem !important;
+        width: 30%;
         background-color: var(--color-primary) !important;
+
+        @media only screen and (max-width: $bp-small) {
+            padding: 24px 48px !important;
+            width: 50%;
+            margin: 12px 0px;
+        }
+    
     }
 
     &__tambah-foto{

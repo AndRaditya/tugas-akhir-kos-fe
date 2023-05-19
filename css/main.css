@@ -260,7 +260,15 @@
 }
 .btn__simpan-perubahan {
   padding: 3.2rem 6.4rem !important;
+  width: 30%;
   background-color: var(--color-primary) !important;
+}
+@media only screen and (max-width: 37.5em) {
+  .btn__simpan-perubahan {
+    padding: 24px 48px !important;
+    width: 50%;
+    margin: 12px 0px;
+  }
 }
 .btn__tambah-foto {
   color: var(--color-primary) !important;
@@ -419,6 +427,39 @@ li {
 
 .v-list-group__header {
   padding: 0 !important;
+}
+
+.v-textarea textarea {
+  line-height: 1.5 !important;
+}
+
+.v-data-table__mobile-row__header,
+.v-data-table__mobile-row__cell {
+  font-size: 14px !important;
+}
+
+@media only screen and (max-width: 37.5em) {
+  .v-data-table-header tr th span {
+    font-size: 12px !important;
+  }
+}
+
+@media only screen and (max-width: 37.5em) {
+  .v-chip__close {
+    padding-left: 12px;
+  }
+}
+
+@media only screen and (max-width: 37.5em) {
+  .v-select__selections {
+    margin-top: 12px;
+  }
+}
+
+@media only screen and (max-width: 68.75em) {
+  .v-select__selection--comma {
+    font-size: 14px !important;
+  }
 }
 
 .image__grid, .image__grid-child-5, .image__grid-child-4, .image__grid-child-3, .image__grid-child-2 {
@@ -1001,12 +1042,12 @@ li {
     grid-template-columns: 0.5fr 1fr 0.5fr;
   }
 }
-@media only screen and (max-width: 37.5em) {
+@media only screen and (max-width: 56.25em) {
   .user-profile__grid {
-    grid-template-columns: auto 0.75fr auto;
+    grid-template-columns: 0.25fr 1fr 0.25fr;
   }
 }
-@media only screen and (max-width: 25em) {
+@media only screen and (max-width: 37.5em) {
   .user-profile__grid {
     grid-template-columns: 1fr;
   }
@@ -1014,7 +1055,7 @@ li {
 .user-profile__grid--child {
   grid-area: 1/2/2/3;
 }
-@media only screen and (max-width: 25em) {
+@media only screen and (max-width: 37.5em) {
   .user-profile__grid--child {
     grid-area: 1/1/2/2;
   }
@@ -1071,7 +1112,7 @@ li {
 @media only screen and (max-width: 37.5em) {
   .cust-transaksi__child-1__title {
     display: flex;
-    align-items: start;
+    align-items: flex-start;
   }
 }
 .cust-transaksi__child-2 {
@@ -1199,13 +1240,13 @@ li {
   grid-area: 1/2/2/3;
   display: flex;
   justify-content: flex-end !important;
-  align-items: start !important;
+  align-items: flex-start !important;
 }
 @media only screen and (max-width: 25em) {
   .cust-transaksi--detail__child-1__header-2 {
     grid-area: 2/1/3/2;
-    justify-content: start !important;
-    align-items: start !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
   }
 }
 .cust-transaksi--detail__child-2 {
@@ -1290,8 +1331,8 @@ li {
 .filter-dialog__tanggal--child-1 {
   grid-area: 1/1/2/3;
   display: grid;
-  align-items: start !important;
-  justify-content: start !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
 }
 @media only screen and (max-width: 37.5em) {
   .filter-dialog__tanggal--child-1 {
@@ -1339,8 +1380,8 @@ li {
 .cust-rincian-pesanan__title {
   grid-area: 1/1/2/6;
   display: grid;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 @media only screen and (max-width: 31.25em) {
   .cust-rincian-pesanan__title {
@@ -1366,14 +1407,14 @@ li {
   grid-area: 1/1/2/2;
   display: grid;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   text-align: left;
 }
 .cust-rincian-pesanan__counter--child-2 {
   grid-area: 1/2/2/3;
   display: flex;
-  align-items: start;
-  justify-content: end;
+  align-items: flex-start;
+  align-items: flex-end;
 }
 .cust-rincian-pesanan__rincian-transaksi {
   grid-area: 3/1/4/4;
@@ -1393,14 +1434,14 @@ li {
 .cust-rincian-pesanan__rincian-transaksi--template, .cust-rincian-pesanan__rincian-transaksi--child-8, .cust-rincian-pesanan__rincian-transaksi--child-7, .cust-rincian-pesanan__rincian-transaksi--child-6, .cust-rincian-pesanan__rincian-transaksi--child-5, .cust-rincian-pesanan__rincian-transaksi--child-4, .cust-rincian-pesanan__rincian-transaksi--child-3 {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
 }
 .cust-rincian-pesanan__rincian-transaksi--child-1 {
   grid-area: 1/1/2/3;
   display: grid;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .cust-rincian-pesanan__rincian-transaksi--child-2 {
   grid-area: 2/1/3/3;
@@ -1458,8 +1499,8 @@ li {
 }
 .cust-rincian-pesanan__pricing--child-1--template, .cust-rincian-pesanan__pricing--child-1__title-4, .cust-rincian-pesanan__pricing--child-1__title-3, .cust-rincian-pesanan__pricing--child-1__title-2, .cust-rincian-pesanan__pricing--child-1__title-1 {
   display: grid;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   text-align: left;
 }
 .cust-rincian-pesanan__pricing--child-1__title-1 {
@@ -1486,15 +1527,15 @@ li {
 .cust-rincian-pesanan__pricing--child-2__child-1 {
   grid-area: 1/1/2/3;
   display: grid;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   text-align: left;
 }
 .cust-rincian-pesanan__pricing--child-2__child-2 {
   grid-area: 1/2/2/3;
   display: grid;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   text-align: left;
 }
 .cust-rincian-pesanan__pricing--child-3 {
@@ -1523,8 +1564,8 @@ li {
 .cust-rincian-pesanan__pricing--child-4__transfer-1 {
   grid-area: 1/1/3/2;
   display: grid;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 @media only screen and (max-width: 37.5em) {
   .cust-rincian-pesanan__pricing--child-4__transfer-1 {
@@ -1534,7 +1575,7 @@ li {
 .cust-rincian-pesanan__pricing--child-4__transfer-2 {
   grid-area: 1/2/3/3;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   flex-direction: column;
   justify-content: center;
 }
@@ -1545,21 +1586,22 @@ li {
 }
 .cust-rincian-pesanan__pricing--child-4__transfer-2__row {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
 }
 .cust-rincian-pesanan__pricing--child-5 {
   grid-area: 5/1/6/5;
   display: flex;
-  align-items: center;
-  justify-content: start;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: 1.8rem;
 }
 .cust-rincian-pesanan__pricing--child-6 {
   grid-area: 6/1/7/5;
   display: flex;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
   padding: 1.8rem;
   line-height: 2;
@@ -1572,8 +1614,8 @@ li {
 .cust-rincian-pesanan__pricing--child-7 {
   grid-area: 7/1/8/5;
   display: flex;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
   padding: 1.8rem;
   padding-bottom: 0;
@@ -1599,7 +1641,7 @@ li {
 .cust-rincian-pesanan__pemesan--template, .cust-rincian-pesanan__pemesan--child-8, .cust-rincian-pesanan__pemesan--child-7, .cust-rincian-pesanan__pemesan--child-6, .cust-rincian-pesanan__pemesan--child-5, .cust-rincian-pesanan__pemesan--child-4, .cust-rincian-pesanan__pemesan--child-3 {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
 }
 .cust-rincian-pesanan__pemesan--parent {
@@ -1785,5 +1827,1109 @@ li {
 @media only screen and (max-width: 37.5em) {
   .cust-rincian-pesanan .card-pesanan {
     padding: 12px;
+  }
+}
+
+.dialog-lokasi__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, auto);
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+.dialog-lokasi__grid--child-1 {
+  grid-area: 1/1/2/3;
+  display: grid;
+  align-items: center;
+  justify-content: flex-start;
+}
+.dialog-lokasi__grid--child-2 {
+  grid-area: 2/1/3/2;
+  display: grid;
+  align-items: center;
+  justify-content: flex-start;
+}
+.dialog-lokasi__grid--child-3 {
+  grid-area: 2/2/3/3;
+  display: grid;
+  align-items: center;
+  justify-content: flex-end;
+}
+.dialog-lokasi__grid--child-4 {
+  grid-area: 3/1/4/3;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-pesanan-cust {
+  max-width: 25vw;
+}
+@media only screen and (max-width: 68.75em) {
+  .dialog-pesanan-cust {
+    max-width: 35vw;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .dialog-pesanan-cust {
+    max-width: 50vw;
+  }
+}
+@media only screen and (max-width: 31.25em) {
+  .dialog-pesanan-cust {
+    max-width: 75vw;
+  }
+}
+
+.pengelola-kos__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.pengelola-kos__grid-1 {
+  grid-area: 1/1/2/3;
+  display: grid;
+  align-items: center;
+  justify-content: flex-start;
+}
+.pengelola-kos__grid-2 {
+  grid-area: 2/1/3/2;
+}
+.pengelola-kos__grid-2__parent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr auto;
+  grid-column-gap: 1.6rem;
+  grid-row-gap: 1.6rem;
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__parent {
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: 1fr;
+    grid-row-gap: 24px;
+  }
+}
+.pengelola-kos__grid-2__form-1 {
+  grid-area: 1/1/2/2;
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-1 {
+    grid-area: 1/1/2/2;
+  }
+}
+.pengelola-kos__grid-2__form-1__listrik {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 1.2rem;
+  grid-row-gap: 0px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-1__listrik {
+    grid-template-rows: repeat(5, auto);
+    grid-template-columns: 1fr;
+    grid-row-gap: 12px;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-1__listrik {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: repeat(3, auto);
+    grid-row-gap: 8px;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-kos__grid-2__form-1__listrik {
+    grid-template-rows: repeat(5, auto);
+    grid-template-columns: 1fr;
+    grid-row-gap: 12px;
+  }
+}
+.pengelola-kos__grid-2__form-1__listrik--child-1 {
+  grid-area: 1/1/2/3;
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-1 {
+    margin-bottom: 8px;
+  }
+}
+.pengelola-kos__grid-2__form-1__listrik--child-2 {
+  grid-area: 2/1/3/2;
+}
+.pengelola-kos__grid-2__form-1__listrik--child-3 {
+  grid-area: 2/2/3/3;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-3 {
+    grid-area: 3/1/4/2;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-3 {
+    grid-area: 2/2/3/3;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-3 {
+    grid-area: 3/1/4/2;
+  }
+}
+.pengelola-kos__grid-2__form-1__listrik--child-4 {
+  grid-area: 3/1/4/2;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-4 {
+    grid-area: 4/1/5/2;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-4 {
+    grid-area: 3/1/4/2;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-4 {
+    grid-area: 4/1/5/2;
+  }
+}
+.pengelola-kos__grid-2__form-1__listrik--child-5 {
+  grid-area: 3/2/4/3;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-5 {
+    grid-area: 5/1/6/2;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-5 {
+    grid-area: 3/2/4/3;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-kos__grid-2__form-1__listrik--child-5 {
+    grid-area: 5/1/6/2;
+  }
+}
+.pengelola-kos__grid-2__form-2 {
+  grid-area: 1/2/2/3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 0.1fr 0.5fr 0.1fr 0.1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 1.2rem;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-kos__grid-2__form-2 {
+    grid-template-rows: 0.01fr 0.25fr 0.01fr 0.01fr;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-2 {
+    grid-area: 2/1/3/2;
+    grid-row-gap: 16px;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-1 {
+  grid-area: 1/1/2/2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-kos__grid-2__form-2--child-1 {
+    display: initial;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-2 {
+  grid-area: 2/1/3/3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 0.25fr);
+  grid-column-gap: 2.4rem;
+  grid-row-gap: 2.4rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-2--child-2 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 0.1fr);
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-2--child-2 {
+    grid-column-gap: 18px;
+    grid-row-gap: 18px;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-2--template, .pengelola-kos__grid-2__form-2--child-2__photo-6, .pengelola-kos__grid-2__form-2--child-2__photo-5, .pengelola-kos__grid-2__form-2--child-2__photo-4, .pengelola-kos__grid-2__form-2--child-2__photo-3, .pengelola-kos__grid-2__form-2--child-2__photo-2, .pengelola-kos__grid-2__form-2--child-2__photo-1 {
+  height: 30vh;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 6px;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-kos__grid-2__form-2--child-2--template, .pengelola-kos__grid-2__form-2--child-2__photo-6, .pengelola-kos__grid-2__form-2--child-2__photo-5, .pengelola-kos__grid-2__form-2--child-2__photo-4, .pengelola-kos__grid-2__form-2--child-2__photo-3, .pengelola-kos__grid-2__form-2--child-2__photo-2, .pengelola-kos__grid-2__form-2--child-2__photo-1 {
+    height: 20vh;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-2--child-2--template, .pengelola-kos__grid-2__form-2--child-2__photo-6, .pengelola-kos__grid-2__form-2--child-2__photo-5, .pengelola-kos__grid-2__form-2--child-2__photo-4, .pengelola-kos__grid-2__form-2--child-2__photo-3, .pengelola-kos__grid-2__form-2--child-2__photo-2, .pengelola-kos__grid-2__form-2--child-2__photo-1 {
+    height: 25vh;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-kos__grid-2__form-2--child-2--template, .pengelola-kos__grid-2__form-2--child-2__photo-6, .pengelola-kos__grid-2__form-2--child-2__photo-5, .pengelola-kos__grid-2__form-2--child-2__photo-4, .pengelola-kos__grid-2__form-2--child-2__photo-3, .pengelola-kos__grid-2__form-2--child-2__photo-2, .pengelola-kos__grid-2__form-2--child-2__photo-1 {
+    height: 20vh;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-2__button {
+  transform: translate(50%, -50%);
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
+  z-index: 5;
+}
+.pengelola-kos__grid-2__form-2--child-2__photo-1 {
+  grid-area: 1/1/2/2;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-2--child-2__photo-1 {
+    grid-area: 1/1/2/2;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-2__photo-2 {
+  grid-area: 1/2/2/3;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-2--child-2__photo-2 {
+    grid-area: 1/2/2/3;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-2__photo-3 {
+  grid-area: 1/3/2/4;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-2--child-2__photo-3 {
+    grid-area: 2/1/3/2;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-2__photo-4 {
+  grid-area: 2/1/3/2;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-2--child-2__photo-4 {
+    grid-area: 2/2/3/3;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-2__photo-5 {
+  grid-area: 2/2/3/3;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-2--child-2__photo-5 {
+    grid-area: 3/1/4/2;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-2__photo-6 {
+  grid-area: 2/3/3/4;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kos__grid-2__form-2--child-2__photo-6 {
+    grid-area: 3/2/4/3;
+  }
+}
+.pengelola-kos__grid-2__form-2--child-3 {
+  grid-area: 3/2/4/3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.pengelola-kos__grid-2__form-2--child-4 {
+  grid-area: 4/2/5/3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.pengelola-kos__grid-2__form-3 {
+  grid-area: 2/1/3/3;
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kos__grid-2__form-3 {
+    grid-area: 3/1/4/2;
+  }
+}
+
+.pengelola-kamar__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.pengelola-kamar__grid-1 {
+  grid-area: 1/1/2/3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+.pengelola-kamar__grid-1__title-1 {
+  grid-area: 1/1/2/2;
+  display: grid;
+  align-items: center;
+  justify-content: flex-start;
+}
+.pengelola-kamar__grid-1__title-2 {
+  grid-area: 1/2/2/3;
+  display: grid;
+  align-items: center;
+  justify-content: flex-end;
+}
+.pengelola-kamar__grid-2 {
+  grid-area: 2/1/3/2;
+}
+.pengelola-kamar__grid-2__parent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr auto;
+  grid-column-gap: 1.6rem;
+  grid-row-gap: 1.6rem;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-kamar__grid-2__parent {
+    grid-template-columns: 0.75fr 1fr;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kamar__grid-2__parent {
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: 1fr;
+    grid-row-gap: 24px;
+  }
+}
+.pengelola-kamar__grid-2__form-1 {
+  grid-area: 1/1/2/2;
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kamar__grid-2__form-1 {
+    grid-area: 1/1/2/2;
+  }
+}
+.pengelola-kamar__grid-2__form-2 {
+  grid-area: 1/2/2/3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 0.1fr 0.5fr 0.1fr 0.1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 1.2rem;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-kamar__grid-2__form-2 {
+    grid-template-rows: 0.01fr 0.25fr 0.01fr 0.01fr;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kamar__grid-2__form-2 {
+    grid-area: 2/1/3/2;
+    grid-row-gap: 16px;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-1 {
+  grid-area: 1/1/2/2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-kamar__grid-2__form-2--child-1 {
+    display: initial;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-2 {
+  grid-area: 2/1/3/3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 0.25fr);
+  grid-column-gap: 2.4rem;
+  grid-row-gap: 2.4rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kamar__grid-2__form-2--child-2 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 0.1fr);
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kamar__grid-2__form-2--child-2 {
+    grid-column-gap: 18px;
+    grid-row-gap: 18px;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-2--template, .pengelola-kamar__grid-2__form-2--child-2__photo-6, .pengelola-kamar__grid-2__form-2--child-2__photo-5, .pengelola-kamar__grid-2__form-2--child-2__photo-4, .pengelola-kamar__grid-2__form-2--child-2__photo-3, .pengelola-kamar__grid-2__form-2--child-2__photo-2, .pengelola-kamar__grid-2__form-2--child-2__photo-1 {
+  height: 30vh;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 6px;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-kamar__grid-2__form-2--child-2--template, .pengelola-kamar__grid-2__form-2--child-2__photo-6, .pengelola-kamar__grid-2__form-2--child-2__photo-5, .pengelola-kamar__grid-2__form-2--child-2__photo-4, .pengelola-kamar__grid-2__form-2--child-2__photo-3, .pengelola-kamar__grid-2__form-2--child-2__photo-2, .pengelola-kamar__grid-2__form-2--child-2__photo-1 {
+    height: 25vh;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-kamar__grid-2__form-2--child-2--template, .pengelola-kamar__grid-2__form-2--child-2__photo-6, .pengelola-kamar__grid-2__form-2--child-2__photo-5, .pengelola-kamar__grid-2__form-2--child-2__photo-4, .pengelola-kamar__grid-2__form-2--child-2__photo-3, .pengelola-kamar__grid-2__form-2--child-2__photo-2, .pengelola-kamar__grid-2__form-2--child-2__photo-1 {
+    height: 20vh;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-2__button {
+  transform: translate(50%, -50%);
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
+  z-index: 5;
+}
+.pengelola-kamar__grid-2__form-2--child-2__photo-1 {
+  grid-area: 1/1/2/2;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kamar__grid-2__form-2--child-2__photo-1 {
+    grid-area: 1/1/2/2;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-2__photo-2 {
+  grid-area: 1/2/2/3;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kamar__grid-2__form-2--child-2__photo-2 {
+    grid-area: 1/2/2/3;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-2__photo-3 {
+  grid-area: 1/3/2/4;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kamar__grid-2__form-2--child-2__photo-3 {
+    grid-area: 2/1/3/2;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-2__photo-4 {
+  grid-area: 2/1/3/2;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kamar__grid-2__form-2--child-2__photo-4 {
+    grid-area: 2/2/3/3;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-2__photo-5 {
+  grid-area: 2/2/3/3;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kamar__grid-2__form-2--child-2__photo-5 {
+    grid-area: 3/1/4/2;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-2__photo-6 {
+  grid-area: 2/3/3/4;
+  position: relative;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-kamar__grid-2__form-2--child-2__photo-6 {
+    grid-area: 3/2/4/3;
+  }
+}
+.pengelola-kamar__grid-2__form-2--child-3 {
+  grid-area: 3/2/4/3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.pengelola-kamar__grid-2__form-2--child-4 {
+  grid-area: 4/2/5/3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.pengelola-kamar__grid-2__form-3 {
+  grid-area: 2/1/3/3;
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-kamar__grid-2__form-3 {
+    grid-area: 3/1/4/2;
+  }
+}
+
+.pengelola-pesanan__header {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) repeat(2, 0.5fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+@media only screen and (max-width: 80em) {
+  .pengelola-pesanan__header {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-pesanan__header {
+    grid-template-columns: 1fr;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan__header {
+    grid-template-rows: 0.25fr repeat(2, 0.5fr);
+  }
+}
+.pengelola-pesanan__child-1 {
+  grid-area: 1/1/4/3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+@media only screen and (max-width: 80em) {
+  .pengelola-pesanan__child-1 {
+    grid-template-columns: auto;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-pesanan__child-1 {
+    grid-area: 1/1/4/2;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan__child-1 {
+    display: flex;
+  }
+}
+.pengelola-pesanan__child-1__title {
+  grid-area: 1/1/2/2;
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan__child-1__title {
+    display: flex;
+    align-items: flex-start;
+  }
+}
+.pengelola-pesanan__child-2 {
+  grid-area: 1/3/4/5;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  grid-template-rows: 1fr 1fr;
+  grid-column-gap: 0px;
+}
+@media only screen and (max-width: 80em) {
+  .pengelola-pesanan__child-2 {
+    grid-area: 1/2/4/3;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-pesanan__child-2 {
+    grid-area: 2/1/4/2;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-pesanan__child-2 {
+    grid-template-columns: 1fr 0.5fr 1fr;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan__child-2 {
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 1.8rem;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-pesanan__child-2 {
+    grid-template-rows: repeat(2, 1fr) auto;
+    grid-template-columns: 1fr;
+  }
+}
+.pengelola-pesanan__child-2__search {
+  grid-area: 1/1/2/3;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-pesanan__child-2__search {
+    grid-area: 1/1/2/4;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan__child-2__search {
+    grid-area: 1/1/2/3;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-pesanan__child-2__search {
+    grid-area: 1/1/2/2;
+  }
+}
+.pengelola-pesanan__child-2__sort {
+  grid-area: 2/1/3/2;
+  display: inline-grid;
+  align-items: center;
+  justify-items: end;
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-pesanan__child-2__sort {
+    justify-items: start !important;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan__child-2__sort {
+    align-items: center !important;
+    justify-items: start !important;
+  }
+}
+.pengelola-pesanan__child-2__filter {
+  grid-area: 2/2/3/3;
+  display: inline-grid;
+  align-items: center !important;
+  justify-items: end !important;
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan__child-2__filter {
+    align-items: center !important;
+    justify-items: start !important;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-pesanan__child-2__filter {
+    grid-area: 3/1/4/2;
+    margin-bottom: 12px;
+  }
+}
+
+.pengelola-pesanan--detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr auto;
+  grid-column-gap: 0px;
+  grid-row-gap: 2.4rem;
+}
+.pengelola-pesanan--detail__child-1 {
+  grid-area: 1/1/2/2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+@media only screen and (max-width: 31.25em) {
+  .pengelola-pesanan--detail__child-1 {
+    grid-template-columns: 0.5fr 1fr;
+    grid-column-gap: 8px;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-pesanan--detail__child-1 {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    grid-row-gap: 8px;
+    grid-column-gap: 0;
+  }
+}
+.pengelola-pesanan--detail__child-1__header-1 {
+  grid-area: 1/1/2/2;
+  text-align: left;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  line-height: 2;
+}
+.pengelola-pesanan--detail__child-1__header-2 {
+  grid-area: 1/2/2/3;
+  display: flex;
+  justify-content: flex-end !important;
+  align-items: flex-start !important;
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-pesanan--detail__child-1__header-2 {
+    grid-area: 2/1/3/2;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+  }
+}
+.pengelola-pesanan--detail__child-2 {
+  grid-area: 2/1/3/2;
+}
+.pengelola-pesanan--detail__child-2--line {
+  border-bottom: 1px solid rgba(51, 51, 51, 0.29) !important;
+}
+.pengelola-pesanan--detail__child-3 {
+  grid-area: 3/1/4/2;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  grid-template-rows: repeat(5, auto);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+@media only screen and (max-width: 31.25em) {
+  .pengelola-pesanan--detail__child-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.pengelola-pesanan--detail__child-3--template, .pengelola-pesanan-rincian--detail__child-3__desc-9, .pengelola-pesanan-rincian--detail__child-3__desc-8, .pengelola-pesanan-rincian--detail__child-3__desc-7, .pengelola-pesanan-rincian--detail__child-3__desc-6, .pengelola-pesanan-rincian--detail__child-3__desc-5, .pengelola-pesanan-rincian--detail__child-3__desc-4, .pengelola-pesanan-rincian--detail__child-3__desc-3, .pengelola-pesanan-rincian--detail__child-3__desc-2, .pengelola-pesanan-rincian--detail__child-3__desc-1, .pengelola-pesanan--detail__child-3__desc-9, .pengelola-pesanan--detail__child-3__desc-8, .pengelola-pesanan--detail__child-3__desc-7, .pengelola-pesanan--detail__child-3__desc-6, .pengelola-pesanan--detail__child-3__desc-5, .pengelola-pesanan--detail__child-3__desc-4, .pengelola-pesanan--detail__child-3__desc-3, .pengelola-pesanan--detail__child-3__desc-2, .pengelola-pesanan--detail__child-3__desc-1 {
+  display: grid !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: left;
+}
+.pengelola-pesanan--detail__child-3__desc-1 {
+  grid-area: 1/1/2/2;
+}
+.pengelola-pesanan--detail__child-3__desc-2 {
+  grid-area: 1/2/2/3;
+}
+.pengelola-pesanan--detail__child-3__desc-3 {
+  grid-area: 2/1/3/2;
+}
+.pengelola-pesanan--detail__child-3__desc-4 {
+  grid-area: 2/2/3/3;
+}
+.pengelola-pesanan--detail__child-3__desc-5 {
+  grid-area: 3/1/4/2;
+}
+.pengelola-pesanan--detail__child-3__desc-6 {
+  grid-area: 3/2/4/3;
+}
+.pengelola-pesanan--detail__child-3__desc-7 {
+  grid-area: 4/1/5/2;
+}
+.pengelola-pesanan--detail__child-3__desc-8 {
+  grid-area: 4/2/5/3;
+}
+.pengelola-pesanan--detail__child-3__desc-9 {
+  grid-area: 5/1/6/2;
+}
+.pengelola-pesanan--detail__child-3__desc-10 {
+  grid-area: 5/2/6/3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.pengelola-pesanan--detail__child-4 {
+  grid-area: 4/1/5/2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.pengelola-pesanan--detail__child-4__desc-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 12px;
+  grid-area: 1/1/5/2;
+}
+.pengelola-pesanan--detail__child-4__desc-2 {
+  grid-area: 1/2/2/3;
+  display: grid;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.pengelola-pesanan--detail__child-4__desc-2__btn {
+  width: 100%;
+}
+
+.filter-dialog {
+  max-width: 40vw;
+}
+@media only screen and (max-width: 68.75em) {
+  .filter-dialog {
+    max-width: 60vw !important;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .filter-dialog {
+    max-width: 75vw !important;
+  }
+}
+@media only screen and (max-width: 31.25em) {
+  .filter-dialog {
+    max-width: 90vw !important;
+  }
+}
+.filter-dialog__tanggal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-column-gap: 1.6rem;
+  grid-row-gap: 0px;
+  padding: 16px;
+}
+@media only screen and (max-width: 37.5em) {
+  .filter-dialog__tanggal {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    padding: 16px;
+    padding-bottom: 0;
+  }
+}
+.filter-dialog__tanggal--child-1 {
+  grid-area: 1/1/2/3;
+  display: grid;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+@media only screen and (max-width: 37.5em) {
+  .filter-dialog__tanggal--child-1 {
+    grid-area: 1/1/2/2;
+  }
+}
+.filter-dialog__tanggal--child-2 {
+  grid-area: 2/1/3/2;
+}
+@media only screen and (max-width: 37.5em) {
+  .filter-dialog__tanggal--child-2 {
+    grid-area: 2/1/3/2;
+  }
+}
+.filter-dialog__tanggal--child-3 {
+  grid-area: 2/2/3/3;
+}
+@media only screen and (max-width: 37.5em) {
+  .filter-dialog__tanggal--child-3 {
+    grid-area: 3/1/4/2;
+  }
+}
+.filter-dialog__btn {
+  width: 30%;
+}
+@media only screen and (max-width: 31.25em) {
+  .filter-dialog__btn {
+    width: 40%;
+  }
+}
+
+.pengelola-pesanan-rincian__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.pengelola-pesanan-rincian__parent {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  grid-column-gap: 1.2rem;
+  grid-row-gap: 1.2rem;
+}
+.pengelola-pesanan-rincian--detail {
+  grid-area: 1/1/2/2;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr auto;
+  grid-column-gap: 0px;
+  grid-row-gap: 2.4rem;
+}
+.pengelola-pesanan-rincian--detail__child-1 {
+  grid-area: 1/1/2/2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+@media only screen and (max-width: 31.25em) {
+  .pengelola-pesanan-rincian--detail__child-1 {
+    grid-template-columns: 0.5fr 1fr;
+    grid-column-gap: 8px;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-pesanan-rincian--detail__child-1 {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    grid-row-gap: 8px;
+    grid-column-gap: 0;
+  }
+}
+.pengelola-pesanan-rincian--detail__child-1__header-1 {
+  grid-area: 1/1/2/2;
+  text-align: left;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  line-height: 2;
+}
+.pengelola-pesanan-rincian--detail__child-1__header-2 {
+  grid-area: 1/2/2/3;
+  display: flex;
+  justify-content: flex-end !important;
+  align-items: flex-start !important;
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-pesanan-rincian--detail__child-1__header-2 {
+    grid-area: 2/1/3/2;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+  }
+}
+.pengelola-pesanan-rincian--detail__child-2 {
+  grid-area: 2/1/3/2;
+}
+.pengelola-pesanan-rincian--detail__child-2--line {
+  border-bottom: 1px solid rgba(51, 51, 51, 0.29) !important;
+}
+.pengelola-pesanan-rincian--detail__child-3 {
+  grid-area: 3/1/4/2;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  grid-template-rows: repeat(5, auto);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+@media only screen and (max-width: 31.25em) {
+  .pengelola-pesanan-rincian--detail__child-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.pengelola-pesanan-rincian--detail__child-3--template {
+  display: grid !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: left;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-1 {
+  grid-area: 1/1/2/2;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-2 {
+  grid-area: 1/2/2/3;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-3 {
+  grid-area: 2/1/3/2;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-4 {
+  grid-area: 2/2/3/3;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-5 {
+  grid-area: 3/1/4/2;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-6 {
+  grid-area: 3/2/4/3;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-7 {
+  grid-area: 4/1/5/2;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-8 {
+  grid-area: 4/2/5/3;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-9 {
+  grid-area: 5/1/6/2;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-10 {
+  grid-area: 5/2/6/3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.pengelola-pesanan-rincian--detail__child-4 {
+  grid-area: 4/1/5/2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.pengelola-pesanan-rincian--action {
+  grid-area: 2/1/3/2;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, 0.25fr);
+  grid-column-gap: 36px;
+  grid-row-gap: 1.2rem;
+}
+.pengelola-pesanan-rincian--action--template, .pengelola-pesanan-rincian--action--child-4, .pengelola-pesanan-rincian--action--child-2, .pengelola-pesanan-rincian--action--child-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.pengelola-pesanan-rincian--action__btn {
+  width: 100%;
+}
+.pengelola-pesanan-rincian--action--child-1 {
+  grid-area: 1/1/2/2;
+  margin-top: 24px;
+}
+.pengelola-pesanan-rincian--action--child-2 {
+  grid-area: 2/1/3/2;
+}
+.pengelola-pesanan-rincian--action--child-3 {
+  grid-area: 3/1/4/2;
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 48rem);
+  grid-template-rows: 1fr;
+  grid-column-gap: 48px;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-pesanan-rincian--action--child-3 {
+    grid-template-columns: repeat(2, 32rem);
+    grid-column-gap: 36px;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan-rincian--action--child-3 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 12px;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan-rincian--action--child-3 {
+    grid-column-gap: 8px;
+  }
+}
+.pengelola-pesanan-rincian--action--child-3--1 {
+  grid-area: 1/1/2/2;
+}
+.pengelola-pesanan-rincian--action--child-3--2 {
+  grid-area: 1/2/2/3;
+}
+.pengelola-pesanan-rincian--action--child-4 {
+  grid-area: 3/2/4/3;
+  margin-top: 24px;
+}
+.pengelola-pesanan-rincian__dialog {
+  max-width: 40vw;
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-pesanan-rincian__dialog {
+    max-width: 60vw !important;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan-rincian__dialog {
+    max-width: 75vw !important;
+  }
+}
+@media only screen and (max-width: 31.25em) {
+  .pengelola-pesanan-rincian__dialog {
+    max-width: 90vw !important;
   }
 }/*# sourceMappingURL=main.css.map */

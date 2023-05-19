@@ -1,137 +1,151 @@
 <template>
-    <v-container grid-list-md class="pa-" v-if="ready">
-        <v-layout align-start wrap class="mt-4 ml-6">
-            <p class="title__main ">Ubah Data Kos</p>
-        </v-layout>
-        <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kos" autofocus lazy-validation>
-            <v-layout align-start justify-center row class="mt-4 pl-2">
-                <v-flex xs4>
-                    <v-layout column>
-                        <v-layout column align-start>
-                            <p class="regular-text__medium">Tipe Kos</p>
-                        </v-layout>
-                        <v-select
-                            outlined
-                            label="Masukkan Tipe Kos"
-                            v-model="kos_model.tipe"
-                            :items="tipe_kos"
-                        ></v-select>
-                        <v-layout column align-start>
-                            <p class="regular-text__medium">Ukuran Kamar</p>
-                        </v-layout>
-                        <v-text-field
-                            outlined
-                            label="Masukkan Ukuran Kamar"
-                            v-model="ukuran_kamar"
-                        ></v-text-field>
-                        <v-layout column align-start>
-                            <p class="regular-text__medium mb-6">Listrik</p>
-                            <v-layout>
-                                <p class="regular-text__thin paragraph mr-4">Termasuk Listrik</p>
-                                <v-radio-group row class="ma-0 pa-0 ml-4" v-model="termasuk_listrik">
-                                    <v-radio label="Ya" value="Termasuk Listrik"></v-radio>
-                                    <v-radio label="Tidak" value="Tidak Termasuk Listrik"></v-radio>
-                                </v-radio-group>
+    <v-container grid-list-md v-if="ready">
+        <div class="pengelola-kos__grid">
+            <div class="pengelola-kos__grid-1">
+                <p class="title__main ">Ubah Data Kos</p>
+            </div>
+            <div class="pengelola-kos__grid-2">
+                <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_data_kos" autofocus lazy-validation>
+                    <div class="pengelola-kos__grid-2__parent">
+                        <div class="pengelola-kos__grid-2__form-1">
+                            <v-layout column align-start>
+                                <p class="regular-text__medium">Tipe Kos</p>
                             </v-layout>
-                            <v-layout>
-                                <p class="regular-text__thin mr-6">Jenis Listrik</p>
-                                <v-radio-group row class="ma-0 pa-0 ml-4" v-model="jenis_listrik">
-                                    <v-radio label="Token" value="Listrik Token"></v-radio>
-                                    <v-radio label="Meteran" value="Listrik Meteran"></v-radio>
-                                </v-radio-group>
+                            <v-select
+                                outlined
+                                label="Masukkan Tipe Kos"
+                                v-model="kos_model.tipe"
+                                :items="tipe_kos"
+                            ></v-select>
+                            <v-layout column align-start>
+                                <p class="regular-text__medium">Ukuran Kamar</p>
                             </v-layout>
-                        </v-layout>
-                        <v-layout column align-start class="mt-4">
-                            <p class="regular-text__medium">Fasilitas Kos</p>
-                        </v-layout>
-                        <v-select
-                            outlined
-                            label="Masukkan Fasilitas Kos"
-                            v-model="kos_model.kos_fasilitas"
-                            multiple
-                            chips
-                            :items="kos_fasilitas_items"
-                        ></v-select>
-                        <v-layout column align-start class="mt-4">
-                            <p class="regular-text__medium">Deskripsi Kos</p>
-                        </v-layout>
-                        <v-textarea
-                            outlined
-                            label="Masukkan Deskripsi Kos"
-                            v-model="kos_model.deskripsi"
-                        ></v-textarea>
-                        <v-layout column align-start>
-                            <p class="regular-text__medium">Peraturan Kos</p>
-                        </v-layout>
-                        <v-textarea
-                            outlined
-                            label="Masukkan Peraturan Kos"
-                            v-model="kos_model.peraturan"
-                        ></v-textarea>
-                    </v-layout>
-                </v-flex>
-                <v-flex xs7 class="ml-8">
-                    <v-layout column>
-                        <v-layout column align-start>
-                            <p class="regular-text__medium">Foto Kos</p>
-                        </v-layout>
-                        <v-layout row wrap class="">
-                            <v-flex
-                                v-for="(url, index) in urls.slice(0, 6)"
-                                :key="index"
-                                class="preview-img-flex ma-2 mr-2 mb-2"
-                                shrink
-                            >
-                                <v-layout v-if="index < 6" column>
-                                    <v-card elevation-0 style="cursor: pointer">
-                                        <v-img
-                                            v-if="url"
-                                            :src="url"
-                                            width="310"
-                                            height="200"
-                                            contain
-                                            class="grey lighten-5"
-                                            @click="openDialogImage(url)"
-                                        ></v-img>
-                                    </v-card>
-                                    <v-flex v-if="url" mt-2>
-                                        <v-btn
-                                            icon
-                                            small
-                                            class="error my-auto"
-                                            @click="removeImage(index)"
-                                            ><span class="material-icons">
-                                            delete
-                                            </span></v-btn>
-                                    </v-flex>
-                                </v-layout>
-                            </v-flex>
-                        </v-layout>
-                        <v-layout justify-end class="pb-4">
-                            <v-btn outlined elevation="0" mx-0 color="#333" class="button__lihat-foto" @click="imageDialog = true">
-                                <span class="material-symbols-outlined">
-                                photo_camera
-                                </span>
-                                &nbsp;Lihat Semua Foto
-                            </v-btn>
-                        </v-layout>
-                        <v-layout justify-end class="pb-8">
-                            <v-btn      
-                                outlined                           
-                                elevation="0" 
-                                @click="onPickFile()" 
-                                class="btn__tambah-foto" >
-                                Tambahkan Foto
-                            </v-btn>
-                            <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
-                        </v-layout>
-                    </v-layout>
-                </v-flex>
-            </v-layout>
-            <v-flex class="my-4">
-                <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
-            </v-flex>
-        </v-form>
+                            <v-text-field
+                                outlined
+                                label="Masukkan Ukuran Kamar"
+                                v-model="ukuran_kamar"
+                            ></v-text-field>
+                            <div class="pengelola-kos__grid-2__form-1__listrik">
+                                <div class="pengelola-kos__grid-2__form-1__listrik--child-1">
+                                    <p class="regular-text__medium paragraph">Listrik</p>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-1__listrik--child-2">
+                                    <p class="regular-text__thin paragraph">Termasuk Listrik</p>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-1__listrik--child-3">
+                                    <v-radio-group row class="ma-0 pa-0 ml-4" v-model="termasuk_listrik">
+                                        <v-radio label="Ya" value="Termasuk Listrik"></v-radio>
+                                        <v-radio label="Tidak" value="Tidak Termasuk Listrik"></v-radio>
+                                    </v-radio-group>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-1__listrik--child-4">
+                                    <p class="regular-text__thin paragraph">Jenis Listrik</p>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-1__listrik--child-5">
+                                    <v-radio-group row class="ma-0 pa-0 ml-4" v-model="jenis_listrik">
+                                        <v-radio label="Token" value="Listrik Token"></v-radio>
+                                        <v-radio label="Meteran" value="Listrik Meteran"></v-radio>
+                                    </v-radio-group>
+                                </div>
+                            </div>
+                            <v-layout column align-start class="mt-4">
+                                <p class="regular-text__medium">Fasilitas Kos</p>
+                            </v-layout>
+                            <v-select
+                                outlined
+                                label="Masukkan Fasilitas Kos"
+                                v-model="kos_model.kos_fasilitas"
+                                multiple
+                                chips
+                                :items="kos_fasilitas_items"
+                            ></v-select>
+                            <v-layout column align-start class="mt-4">
+                                <p class="regular-text__medium">Deskripsi Kos</p>
+                            </v-layout>
+                            <v-textarea
+                                outlined
+                                label="Masukkan Deskripsi Kos"
+                                v-model="kos_model.deskripsi"
+                            ></v-textarea>
+                            <v-layout column align-start>
+                                <p class="regular-text__medium">Peraturan Kos</p>
+                            </v-layout>
+                            <v-textarea
+                                outlined
+                                label="Masukkan Peraturan Kos"
+                                v-model="kos_model.peraturan"
+                            ></v-textarea>
+                        </div>
+                        <div class="pengelola-kos__grid-2__form-2">
+                            <div class="pengelola-kos__grid-2__form-2--child-1">
+                                <p class="regular-text__medium paragraph">Foto Kos</p>
+                            </div>
+                            <div class="pengelola-kos__grid-2__form-2--child-2">
+                                <div class="pengelola-kos__grid-2__form-2--child-2__photo-1" :style="{backgroundImage: `url(${urls[0]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(0)" v-if="urls[0]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-2--child-2__photo-2" :style="{backgroundImage: `url(${urls[1]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(1)" v-if="urls[1]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-2--child-2__photo-3" :style="{backgroundImage: `url(${urls[2]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(2)" v-if="urls[2]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-2--child-2__photo-4" :style="{backgroundImage: `url(${urls[3]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(3)" v-if="urls[3]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-2--child-2__photo-5" :style="{backgroundImage: `url(${urls[4]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(4)" v-if="urls[4]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+                                <div class="pengelola-kos__grid-2__form-2--child-2__photo-6" :style="{backgroundImage: `url(${urls[5]})`}">
+                                    <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
+                                    @click="removeImage(5)" v-if="urls[5]">
+                                    <span class="material-icons">delete</span>
+                                    </v-btn>
+                                </div>
+
+                            </div>
+                            <div class="pengelola-kos__grid-2__form-2--child-3">
+                                <v-btn outlined elevation="0" mx-0 color="#333" class="button__lihat-foto" @click="imageDialog = true">
+                                    <span class="material-symbols-outlined">
+                                    photo_camera
+                                    </span>
+                                    &nbsp;Lihat Semua Foto
+                                </v-btn>
+                            </div>
+                            <div class="pengelola-kos__grid-2__form-2--child-4">
+                                <v-btn      
+                                    outlined                           
+                                    elevation="0" 
+                                    @click="onPickFile()" 
+                                    class="btn__tambah-foto" >
+                                    Tambahkan Foto
+                                </v-btn>
+                                <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
+                            </div>
+                        </div>
+                        <div class="pengelola-kos__grid-2__form-3">
+                            <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit">Simpan Perubahan</v-btn>
+                        </div>
+                    </div>
+                </v-form>
+            </div>
+        </div>
+
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
         <v-dialog v-model="imageDialog" :lazy="true" max-width="60vw">
@@ -139,7 +153,7 @@
                 <v-toolbar dark color="primary" dense flat>
                 </v-toolbar>
 
-                <v-layout row wrap fill-height class="pa-0 ma-0">
+                <v-layout row align-center justify-center wrap fill-height class="pa-0 ma-0">
                     <v-flex
                         v-for="(url, index) in urls"
                         :key="index"
@@ -151,7 +165,7 @@
                                 <v-img
                                     v-if="url"
                                     :src="url"
-                                    width="350"
+                                    width="300"
                                     height="200"
                                     contain
                                     class="grey lighten-5"

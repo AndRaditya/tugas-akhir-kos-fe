@@ -112,3 +112,37 @@ li{
 .v-list-group__header{
     padding: 0 !important;
 }
+
+.v-textarea textarea {
+    line-height: 1.5 !important;
+}
+
+.v-data-table__mobile-row__header,
+.v-data-table__mobile-row__cell
+{
+    font-size: 14px !important;
+}
+
+.v-data-table-header tr th span{
+    @media only screen and (max-width: $bp-small) {
+        font-size: 12px !important;
+    }  
+}
+
+.v-chip__close{
+    @media only screen and (max-width: $bp-small) {
+        padding-left: 12px;
+    } 
+}
+
+.v-select__selections{
+    @media only screen and (max-width: $bp-small) {
+        margin-top: 12px;    
+    }  
+}
+
+.v-select__selection--comma{
+    @media only screen and (max-width: $bp-large) {
+        font-size: 14px !important;
+    }  
+}

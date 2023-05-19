@@ -14,8 +14,8 @@
         grid-area: 1 / 1 / 2 / 6;
 
         display: grid;
-        align-items: start;
-        justify-content: start;
+        align-items: flex-start;
+        justify-content: flex-start;
 
         @media only screen and (max-width: $bp-smallest) {
             grid-area: 1 / 1 / 2 / 2; 
@@ -45,15 +45,15 @@
 
             display: grid;
             align-items: center;
-            justify-content: start;
+            justify-content: flex-start;
             text-align: left;
         }
 
         &--child-2{
             grid-area: 1 / 2 / 2 / 3;
             display: flex;
-            align-items: start;
-            justify-content: end;
+            align-items: flex-start;
+            align-items: flex-end;
         }
 
     }
@@ -76,7 +76,7 @@
         &--template{
             display: flex;
             flex-direction: column;
-            align-items: start;
+            align-items: flex-start;
             justify-content: center;
         }
             
@@ -85,7 +85,7 @@
 
             display: grid;
             align-items: center;
-            justify-content: start;
+            justify-content: flex-start;
         }
 
         &--child-2 { 
@@ -159,8 +159,8 @@
 
             &--template{
                 display: grid;
-                align-items: start;
-                justify-content: start;
+                align-items: flex-start;
+                justify-content: flex-start;
                 text-align: left;
             }
 
@@ -204,16 +204,16 @@
             &__child-1 {
                 grid-area: 1 / 1 / 2 / 3; 
                 display: grid;
-                align-items: start;
-                justify-content: start;
+                align-items: flex-start;
+                justify-content: flex-start;
                 text-align: left;
             }
             
             &__child-2 {
                 grid-area: 1 / 2 / 2 / 3; 
                 display: grid;
-                align-items: start;
-                justify-content: start;
+                align-items: flex-start;
+                justify-content: flex-start;
                 text-align: left;
             }
 
@@ -249,8 +249,8 @@
                 grid-area: 1 / 1 / 3 / 2; 
 
                 display: grid;
-                align-items: start;
-                justify-content: start;
+                align-items: flex-start;
+                justify-content: flex-start;
 
                 @media only screen and (max-width: $bp-small) {
                     grid-area: 1 / 1 / 2 / 2; 
@@ -260,7 +260,7 @@
             &__transfer-2 { 
                 grid-area: 1 / 2 / 3 / 3; 
                 display: flex;
-                align-items: start;
+                align-items: flex-start;
                 flex-direction: column;
                 justify-content: center;
 
@@ -270,7 +270,7 @@
 
                 &__row{
                     display: flex;
-                    align-items: start;
+                    align-items: flex-start;
                     justify-content: center;
                 }
             }
@@ -281,16 +281,17 @@
             grid-area: 5 / 1 / 6 / 5; 
 
             display: flex;
-            align-items: center;
-            justify-content: start;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
             padding: 1.8rem;
         }
 
         &--child-6 { 
             grid-area: 6 / 1 / 7 / 5; 
             display: flex;
-            align-items: start;
-            justify-content: start;
+            align-items: flex-start;
+            justify-content: flex-start;
             flex-direction: column;
             padding: 1.8rem;
             line-height: 2;
@@ -303,8 +304,8 @@
         &--child-7 { 
             grid-area: 7 / 1 / 8 / 5; 
             display: flex;
-            align-items: start;
-            justify-content: start;
+            align-items: flex-start;
+            justify-content: flex-start;
             flex-direction: column;
             padding: 1.8rem;
             padding-bottom: 0;
@@ -332,7 +333,7 @@
         &--template{
             display: flex;
             flex-direction: column;
-            align-items: start;
+            align-items: flex-start;
             justify-content: center;
         }
 
@@ -518,6 +519,58 @@
         @media only screen and (max-width: $bp-small) {
             padding: 12px;
         }
+    }    
+}
+
+.dialog-lokasi__grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+
+    &--child-1 { 
+        grid-area: 1 / 1 / 2 / 3; 
+        display: grid;
+        align-items: center;
+        justify-content: flex-start;
     }
 
+    &--child-2 { 
+        grid-area: 2 / 1 / 3 / 2; 
+        display: grid;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    &--child-3 { 
+        grid-area: 2 / 2 / 3 / 3; 
+        display: grid;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    &--child-4 { 
+        grid-area: 3 / 1 / 4 / 3; 
+        display: grid;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
+.dialog-pesanan-cust{
+    max-width: 25vw;
+
+    @media only screen and (max-width: $bp-large) {
+        max-width: 35vw;
+    }
+
+    @media only screen and (max-width: $bp-small) {
+        max-width: 50vw;
+    }
+
+    @media only screen and (max-width: $bp-smallest) {
+        max-width: 75vw;
+    }
 }
