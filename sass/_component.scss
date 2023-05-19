@@ -54,7 +54,7 @@ tbody tr td{
 .navigation{
     &__menu{
         &-main{
-            @media only screen and (max-width: $bp-small) {
+            @media only screen and (max-width: $bp-large) {
                 display: none !important;
             }
         }
@@ -62,12 +62,17 @@ tbody tr td{
         &-mobile{
             display: none !important;
 
-            @media only screen and (max-width: $bp-small) {
+            @media only screen and (max-width: $bp-large) {
                 display: block !important;
             }  
         }
     }
 }
+
+.v-application--is-ltr .v-list-group--no-action>.v-list-group__items>.v-list-item{
+    padding: 0 !important;
+}
+
 
 .accent--text{
     font-size: 1.2rem !important;
@@ -103,3 +108,7 @@ li{
 //         margin: 0 0 0 10px;
 //     }  
 // }
+
+.v-list-group__header{
+    padding: 0 !important;
+}

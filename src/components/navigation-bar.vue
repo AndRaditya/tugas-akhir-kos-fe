@@ -28,7 +28,6 @@
               </div>
             </v-layout>
 
-
             <div class="navigation__menu-mobile" v-if="!this.is_booking">
               <span class="material-icons menu-icons" @click.stop="drawer = !drawer">
                 menu
@@ -43,37 +42,59 @@
       </v-toolbar>
       <v-spacer></v-spacer>
       
-      <v-list class="pt-0 pb-5" id="drawer-list">
-        <v-list-item-group>
-          <v-list-item v-for="item in items" :key="item.title" class="pa-0">
-
-            <v-list-item-title class="nav-list__title" @click="checkLink(item.link)" v-if="!item.outline && !item.filled && item.link != 'profile' && item.title != 'Transaksi' ">{{ item.title }}</v-list-item-title>
-            <v-list-item-title class="nav-list__title" @click="checkLink(item.link)" v-if="item.outline && !item.filled && item.link != 'profile' && item.title != 'Transaksi' ">{{ item.title }}</v-list-item-title>
-            <v-list-item-title class="nav-list__title" @click="checkLink(item.link)" v-if="item.outline && !item.filled && item.link == 'profile' && item.title != 'Transaksi' ">{{ item.title }} {{ username }} </v-list-item-title>
-            <v-list-item-title class="nav-list__title-keluar" @click="checkLink(item.link)" v-if="!item.outline && item.filled && item.link != 'transaksi'">{{ item.title }} </v-list-item-title>
-            <v-list-group
-              value="false"
-              v-if="item.title == 'Transaksi'"
+      <v-list id="drawer-list" dense nav>
+        <div v-for="(item, index) in items" :key="index">
+            <v-list-item 
+              v-if="!item.sublinks"
+              @click="checkLink(item.link)"
+              :class="item.class2"
+              prepend-icon="mdi-home"
             >
-              <template v-slot:activator>
-                  <v-list-item-title class="nav-list__title" @click="checkLink(item.link)">{{ item.title }}</v-list-item-title>
-              </template>
-    
-              <v-list-item
-                v-for="(item_menu, index) in items_menu"
-                :key="index"
-                link
-              >
-                <v-list-item-title class="nav-list__item-menu" @click="checkLink(item_menu.link)">{{ item_menu.title }}</v-list-item-title>
+              <v-list-item-icon v-if="item.link != 'profile' && item.link != 'logout' && item.link != 'register'">
+                <v-icon class="pr-2">{{ item.icon }}</v-icon>
+              </v-list-item-icon>
 
+              <v-list-item-content class="text-left align-self-start" v-if="item.link != 'logout' && item.link != 'profile' && item.link != 'register'">
+                <v-list-item-title  :class="item.class">{{item.title}}</v-list-item-title>
+              </v-list-item-content>
+
+              <v-list-item-content class="text-center align-center" v-else-if="item.link == 'profile' && item.link != 'register'">
+                <v-list-item-title :class="item.class">{{item.title}} {{ username }} </v-list-item-title>
+              </v-list-item-content>
+
+              <v-list-item-content v-else>
+                <v-list-item-title v-if="item.link != 'profile'" class="nav-list__title-keluar">{{item.title}}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-group
+              v-else
+              :value="false"
+              class="pl-6"
+            >
+              <template v-slot:activator >
+                <v-list-item-icon >
+                  <v-icon class="pr-2">{{item.icon}}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title :class="item.class">{{item.title}}</v-list-item-title>
+              </template>
+
+              <v-list-item
+                v-for="(sublink, i) in item.sublinks"
+                :key="i"
+                link
+                class="text-left align-self-start pl-3"
+              >
+                <v-list-item-icon>
+                  <v-icon>{{ sublink.icon }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-title :class="sublink.class">{{ sublink.title }}</v-list-item-title>
               </v-list-item>
             </v-list-group>
-
-          </v-list-item>
-        </v-list-item-group>
+        </div>
       </v-list>
     </v-navigation-drawer>
-
 
     <!-- <v-navigation-drawer id="app-drawer" fixed temporary v-model="drawer" right>
         <v-list dense class="pt-0 pb-5" :key="'list-'+listKey" id="drawer-list">
@@ -88,7 +109,7 @@
                     <v-icon>@{{ item.icon }}</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content :class="`${ item.color }--text`">
-                    <v-list-tile-title class="pl-2">@{{item.title}}</v-list-tile-title>
+                    <v-list-tile-title class="pl-6">@{{item.title}}</v-list-tile-title>
                 </v-list-tile-content>
                 <v-list-tile-action class="pa-0 ma-0" v-if="item.expandable">
                     <v-icon pa-0 ma-0>@{{ item.expandable }}</v-icon>
@@ -128,6 +149,7 @@ export default {
     this.initData();
     this.param_pengelola = this.check_pengelola();
   },  
+  
 
   methods:{
     initData(){
@@ -228,36 +250,34 @@ export default {
     buttonItems(){
       if(!this.is_login_customer && !this.is_login_pengelola && !this.is_booking){
         this.items = [
-          {title: 'Kos', link: 'dashboard', outline: false, filled: false, icon: 'sensor_door'},
-          {title: 'Masuk', link: 'login', outline: false, filled: false, icon: 'login'},
-          {title: 'Buat Akun', link: 'register', outline:true, filled: false, icon: 'account_circle'},
+          {title: 'Kos', link: 'dashboard', outline: false, filled: false, icon: 'sensor_door', class: 'nav-list__title', class2: 'pl-6 pb-1'},
+          {title: 'Masuk', link: 'login', outline: false, filled: false, icon: 'login', class: 'nav-list__title', class2: 'pl-6 pb-1'},
+          {title: 'Buat Akun', link: 'register', outline: true, filled: false, icon: 'account_circle', class: 'nav-list__title', class2: 'nav-list__btn-keluar mt-2'},
         ];
       }
 
       if(this.is_login_customer && !this.is_login_pengelola && !this.param_pengelola && !this.is_booking){
         this.items = [
-          {title: 'Kos', link: 'dashboard', outline: false, filled: false, icon: 'sensor_door'},
-          {title: 'Rincian Transaksi', link: 'transaksi', outline: false, filled: false, icon:'receipt'},
-          {title: 'Hai, ', link: 'profile', outline: true, filled: false, icon: 'account_circle'},
-          {title: 'Keluar', link: 'logout', outline: false, filled: true},
+          {title: 'Kos', link: 'dashboard', outline: false, filled: false, icon: 'sensor_door', class: 'nav-list__title', class2: 'pl-6 pb-1'},
+          {title: 'Rincian Transaksi', link: 'transaksi', outline: false, filled: false, icon:'receipt', class: 'nav-list__title', class2: 'pl-6 pb-1'},
+          {title: 'Hai, ', link: 'profile', outline: true, filled: false, icon: 'account_circle', class: 'nav-list__title', class2: 'mt-4'},
+          {title: 'Keluar', link: 'logout', outline: false, filled: true, class: 'nav-list__title-keluar', class2: 'nav-list__btn-keluar mt-2'},
         ];
       }
 
       if(!this.is_login_customer && this.is_login_pengelola || this.param_pengelola && !this.is_booking){
         this.items = [
-          {title: 'Kos', link: 'kos', outline: false, filled: false, icon: 'sensor_door'},
-          {title: 'Kamar', link: 'kamar', outline: false, filled: false, icon: 'bed'},
-          {title: 'Pesanan', link: 'pengelola-pesanan', outline: false, filled: false, icon:'receipt'},
-          {title: 'Transaksi', outline: false, filled: false, icon: 'receipt_long'},
-          {title: 'Hai, Pengelola ', link: 'profile', outline: true, filled: false, icon: 'account_circle'},
-          {title: 'Keluar', link: 'logout', outline: false, filled: true},
+          {title: 'Kos', link: 'kos', outline: false, filled: false, icon: 'sensor_door', class: 'nav-list__title' , class2: 'pl-6 pb-1'},
+          {title: 'Kamar', link: 'kamar', outline: false, filled: false, icon: 'bed', class: 'nav-list__title' , class2: 'pl-6 pb-1'},
+          {title: 'Pesanan', link: 'pengelola-pesanan', outline: false, filled: false, icon:'receipt', class: 'nav-list__title' , class2: 'pl-6 pb-1'},
+          {title: 'Transaksi', outline: false, filled: false, icon: 'receipt_long', class: 'nav-list__title nav-list__transaksi pl-2', sublinks: [
+            {title: 'Transaksi Masuk', link: 'transaksi-masuk', outline: false, filled: false, icon: 'list_alt', class: 'nav-list__item-menu pl-1'},
+            {title: 'Transaksi Keluar', link: 'transaksi-keluar', outline: false, filled: false, icon: 'list_alt', class: 'nav-list__item-menu pl-1'},
+            {title: 'Unduh Transaksi', link: 'transaksi-unduh', outline: false, filled: false, icon: 'file_download', class: 'nav-list__item-menu pl-1'},
+          ]},
+          {title: 'Hai, Pengelola ', link: 'profile', outline: true, filled: false, icon: 'account_circle', class: 'nav-list__title' , class2: 'mt-4'},
+          {title: 'Keluar', link: 'logout', outline: false, filled: true, class: 'nav-list__title-keluar', class2: 'nav-list__btn-keluar mt-2'},
         ];
-
-        this.items_menu = [
-          {title: 'Transaksi Masuk', link: 'transaksi-masuk', outline: false, filled: false, icon: 'receipt_long'},
-          {title: 'Transaksi Keluar', link: 'transaksi-keluar', outline: false, filled: false, icon: 'receipt_long'},
-          {title: 'Unduh Transaksi', link: 'transaksi-unduh', outline: false, filled: false, icon: 'file_download'},
-        ]
       }
     },
 
@@ -300,11 +320,15 @@ export default {
     margin-bottom: 36px;
   }
 
-  #app-drawer{
+  /* #app-drawer{
     width: 50% !important;
-  }
+  } */
 
   .v-toolbar--flat{
     height: 15% !important;
+  }
+
+  .v-application--is-ltr .v-list--dense.v-list--nav .v-list-group--no-action > .v-list-group__items > .v-list-item {
+    padding: 0 8px;
   }
 </style>
