@@ -2,84 +2,75 @@
     <v-container grid-list-md class="pt-6" v-if="ready">
 
         <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_transaksi_keluar" autofocus lazy-validation>
-            <v-layout column>
-                <v-layout align-start justify-center row class="mt-6">
-                    <v-flex xs5>
-                        <v-layout align-start>
-                            <p class="title__main">{{ nav_title }} Transaksi Keluar</p>
-                        </v-layout>
-                    </v-flex>
-                    <v-flex xs5>
-                        <v-layout align-end justify-end v-if="!editable">
-                            <v-btn elevation="0" class="white--text btn__go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
-                        </v-layout>
-                    </v-flex>
-                </v-layout>
-                <v-layout  align-start justify-center row class="mt-6">
-                    <v-flex xs5>
-                        <v-layout column>
-                            <v-layout align-start column>
-                                <p class="regular-text">Nomor Transaksi</p>
-                            </v-layout>
-                            <v-text-field
-                                v-model="transaksi_keluar_model.no"
-                                placeholder="Nomor Transaksi Otomatis Generate"
-                                outlined
-                                disabled
-                            ></v-text-field>
-                            <v-layout align-start column>
-                                <p class="regular-text">Kategori Transaksi</p>
-                            </v-layout>
-                            <v-select
-                                v-model="transaksi_keluar_model.transaksi_keluar_kategori_id"
-                                placeholder="Masukkan Kategori Transaksi"
-                                outlined
-                                :items="kategori_transaksi_keluar"
-                                :readonly="!editable"
-                                :rules="requiredRule"
-                            ></v-select>
-                            <v-layout align-start column>
-                                <p class="regular-text">Nilai Transaksi</p>
-                            </v-layout>
-                            <v-text-field
-                                v-model="transaksi_keluar_model.nilai"
-                                label="Masukkan Nilai Transaksi"
-                                :prefix="prefix"
-                                :readonly="!editable"
-                                type="number"
-                                hide-spin-buttons
-                                outlined
-                                :rules="requiredRule"
-                            ></v-text-field>
-                        </v-layout>
-                    </v-flex>
-                    <v-flex xs5 class="ml-6">
-                        <v-layout column>
-                            <v-layout align-start column>
-                                <p class="regular-text">Nomor Transaksi</p>
-                            </v-layout>
-                            <v-text-field
-                                v-model="transaksi_keluar_model.tanggal"
-                                outlined
-                                disabled
-                            ></v-text-field>
-                            <v-layout align-start column>
-                                <p class="regular-text">Deskripsi Transaksi</p>
-                            </v-layout>
-                            <v-textarea
-                                v-model="transaksi_keluar_model.desc"
-                                label="Masukkan Deskripsi Transaksi"
-                                :readonly="!editable"
-                                outlined
-                                :rules="requiredRule"
-                            ></v-textarea>
-                            
-                        </v-layout>
-                    </v-flex>
-                </v-layout>
-            </v-layout>
+            <div class="pengelola-trs-keluar__grid">
+                <div class="pengelola-trs-keluar__child-1">
+                    <div class="pengelola-trs-keluar__child-1__title-1">
+                        <p class="title__main">{{ nav_title }} Transaksi Keluar</p>
+                    </div>
+                    <div class="pengelola-trs-keluar__child-1__title-2" v-if="!editable">
+                        <v-btn elevation="0" class="white--text btn__go-edit pengelola-trs-keluar__btn" slot="page-button" @click="goEdit()">Edit</v-btn>
+                    </div>
+                </div>
+                <div class="pengelola-trs-keluar__child-2">
+                    <v-layout align-start column>
+                        <p class="regular-text">Nomor Transaksi</p>
+                    </v-layout>
+                    <v-text-field
+                        v-model="transaksi_keluar_model.no"
+                        placeholder="Nomor Transaksi Otomatis Generate"
+                        outlined
+                        disabled
+                    ></v-text-field>
+                    <v-layout align-start column>
+                        <p class="regular-text">Kategori Transaksi</p>
+                    </v-layout>
+                    <v-select
+                        v-model="transaksi_keluar_model.transaksi_keluar_kategori_id"
+                        placeholder="Masukkan Kategori Transaksi"
+                        outlined
+                        :items="kategori_transaksi_keluar"
+                        :readonly="!editable"
+                        :rules="requiredRule"
+                    ></v-select>
+                    <v-layout align-start column>
+                        <p class="regular-text">Nilai Transaksi</p>
+                    </v-layout>
+                    <v-text-field
+                        v-model="transaksi_keluar_model.nilai"
+                        label="Masukkan Nilai Transaksi"
+                        :prefix="prefix"
+                        :readonly="!editable"
+                        type="number"
+                        hide-spin-buttons
+                        outlined
+                        :rules="requiredRule"
+                    ></v-text-field>
+                </div>
+                <div class="pengelola-trs-keluar__child-3">
+                    <v-layout align-start column>
+                        <p class="regular-text">Nomor Transaksi</p>
+                    </v-layout>
+                    <v-text-field
+                        v-model="transaksi_keluar_model.tanggal"
+                        outlined
+                        disabled
+                    ></v-text-field>
+                    <v-layout align-start column>
+                        <p class="regular-text">Deskripsi Transaksi</p>
+                    </v-layout>
+                    <v-textarea
+                        v-model="transaksi_keluar_model.desc"
+                        label="Masukkan Deskripsi Transaksi"
+                        :readonly="!editable"
+                        outlined
+                        :rules="requiredRule"
+                    ></v-textarea>
+                </div>
+                <div class="pengelola-trs-keluar__child-4" v-if="editable">
+                    <v-btn elevation="0" class="white--text btn__simpan-perubahan pengelola-trs-keluar__btn" ref="form_profile" type="submit">Simpan Perubahan</v-btn>
+                </div>
+            </div>
             <v-flex class="my-4" v-if="editable">
-                <v-btn elevation="0" class="white--text btn__simpan-perubahan" ref="form_profile" type="submit" width="30%">Simpan Perubahan</v-btn>
             </v-flex>
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>

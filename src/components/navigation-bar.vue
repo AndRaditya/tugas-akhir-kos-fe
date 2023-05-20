@@ -18,8 +18,8 @@
                     </v-btn>
                   </template>
                   <v-layout column style="background-color: #fff">
-                    <div v-for=" (btn, index) in items_menu" :key="index">
-                      <v-btn color="#146C94" class="ma-2" text elevation="0" @click="checkLink(btn.link)">{{ btn.title }}</v-btn>
+                    <div v-for=" (sublink, index) in btn.sublinks" :key="index">
+                      <v-btn color="#146C94" class="ma-2" text elevation="0" @click="checkLink(sublink.link)">{{ sublink.title }}</v-btn>
                     </div>
                   </v-layout>
                 </v-menu>
@@ -96,28 +96,6 @@
         </div>
       </v-list>
     </v-navigation-drawer>
-
-    <!-- <v-navigation-drawer id="app-drawer" fixed temporary v-model="drawer" right>
-        <v-list dense class="pt-0 pb-5" :key="'list-'+listKey" id="drawer-list">
-            <v-list-tile
-                v-for="item in items"
-                :key="item.title+item.name"
-                :to="item.link"
-                :class="item.class"
-                v-model="item.show"
-                @click.stop="item.click()"
-            ><v-list-tile-action :class="`${ item.color }--text`">
-                    <v-icon>@{{ item.icon }}</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content :class="`${ item.color }--text`">
-                    <v-list-tile-title class="pl-6">@{{item.title}}</v-list-tile-title>
-                </v-list-tile-content>
-                <v-list-tile-action class="pa-0 ma-0" v-if="item.expandable">
-                    <v-icon pa-0 ma-0>@{{ item.expandable }}</v-icon>
-                </v-list-tile-action>
-            </v-list-tile>
-        </v-list>
-    </v-navigation-drawer> -->
   </div>
 </template>
 

@@ -1,15 +1,15 @@
 <template>
     <v-container grid-list-md class="pt-0" v-if="ready">
-        <v-layout align-start>
-            <p class="title__main">Unduh Transaksi</p>
-        </v-layout>
-        <v-layout column class="mt-4">
-            <v-flex xs6>
-                <v-layout align-start column>
-                    <p class="bigger--regular-text__medium  pb-2">Transaksi Masuk</p>
-                </v-layout>
-                <v-layout row>
-                    <v-flex xs2 sm2 class="pl-0">
+        <div class="transaksi-unduh__grid">
+            <div class="transaksi-unduh__child-1">
+                <p class="title__main">Unduh Transaksi</p>
+            </div>
+            <div class="transaksi-unduh__child-2">
+                <div class="transaksi-unduh__tanggal">
+                    <div class="transaksi-unduh__tanggal--child-1">
+                        <p class="bigger--regular-text__medium paragraph">Transaksi Masuk</p>
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-2">
                         <v-menu
                             ref="dialogTrsMasuk"
                             v-model="menu_trs_masuk_mulai"
@@ -34,8 +34,8 @@
                                 <v-btn text color="primary" @click="$refs.dialogTrsMasuk.save(transaksi_masuk_mulai)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
-                    </v-flex>
-                    <v-flex xs2 sm2 class="mx-2">
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-3">
                         <v-menu
                             ref="dialogTrsMasuk2"
                             v-model="menu_trs_masuk_selesai"
@@ -60,19 +60,18 @@
                                 <v-btn text color="primary" @click="$refs.dialogTrsMasuk2.save(transaksi_masuk_selesai)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
-                    </v-flex>
-                    <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn__unduh" @click="confirmExport('transaksi_masuk')" width="75%">Unduh</v-btn>
-                    </v-flex>
-                </v-layout>
-            </v-flex>
-
-            <v-flex xs6>
-                <v-layout align-start column>
-                    <p class="bigger--regular-text__medium  pb-2">Transaksi Keluar</p>
-                </v-layout>
-                <v-layout row>
-                    <v-flex xs2 sm2 class="pl-0">
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-4">
+                        <v-btn elevation="0" class="white--text btn__unduh transaksi-unduh__tanggal--child-4__btn" @click="confirmExport('transaksi_masuk')">Unduh</v-btn>
+                    </div>
+                </div>
+            </div>
+            <div class="transaksi-unduh__child-3">
+                <div class="transaksi-unduh__tanggal">
+                    <div class="transaksi-unduh__tanggal--child-1">
+                        <p class="bigger--regular-text__medium">Transaksi Keluar</p>
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-2">
                         <v-menu
                             ref="dialogTrsKeluar"
                             v-model="menu_trs_keluar_mulai"
@@ -97,8 +96,8 @@
                                 <v-btn text color="primary" @click="$refs.dialogTrsKeluar.save(transaksi_keluar_mulai)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
-                    </v-flex>
-                    <v-flex xs2 sm2 class="mx-2">
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-3">
                         <v-menu
                             ref="dialogTrsKeluar2"
                             v-model="menu_trs_keluar_selesai"
@@ -107,35 +106,34 @@
                             elevation="0"
                             min-width="0%"
                         >
-                            <template v-slot:activator="{ on }">
-                                <v-text-field
-                                    v-model="transaksi_keluar_selesai"
-                                    label="Tanggal Selesai"
-                                    append-icon="event"
-                                    readonly
-                                    v-on="on"
-                                    outlined
-                                ></v-text-field>
-                            </template>
-                            <v-date-picker v-model="transaksi_keluar_selesai" scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="menu_trs_keluar_selesai = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="$refs.dialogTrsKeluar2.save(transaksi_keluar_selesai)">OK</v-btn>
-                            </v-date-picker>
-                        </v-menu>
-                    </v-flex>
-                    <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn__unduh" @click="confirmExport('transaksi_keluar')" width="75%">Unduh</v-btn>
-                    </v-flex>
-                </v-layout>
-            </v-flex>
-
-            <v-flex xs6>
-                <v-layout align-start column>
-                    <p class="bigger--regular-text__medium  pb-2">Semua Transaksi</p>
-                </v-layout>
-                <v-layout row>
-                    <v-flex xs2 sm2 class="pl-0">
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                v-model="transaksi_keluar_selesai"
+                                label="Tanggal Selesai"
+                                append-icon="event"
+                                readonly
+                                v-on="on"
+                                outlined
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="transaksi_keluar_selesai" scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="menu_trs_keluar_selesai = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="$refs.dialogTrsKeluar2.save(transaksi_keluar_selesai)">OK</v-btn>
+                        </v-date-picker>
+                    </v-menu>
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-4">
+                        <v-btn elevation="0" class="white--text btn__unduh transaksi-unduh__tanggal--child-4__btn" @click="confirmExport('transaksi_keluar')">Unduh</v-btn>
+                    </div>
+                </div>
+            </div>
+            <div class="transaksi-unduh__child-4">
+                <div class="transaksi-unduh__tanggal">
+                    <div class="transaksi-unduh__tanggal--child-1">
+                        <p class="bigger--regular-text__medium  pb-2">Semua Transaksi</p>
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-2">
                         <v-menu
                             ref="dialogTrsSemua"
                             v-model="menu_trs_semua_mulai"
@@ -160,8 +158,8 @@
                                 <v-btn text color="primary" @click="$refs.dialogTrsSemua.save(transaksi_semua_mulai)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
-                    </v-flex>
-                    <v-flex xs2 sm2 class="mx-2">
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-3">
                         <v-menu
                             ref="dialogTrsSemua2"
                             v-model="menu_trs_semua_selesai"
@@ -186,13 +184,14 @@
                                 <v-btn text color="primary" @click="$refs.dialogTrsSemua2.save(transaksi_semua_selesai)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
-                    </v-flex>
-                    <v-flex xs2 sm2 class="mx-2">
-                        <v-btn elevation="0" class="white--text btn__unduh" @click="confirmExport('transaksi_semua')" width="75%">Unduh</v-btn>
-                    </v-flex>
-                </v-layout>
-            </v-flex>
-        </v-layout>
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-4">
+                        <v-btn elevation="0" class="white--text btn__unduh transaksi-unduh__tanggal--child-4__btn" @click="confirmExport('transaksi_semua')">Unduh</v-btn>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
     </v-container>
 </template>

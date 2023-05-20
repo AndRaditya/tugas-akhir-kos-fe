@@ -146,3 +146,9 @@ li{
         font-size: 14px !important;
     }  
 }
+
+.v-date-picker-header__value button{
+    @media only screen and (max-width: $bp-largest) {
+        font-size: 14px !important;
+    }  
+}

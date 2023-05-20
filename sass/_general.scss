@@ -189,6 +189,15 @@
     }
 }
 
+.thin-smaller-regular-text{
+    font-weight: 300;
+    font-size: 1.6rem;
+
+    @media only screen and (max-width: $bp-small) {
+        font-size: 14px;
+    }
+}
+
 // CARD
 .card{
     &__regular{

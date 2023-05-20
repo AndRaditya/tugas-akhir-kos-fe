@@ -1,12 +1,20 @@
 <template>
     <v-container grid-list-md class="pt-0" v-if="ready">
+        <div class="pengelola-trs-masuk__list-header">
+            <div class="pengelola-trs-masuk__list-header--child-1">
+                <p class="title__main">List Transaksi Masuk</p>
+            </div>
+            <div class="pengelola-trs-masuk__list-header--child-2">
+                <v-btn color="#146C94" elevation="0" class="white--text"  @click="tambahData()">Tambah Transaksi</v-btn>
+            </div>
+            <div class="pengelola-trs-masuk__list-header--child-3">
+                <v-btn color="#146C94" elevation="0" class="white--text"  @click="dialog_transaksi = true">Unduh Transaksi</v-btn>
+            </div>
+        </div>
         <v-layout align-start row>
             <v-layout align-start>
-                <p class="title__main">List Transaksi Masuk</p>
             </v-layout>
             <v-layout justify-end row>
-                <v-btn color="#146C94" elevation="0" class="white--text mr-2"  @click="tambahData()">Tambah Transaksi</v-btn>
-                <v-btn color="#146C94" elevation="0" class="white--text ml-2"  @click="dialog_transaksi = true">Unduh Transaksi</v-btn>
             </v-layout>
         </v-layout>
         <v-flex fill-height class="mt-4">

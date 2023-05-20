@@ -6,7 +6,8 @@
                     <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_profile" autofocus lazy-validation>
                         <v-container column fluid>
                             <v-layout column align-start>
-                                <p class="title__paragraph">Profil Customer</p>
+                                <p class="title__paragraph" v-if="!this.param_pengelola">Profil Customer</p>
+                                <p class="title__paragraph" v-else-if="this.param_pengelola">Profil Pengelola</p>
                                 <p class="subtitle__paragraph">Silahkan Ubah Profil Anda</p>
                             </v-layout>
                             <v-layout column pt-4>
