@@ -26,17 +26,11 @@ import PengelolaUnduhTransaksi from './components/pengelola/transaksi-unduh/tran
 
 Vue.use(Router)
 var baseUrl = "";
-var nodeENV = "";
 
-if ( process.env.NODE_ENV == 'production' ) {
+if( process.env.NODE_ENV != 'development') {
   baseUrl = "https://api.kost-catleya.space";
-  nodeENV = 'prod';
-} else if( process.env.NODE_ENV == 'staging' ) {
-  baseUrl = "https://api.kost-catleya.space";
-  nodeENV = 'staging';
 } else {
   baseUrl = "http://127.0.0.1:8000";
-  nodeENV = 'dev';
 }
 
 const apiUrl = "/api";
@@ -45,7 +39,6 @@ Vue.mixin({
   data() {
       return {
           API: api,
-          nodeENV: nodeENV,
       }
   },
 });
