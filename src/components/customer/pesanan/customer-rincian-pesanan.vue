@@ -1,6 +1,6 @@
 <template>
     <!-- <v-main> -->
-        <v-container grid-list-md class="pt-0" v-if="ready">
+        <v-container grid-list-md class="pt-0">
             <div class="cust-rincian-pesanan mb-12" v-if="this.model_ready">
                 <div class="cust-rincian-pesanan__title">
                     <p class="title__medium paragraph">Rincian Pesanan</p>
@@ -178,7 +178,7 @@
             
             <v-layout column class="layout-main" mt-6 v-if="!this.model_ready">
                 <p class="title__medium">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
-                <p class="subtitle--thin pt-2">Silahkan Cek Rincian Transaksi jika sudah melakukan Pemesanan</p>
+                <p class="subtitle__thin pt-2">Silahkan Cek Rincian Transaksi jika sudah melakukan Pemesanan</p>
             </v-layout>
 
             <v-dialog v-model="dialog_konfirmasi_batal" persistent content-class="dialog-pesanan-cust">
@@ -261,6 +261,10 @@
                 default: "no_data",
             },
             apiPengelola: {
+                type: String,
+                default: "no_data",
+            },
+            apiNotification: {
                 type: String,
                 default: "no_data",
             },
@@ -476,10 +480,11 @@
                                     this.snackbar = true;
                                 }else{
                                     localStorage.removeItem('kosBooking');
+                                    this.sendNotification();
 
-                                    this.$router
-                                        .push({ path: '/transaksi' })
-                                        .then(() => { this.$router.go() })
+                                    // this.$router
+                                    //     .push({ path: '/transaksi' })
+                                    //     .then(() => { this.$router.go() })
                                 }
                             }
                         }).catch((err)=>{
@@ -498,6 +503,26 @@
                     this.snackbar = true;
                 }
             },      
+
+            sendNotification(){
+                let notification_data = {
+                    role_id: '1',
+                    message_title: 'Kost Catleya Pesanan Baru',
+                    message_body: 'Terdapat Pesanan Baru'
+                };
+
+                this.$http.post(this.apiNotification, notification_data, {headers : {
+                    Authorization: localStorage.token,
+                }})
+                .then(response => {
+                    this.devLog("Result Code notification: " +response.status);
+                }).catch((err)=>{
+                    this.error_message = err.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                });
+                
+            },  
             
             onPickFile() {
                 this.$refs.file.click();
