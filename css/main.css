@@ -153,6 +153,11 @@
   font-weight: 300;
   font-size: 2.4rem;
 }
+@media only screen and (max-width: 37.5em) {
+  .subtitle__thin {
+    font-size: 14px !important;
+  }
+}
 .subtitle__paragraph {
   font-weight: 300;
   font-size: 1.8rem;
@@ -505,6 +510,8 @@ li {
   grid-area: 1/1/5/5;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position-x: center;
+  background-position-y: center;
 }
 @media only screen and (max-width: 37.5em) {
   .image__grid-child-1 {
@@ -2607,7 +2614,7 @@ li {
     grid-template-columns: 1fr 1fr;
   }
 }
-.pengelola-pesanan--detail__child-3--template, .pengelola-pesanan-rincian--detail__child-3__desc-9, .pengelola-pesanan-rincian--detail__child-3__desc-8, .pengelola-pesanan-rincian--detail__child-3__desc-7, .pengelola-pesanan-rincian--detail__child-3__desc-6, .pengelola-pesanan-rincian--detail__child-3__desc-5, .pengelola-pesanan-rincian--detail__child-3__desc-4, .pengelola-pesanan-rincian--detail__child-3__desc-3, .pengelola-pesanan-rincian--detail__child-3__desc-2, .pengelola-pesanan-rincian--detail__child-3__desc-1, .pengelola-pesanan--detail__child-3__desc-9, .pengelola-pesanan--detail__child-3__desc-8, .pengelola-pesanan--detail__child-3__desc-7, .pengelola-pesanan--detail__child-3__desc-6, .pengelola-pesanan--detail__child-3__desc-5, .pengelola-pesanan--detail__child-3__desc-4, .pengelola-pesanan--detail__child-3__desc-3, .pengelola-pesanan--detail__child-3__desc-2, .pengelola-pesanan--detail__child-3__desc-1 {
+.pengelola-pesanan--detail__child-3--template, .pengelola-pesanan-rincian--detail__child-3__desc-11, .pengelola-pesanan-rincian--detail__child-3__desc-10, .pengelola-pesanan-rincian--detail__child-3__desc-9, .pengelola-pesanan-rincian--detail__child-3__desc-8, .pengelola-pesanan-rincian--detail__child-3__desc-7, .pengelola-pesanan-rincian--detail__child-3__desc-6, .pengelola-pesanan-rincian--detail__child-3__desc-5, .pengelola-pesanan-rincian--detail__child-3__desc-4, .pengelola-pesanan-rincian--detail__child-3__desc-3, .pengelola-pesanan-rincian--detail__child-3__desc-2, .pengelola-pesanan-rincian--detail__child-3__desc-1, .pengelola-pesanan--detail__child-3__desc-9, .pengelola-pesanan--detail__child-3__desc-8, .pengelola-pesanan--detail__child-3__desc-7, .pengelola-pesanan--detail__child-3__desc-6, .pengelola-pesanan--detail__child-3__desc-5, .pengelola-pesanan--detail__child-3__desc-4, .pengelola-pesanan--detail__child-3__desc-3, .pengelola-pesanan--detail__child-3__desc-2, .pengelola-pesanan--detail__child-3__desc-1 {
   display: grid !important;
   align-items: center !important;
   justify-content: flex-start !important;
@@ -2816,7 +2823,7 @@ li {
   grid-area: 3/1/4/2;
   display: grid;
   grid-template-columns: 0.5fr 1fr;
-  grid-template-rows: repeat(5, auto);
+  grid-template-rows: repeat(6, auto);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
@@ -2860,6 +2867,12 @@ li {
 }
 .pengelola-pesanan-rincian--detail__child-3__desc-10 {
   grid-area: 5/2/6/3;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-11 {
+  grid-area: 6/1/7/2;
+}
+.pengelola-pesanan-rincian--detail__child-3__desc-12 {
+  grid-area: 6/2/7/3;
   display: flex;
   flex-direction: row;
   align-items: center;

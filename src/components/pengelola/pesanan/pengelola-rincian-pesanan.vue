@@ -32,27 +32,33 @@
                                     <p class="bigger--regular-text__medium ">{{ kos_booking_model.user.name }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-3">
-                                    <p class="bigger--regular-text">Tanggal Masuk</p>
+                                    <p class="bigger--regular-text">Nomor Telepon</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-4">
-                                    <p class="bigger--regular-text__medium ">{{ tanggal_mulai }}</p>
+                                    <p class="bigger--regular-text__medium ">{{ kos_booking_model.user.phone_number }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-5">
-                                    <p class="bigger--regular-text">Tanggal Selesai</p>
+                                    <p class="bigger--regular-text">Tanggal Masuk</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-6">
-                                    <p class="bigger--regular-text__medium ">{{ tanggal_selesai }}</p>
+                                    <p class="bigger--regular-text__medium ">{{ tanggal_mulai }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-7">
-                                    <p class="bigger--regular-text">Jumlah Kamar</p>
+                                    <p class="bigger--regular-text">Tanggal Selesai</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-8">
-                                    <p class="bigger--regular-text__medium ">{{ kos_booking_model.total_kamar }} Kamar</p>
+                                    <p class="bigger--regular-text__medium ">{{ tanggal_selesai }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-9">
-                                    <p class="bigger--regular-text" v-if="kos_booking_model.kamar.length > 0">Nomor Kamar</p>
+                                    <p class="bigger--regular-text">Jumlah Kamar</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-10">
+                                    <p class="bigger--regular-text__medium ">{{ kos_booking_model.total_kamar }} Kamar</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-11">
+                                    <p class="bigger--regular-text" v-if="kos_booking_model.kamar.length > 0">Nomor Kamar</p>
+                                </div>
+                                <div class="pengelola-pesanan-rincian--detail__child-3__desc-12">
                                     <div v-for="(nomor, index) in kos_booking_model.kamar" :key="index">
                                         <p class="bigger--regular-text__medium " v-if="index+1 < kos_booking_model.kamar.length">{{ nomor.number }}, &nbsp; </p>    
                                         <p class="bigger--regular-text__medium " v-if="index+1 === kos_booking_model.kamar.length">{{ nomor.number }} </p>    
@@ -98,7 +104,7 @@
         
         <v-dialog v-model="dialog_konfirmasi_batal" persistent content-class="pengelola-pesanan-rincian__dialog">
             <v-card class="pa-4">
-                <p class="regular-text__medium">Ingin Membatalkan Pesanan?</p>
+                <p class="regular-text__medium" style="text-align: center">Ingin Membatalkan Pesanan?</p>
                 <v-layout justify-center class="pt-4">
                     <v-btn outlined class="mr-2" @click="dialog_konfirmasi_batal = false">Keluar</v-btn>
                     <v-btn color="red" class="ml-2 white--text" @click="submitForm('Dibatalkan')">Batalkan</v-btn>
@@ -143,6 +149,10 @@
                 required: true
             },
             apiKamarKosong: {
+                type: String,
+                required: true
+            },
+            apiNotification: {
                 type: String,
                 required: true
             },
@@ -270,6 +280,8 @@
                                 this.color = "red";
                                 this.snackbar = true;
                             }else{
+                                this.sendNotification(this.kos_booking_model.status)
+
                                 this.dialog_konfirmasi_batal = false;
                                 this.$router
                                     .push({ path: '/pengelola-pesanan' })
@@ -288,6 +300,38 @@
                 }
             
             },
+
+            sendNotification(item){
+                let notification_data;
+
+                if(item == 'Dibatalkan'){
+                    notification_data = {
+                        role_id: this.kos_booking_model.user.roles_id,
+                        id: this.kos_booking_model.user.id,
+                        message_title: 'Kost Catleya Pesanan Dibatalkan',
+                        message_body: 'Pesanan Anda Dibatalkan, Mohon tunggu respon pengelola melalui WhatsApp'
+                    };
+                }else if(item == 'Terkonfirmasi'){
+                    notification_data = {
+                        role_id: this.kos_booking_model.user.roles_id,
+                        id: this.kos_booking_model.user.id,
+                        message_title: 'Kost Catleya Pesanan Dikonfirmasi',
+                        message_body: 'Pesanan Anda Telah Dikonfirmasi, Mohon tunggu respon pengelola melalui WhatsApp'
+                    };
+                }
+
+                this.$http.post(this.apiNotification, notification_data, {headers : {
+                    Authorization: localStorage.token,
+                }})
+                .then(response => {
+                    this.devLog("Result Code notification: " +response.status);
+                }).catch((err)=>{
+                    this.error_message = err.response.data.message;
+                    this.color = "red";
+                    this.snackbar = true;
+                });
+                
+            },  
 
             getData(){
                 this.devLog('get data');

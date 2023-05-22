@@ -192,6 +192,7 @@
                 let loginData = {
                     email: this.login.email,
                     password: this.login.password,
+                    firebase_token: localStorage.getItem('firebaseToken')
                 };
                 this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(loginData)) ;
                 this.$http.post(this.api, loginData)
