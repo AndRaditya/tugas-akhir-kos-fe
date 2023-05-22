@@ -25,23 +25,24 @@ console.log(app)
 // subsequent calls to getToken will return from cache.
 const messaging = getMessaging();
 onMessage(messaging, (payload) => {
-  this.devLog('Message received. ', payload);
-  // ...
+  if ( process.env.NODE_ENV == 'development' ) {
+      console.log('Message received. ', payload);
+  }
 });
 
 getToken(messaging, { vapidKey: 'BP2GadiKl-yWOQDE0KnPwt9clvNWwEd9YEtFh_gm32VYqlqgToyfZ1SBoZKw-geyen17oyZhkZRSqEXK2QiLi5M' }).then((currentToken) => {
   if (currentToken) {
     // Send the token to your server and update the UI if necessary
-    this.devLog("Token is:",currentToken);
+    // console.log("Token is:",currentToken);
     localStorage.firebaseToken = currentToken;
     // ...
   } else {
     // Show permission request UI
-    this.devLog('No registration token available. Request permission to generate one.');
+    // this.devLog('No registration token available. Request permission to generate one.');
     // ...
   }
 }).catch((err) => {
-  this.devLog('An error occurred while retrieving token. ', err);
+    console.log('An error occurred while retrieving token. ', err);
   // ...
 });
 
