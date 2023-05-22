@@ -37,10 +37,10 @@ Vue.mixin({
   },
   methods: {
         devLog(item){
-            // if ( process.env.NODE_ENV == 'development' ) {
-            //     console.log(item);
-            //   }
-            console.log(item);
+            if ( process.env.NODE_ENV == 'development' ) {
+                console.log(item);
+            }
+            // console.log(item);
         },
         confirm(title, message, options) {
             return app.confirm(title, message, options);

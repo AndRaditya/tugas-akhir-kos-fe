@@ -121,7 +121,7 @@
                 }
             },
             validateForm () {
-                console.log('valid')
+                this.devLog('valid')
                 this.devLog("validating");
                 // this.devLog(this.valid);
                 this.valid = (this.$refs.form_register).validate();

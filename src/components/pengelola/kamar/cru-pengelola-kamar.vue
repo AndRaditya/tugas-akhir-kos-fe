@@ -500,7 +500,7 @@ export default {
         // },
 
         validateForm () {
-            console.log('valid')
+            this.devLog('valid')
             this.devLog("validating");
             this.devLog(this.kamar_model.status);
             this.devLog(this.kamar_model.nama_penyewa);

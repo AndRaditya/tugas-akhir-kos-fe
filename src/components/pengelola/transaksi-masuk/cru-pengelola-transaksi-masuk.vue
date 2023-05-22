@@ -500,7 +500,7 @@ export default {
         },
 
         validateForm () {
-            console.log('valid')
+            this.devLog('valid')
             this.devLog("validating");
             this.valid = (this.$refs.form_transaksi_masuk).validate();
             this.devLog(this.valid);

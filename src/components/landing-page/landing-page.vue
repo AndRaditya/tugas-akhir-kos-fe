@@ -274,7 +274,7 @@
                                             <v-layout column align-end>
                                                 <p class="pb-2 regular-text__bold paragraph">Butuh Pertanyaan?</p>
                                                 <p class="regular-text">Hubungi Pengelola</p>
-                                                <v-btn color="#19A7CE" outlined elevation="0" class="button__lihat-foto">Tanya Pengelola</v-btn>
+                                                <v-btn color="#19A7CE" outlined elevation="0" class="button__lihat-foto" href="https://api.whatsapp.com/send/?phone=6282214006189&text=Halo,%20Saya%20ingin%20mendapatkan%20informasi%20mengenai%20Kost%20Catleya&type=phone_number&app_absent=0" target="_blank">Tanya Pengelola</v-btn>
                                             </v-layout>
                                         </div>
                                     </div>
@@ -466,6 +466,9 @@ export default {
         this.sisaKamar();
         this.param_pengelola = this.check_pengelola();
         this.reloadOnce();
+
+        this.devLog('process.env.NODE_ENV');
+        this.devLog(process.env.NODE_ENV);
     },  
     methods:{
         reloadOnce(){
