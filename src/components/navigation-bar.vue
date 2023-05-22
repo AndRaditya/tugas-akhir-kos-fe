@@ -181,12 +181,37 @@ export default {
 
     logout(){
       if(localStorage.userLogin){
-        localStorage.removeItem("userLogin");
-        localStorage.removeItem("token");
+        this.$http.get(this.API + '/logout', {headers : {
+                Authorization: localStorage.token,
+            }})
+        .then(response => {
+            this.devLog("logout: " +response.status);
+            if(response.status == 200){
+                if(response.data.api_status == "fail"){
+                    this.devLog('response fail')
+                    this.error_message = response.data.api_title;
+                    this.color = "red";
+                    this.snackbar = true;
+                    this.model_transaksi = false;
+                }else{
+                  localStorage.clear();
 
-        this.$router
-          .push({ path: '/login' })
-          .then(() => { this.$router.go() })
+                  this.$router
+                    .push({ path: '/login' })
+                    .then(() => { this.$router.go() })
+                }
+            }
+        }).catch((err)=>{
+            this.devLog(err);
+            this.error_message = err.response;
+            this.color = "red";
+            this.snackbar = true;
+            this.model_transaksi = false;
+            this.ready = false;
+        });
+
+
+
       }
     },  
 

@@ -26,6 +26,8 @@
             grid-area: 1 / 1 / 5 / 5;
             background-repeat: no-repeat;
             background-size: cover;
+            background-position-x: center;
+            background-position-y: center;
 
             @media only screen and (max-width: $bp-small) {
                 grid-area: 1 / 1 / 2 / 2;
