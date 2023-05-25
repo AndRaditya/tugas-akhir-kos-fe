@@ -41,6 +41,11 @@ Vue.mixin({
             }
             // console.log(item);
         },
+        formatPrice(n) {
+            return  Number(n).toFixed(0).replace(/./g, function(c, i, a) {
+                return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
+            });
+        },
         confirm(title, message, options) {
             return app.confirm(title, message, options);
         },

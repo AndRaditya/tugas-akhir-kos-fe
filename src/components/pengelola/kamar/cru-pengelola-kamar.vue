@@ -18,12 +18,13 @@
                                 <p class="regular-text">Nama Kos</p>
                             </v-layout>
                             <v-select
-                                v-model="kamar_model.kos_id"
-                                placeholder="Masukkan Nama Kos"
+                                v-model="kamar_model.kos_name"
+                                label="Masukkan Nama Kos"
                                 outlined
                                 :items="listKos"
                                 :readonly="!editable"
-                                :rules="[(v) => !!v || 'This is required']"
+                                clearable
+                                :rules="[(v) => !!v || 'Item is required']"
                             ></v-select>
                             <v-layout align-start column>
                                 <p class="regular-text">Nomor Kamar</p>
@@ -84,6 +85,7 @@
                                 type="number"
                                 hide-spin-buttons
                                 outlined
+                                clearable
                             ></v-text-field>
 
                         </div>
@@ -91,40 +93,40 @@
                             <div class="pengelola-kamar__grid-2__form-2--child-1">
                                 <p class="regular-text__medium paragraph">Foto Kamar</p>
                             </div>
-                            <div class="pengelola-kamar__grid-2__form-2--child-2">
+                            <div class="pengelola-kamar__grid-2__form-2--child-2" v-if="urls.length != 0">
                                 <div class="pengelola-kamar__grid-2__form-2--child-2__photo-1" :style="{backgroundImage: `url(${urls[0]})`}">
                                     <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
-                                    @click="removeImage(0)" v-if="urls[0]">
+                                    @click="removeImage(0)" v-if="urls[0] && editable">
                                     <span class="material-icons">delete</span>
                                     </v-btn>
                                 </div>
                                 <div class="pengelola-kamar__grid-2__form-2--child-2__photo-2" :style="{backgroundImage: `url(${urls[1]})`}">
                                     <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
-                                    @click="removeImage(1)" v-if="urls[1]">
+                                    @click="removeImage(1)" v-if="urls[1] && editable">
                                     <span class="material-icons">delete</span>
                                     </v-btn>
                                 </div>
                                 <div class="pengelola-kamar__grid-2__form-2--child-2__photo-3" :style="{backgroundImage: `url(${urls[2]})`}">
                                     <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
-                                    @click="removeImage(2)" v-if="urls[2]">
+                                    @click="removeImage(2)" v-if="urls[2] && editable">
                                     <span class="material-icons">delete</span>
                                     </v-btn>
                                 </div>
                                 <div class="pengelola-kamar__grid-2__form-2--child-2__photo-4" :style="{backgroundImage: `url(${urls[3]})`}">
                                     <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
-                                    @click="removeImage(3)" v-if="urls[3]">
+                                    @click="removeImage(3)" v-if="urls[3] && editable">
                                     <span class="material-icons">delete</span>
                                     </v-btn>
                                 </div>
                                 <div class="pengelola-kamar__grid-2__form-2--child-2__photo-5" :style="{backgroundImage: `url(${urls[4]})`}">
                                     <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
-                                    @click="removeImage(4)" v-if="urls[4]">
+                                    @click="removeImage(4)" v-if="urls[4] && editable">
                                     <span class="material-icons">delete</span>
                                     </v-btn>
                                 </div>
                                 <div class="pengelola-kamar__grid-2__form-2--child-2__photo-6" :style="{backgroundImage: `url(${urls[5]})`}">
                                     <v-btn icon small class="error my-auto pengelola-kamar__grid-2__form-2--child-2__button" 
-                                    @click="removeImage(5)" v-if="urls[5]">
+                                    @click="removeImage(5)" v-if="urls[5] && editable">
                                     <span class="material-icons">delete</span>
                                     </v-btn>
                                 </div>
@@ -137,7 +139,7 @@
                                     &nbsp;Lihat Semua Foto
                                 </v-btn>
                             </div>
-                            <div class="pengelola-kamar__grid-2__form-2--child-4">
+                            <div class="pengelola-kamar__grid-2__form-2--child-4" v-if="editable">
                                 <v-btn      
                                     outlined                           
                                     elevation="0" 
@@ -155,50 +157,6 @@
                 </v-form>
             </div>
         </div>
-
-
-
-      
-            <!-- <v-layout align-start justify-center  row class="mt-6">
-
-                <v-flex xs6 class="ml-8">
-                    <v-layout row wrap class="">
-                        <v-flex
-                            v-for="(url, index) in urls"
-                            :key="index"
-                            class="preview-img-flex ma-2 mr-2 mb-2"
-                            shrink
-                        >
-                            <v-layout v-if="index < 6" column>
-                                <v-card elevation-0 style="cursor: pointer">
-                                    <v-img
-                                        v-if="url"
-                                        :src="url"
-                                        width="251"
-                                        height="200"
-                                        contain
-                                        class="grey lighten-5"
-                                    ></v-img>
-                                </v-card>
-                                <v-flex v-if="url" mt-2>
-                                    <v-btn
-                                        icon
-                                        small
-                                        class="error my-auto"
-                                        @click="removeImage(index)"
-                                        ><span class="material-icons">
-                                        delete
-                                        </span></v-btn>
-                                </v-flex>
-                            </v-layout>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-            </v-layout>
-            <v-flex class="my-4" v-if="editable">
-
-            </v-flex> -->
-
 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
@@ -247,6 +205,21 @@
             </v-card>
         </v-dialog>
 
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
+        <v-dialog v-model="errorDialog" max-width="500">
+            <v-card>
+                <v-card-text class="subtitle pa-3">{{errorText}}</v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="errorDialog = false" flat>Tutup!</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
@@ -284,6 +257,7 @@ export default {
             if(newVal != oldVal){
                 if(newVal == 'Kosong'){
                     this.penyewa_disabled = true;
+                    this.kamar_model.nama_penyewa = ''
                 }else{
                     this.penyewa_disabled = false;
                 }
@@ -292,7 +266,11 @@ export default {
     },
 
     data(){
-        return{
+        return{    
+            form_data_kamar: false,
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
+
             ready: false,
             id: null,
             deletedImages: [],
@@ -323,9 +301,16 @@ export default {
                 v => v.length>0|| 'This is required',
             ],
 
+            rules:  [v => Boolean(Object.keys(v || {})[0]) || "Field is required"]
+            ,
+
             listKos: [],
             penyewa_disabled: false,
             penyewa_required: 0,
+
+            maxSize: 1024,
+            errorDialog: null,
+            errorText: "",
         }
     },
 
@@ -334,12 +319,13 @@ export default {
         this.devLog(this.editable + 'editable');
         this.initData();
         this.initAxio();
+
+        this.devLog(this.urls);
     },
 
     methods:{
         initData(){
             this.initModel();
-            this.initListKos();
             this.getKamarFasilitas();
             // this.getNomorKamar();
 
@@ -369,6 +355,9 @@ export default {
         initAxio(){
             this.devLog(this.nav_title);
             if(this.nav_title == "Ubah" || this.nav_title == "Detail"){
+                this.snackbarLoading_message = 'Loading';
+                this.color = "orange darken-2";
+                this.snackbarLoading = true;
                 this.devLog('this.id');
                 this.devLog(this.id);
 
@@ -376,6 +365,7 @@ export default {
                         Authorization: localStorage.token,
                     }})
                     .then(response => {
+                        this.snackbarLoading = false;
                         this.devLog("get user result code: " + response.status);
                         if(response.status == 200){
                             if(!response.data){
@@ -383,12 +373,14 @@ export default {
                             }else{
                                 this.kamar_model = response.data.data[0];
                                 this.devLog(this.kamar_model)
+                                this.initListKos();
                                 this.getKamarFasilitasAxio();
                                 this.initPhoto();
                                 this.ready = true;
                             }
                         }
                     }).catch((err)=>{
+                        this.snackbarLoading = false;
                         this.error_message = err.response.data;
                         this.color = "red";
                         this.snackbar = true;
@@ -432,7 +424,7 @@ export default {
                 nama_penyewa: '',
                 kamar_photos: [],
                 kamar_fasilitas: [],
-                kos_id: '',
+                kos_name: '',
             }
             
             this.kamar_model_temp = {
@@ -446,58 +438,8 @@ export default {
         },
 
         getKamarFasilitas(){
-            this.kamar_fasiitas_items = ['Kasur ukuran 90x90', 'TV', 'Meja', 'Nakas', 'Lemari', 'Kamar Mandi Dalam', 'Water Heater', 'Kloset Duduk'];
+            this.kamar_fasiitas_items = ['Kasur ukuran 90x120', 'TV', 'Meja', 'Nakas', 'Lemari', 'Kamar Mandi Dalam', 'Water Heater', 'Kloset Duduk'];
         },
-
-        // getNomorKamar(){
-        //     this.devLog('get nomor kamar')
-        //     this.$http.get(this.api, {headers : {
-        //                 Authorization: localStorage.token,
-        //             }})
-        //         .then(response => {
-        //             this.devLog("get nomor kamar result code: " + response.status);
-        //             if(response.status == 200){
-        //                 if(!response.data){
-        //                     this.devLog('response fail')
-        //                 }else{
-        //                     this.kamar_model_temp = response.data.data;
-        //                     this.devLog(this.kamar_model_temp)
-        //                     if(this.nav_title == "Tambah"){
-        //                         this.tambahKamarNomor();
-        //                     }
-        //                 }
-        //             }
-        //         }).catch((err)=>{
-        //             this.error_message = err.response.data;
-        //             this.color = "red";
-        //             this.snackbar = true;
-        //         });
-        // },
-
-        // tambahKamarNomor(){
-        //     const nomor_model  = [];
-            
-        //     for(let i = 0; i < this.kamar_model_temp.length; i++){
-        //         nomor_model.push(this.kamar_model_temp[i].number)
-        //     }
-
-        //     // this.nomor_kamar = this.nomor_kamar.filter(function(val) {
-        //     //     return nomor_model.indexOf(val) == -1;
-        //     // });
-
-        //     this.nomor_kamar = nomor_model;
-
-        //     this.devLog('this.nomor_kamar');
-        //     this.devLog(this.nomor_kamar);
-        // },
-
-        // checkDuplicateNomor(val){
-        //     // this.nomor_kamar.forEach((element) => {
-        //         if(val == this.nomor_kamar[0]){
-        //             return `Nomor Kamar ${val} sudah diambil`;
-        //         }
-        //     // })
-        // },
 
         validateForm () {
             this.devLog('valid')
@@ -519,10 +461,16 @@ export default {
 
         validate(){
             this.valid = (this.$refs.form_data_kamar).validate();
-            this.devLog(this.valid);
+            this.devLog('valid + '+ this.valid);
 
             if (this.valid == true) {
-                this.submitForm();
+                if(this.kamar_model.id == ''){
+                    this.error_message = `Nama Kos Kosong`;
+                    this.color = "red";
+                    this.snackbar = true;
+                }else{
+                    this.submitForm();
+                }
             }else{
                 window.scrollTo(0,0);
             }
@@ -545,12 +493,18 @@ export default {
             this.devLog(JSON.stringify(this.kamar_model));
             this.devLog(this.kamar_model);
 
+            this.snackbarLoading_message = 'Submitting Data';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
+
             this.$http.post(this.api, this.kamar_model, {headers : {
                 Authorization: localStorage.token,
             }})
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 201){
+                    this.snackbarLoading = false;
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
@@ -567,6 +521,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
                 this.color = "red";
                 this.snackbar = true;
@@ -574,6 +529,10 @@ export default {
         },  
 
         putData(){
+            this.snackbarLoading_message = 'Submitting Data';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.devLog(this.api+this.id)
             this.devLog(JSON.stringify(this.kamar_model));
             this.devLog(this.kamar_model);
@@ -584,6 +543,7 @@ export default {
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 202){
+                    this.snackbarLoading = false;
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
@@ -602,6 +562,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
                 this.color = "red";
                 this.snackbar = true;
@@ -634,12 +595,18 @@ export default {
         },
 
         onFileChange(file) {
+            const { maxSize } = this
             let imageFile = file[0];
+            let size = imageFile.size / maxSize / maxSize
             if (file.length > 0) {
                 if (!imageFile.type.match("image.*")) {
                     this.errorDialog = true;
                     this.errorText = "Please choose an image file";
-                } else {
+                }else if(size>1){
+                    this.errorDialog = true
+                    this.errorText = 'Gambar anda terlalu besar! Pilih gambar dibawah 1MB'
+                } 
+                else {
                     let imageURL = URL.createObjectURL(imageFile);
                     this.fileName = imageFile.name;
 

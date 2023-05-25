@@ -3,8 +3,8 @@
         display: grid;
         grid-template-columns: 1fr 0.1fr 0.1fr;
         grid-template-rows: 1fr;
-        grid-column-gap: 0px;
-        grid-row-gap: 0px;
+        grid-column-gap: 2.4rem;
+        grid-row-gap: 2.4rem;
 
         @media only screen and (max-width: $bp-medium) {
             grid-template-columns: repeat(2, auto);
@@ -24,6 +24,14 @@
 
             display: flex;
             justify-content: flex-start;
+
+            @media only screen and (max-width: $bp-smallest) {
+                grid-area: 1 / 1 / 2 / 3; 
+            }
+
+            @media only screen and (max-width: $bp-mobile) {
+                grid-area: 1 / 1 / 2 / 2; 
+            }
         }
 
         &--child-2 { 

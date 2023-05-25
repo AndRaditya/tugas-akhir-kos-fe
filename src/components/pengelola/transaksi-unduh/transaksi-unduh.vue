@@ -193,6 +193,11 @@
         </div>
 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
+
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="3000" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
     </v-container>
 </template>
 
@@ -207,6 +212,9 @@ export default {
     },
     data(){
         return{
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
+
             ready: false,
             snackbar: '',
             color: '',
@@ -282,6 +290,10 @@ export default {
         },
 
         exportData(model, url, filename){
+            this.snackbarLoading_message = 'Mengunduh Transaksi';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.devLog(JSON.stringify(model));
             let tanggal_mulai = model.tanggal_mulai
             let tanggal_selesai = model.tanggal_selesai
@@ -294,6 +306,7 @@ export default {
                 this.devLog(response);
                 this.devLog("unduh trs result code: " + response.status);
                 if(response.status == 200){
+                    this.snackbarLoading = false;
                     if(!response.data){
                         this.devLog('response fail')
                         this.error_message = response;
@@ -309,6 +322,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 if(!err.response){
                     this.error_message = err.response;
                     this.color = "red";

@@ -21,10 +21,18 @@
                         disabled
                     ></v-text-field>
                     <v-layout align-start column>
+                        <p class="regular-text">Tanggal Transaksi</p>
+                    </v-layout>
+                    <v-text-field
+                        v-model="transaksi_masuk_model.tanggal"
+                        outlined
+                        disabled
+                    ></v-text-field>
+                    <v-layout align-start column>
                         <p class="regular-text">Kategori Transaksi</p>
                     </v-layout>
                     <v-select
-                        v-model="transaksi_masuk_model.transaksi_masuk_kategori_id"
+                        v-model="transaksi_masuk_model.kategori_name"
                         placeholder="Masukkan Kategori Transaksi"
                         outlined
                         :readonly="!editable"
@@ -47,6 +55,8 @@
                         @input="biayaTambahan()"
                         clearable
                     ></v-text-field>
+                </div>
+                <div class="pengelola-trs-masuk__child-3">
                     <v-layout align-start column>
                         <p class="regular-text">Deskripsi Transaksi</p>
                     </v-layout>
@@ -58,16 +68,6 @@
                         :rules="requiredRule"
                         clearable
                     ></v-textarea>
-                </div>
-                <div class="pengelola-trs-masuk__child-3">
-                    <v-layout align-start column>
-                        <p class="regular-text">Tanggal Transaksi</p>
-                    </v-layout>
-                    <v-text-field
-                        v-model="transaksi_masuk_model.tanggal"
-                        outlined
-                        disabled
-                    ></v-text-field>
                     <v-layout align-start column>
                         <p class="regular-text">Nama Penyewa</p>
                     </v-layout>
@@ -86,8 +86,8 @@
                         outlined
                         :readonly="!editable"
                         :items="nomor_kamar"
-                        :rules="transaksi_masuk_model.transaksi_masuk_kategori_id != 6 ? [fillRule] : []"
-                        :required="transaksi_masuk_model.transaksi_masuk_kategori_id != 6"
+                        :rules="transaksi_masuk_model.kategori_name != 'Lain - lain' ? [fillRule] : []"
+                        :required="transaksi_masuk_model.kategori_name != 'Lain - lain'"
                         @input="selectNamaPenyewa()"
                         clearable
                     ></v-select>
@@ -100,8 +100,6 @@
                         :readonly="!editable"
                         :items="kode_booking"
                         outlined
-                            v-bind="attrs"
-                        v-on="listeners"
                         return-object
                         hide-selected
                         clearable
@@ -223,7 +221,23 @@
             </v-card>
         </v-dialog>
 
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
+        <v-dialog v-model="errorDialog" max-width="500">
+            <v-card>
+                <v-card-text class="subtitle pa-3">{{errorText}}</v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="errorDialog = false" flat>Tutup!</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-container>
+    
     
 </template>
 
@@ -262,6 +276,9 @@ export default {
     },
     data(){
         return{
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
+
             ready: false,
             id: null,
             imageDialog: false,
@@ -308,6 +325,10 @@ export default {
             
             fileName: '',
             file: '',
+            
+            maxSize: 1024,
+            errorDialog: null,
+            errorText: "",
         }
     },
     created(){
@@ -320,7 +341,6 @@ export default {
         initData(){
             this.initModel();
             this.getKategori();
-            this.getNomorKamar();
             this.getKodeBooking();
             this.nav_path = this.$route.path.split("/");
             var last = this.nav_path.length -1;
@@ -357,7 +377,7 @@ export default {
                 nomor_booking: '',
                 total_nilai: null,
 
-                transaksi_masuk_kategori_id: '',
+                kategori_name: '',
                 biaya_tambahan: {},
             }
 
@@ -373,44 +393,55 @@ export default {
                 this.devLog('this.id');
                 this.devLog(this.id);
 
-                this.$http.get(this.api+this.id, {headers : {
-                        Authorization: localStorage.token,
-                    }})
-                    .then(response => {
-                        this.devLog("init axio result code: " + response.status);
-                        if(response.status == 200){
-                            if(!response.data){
-                                this.devLog('response fail')
-                            }else{
-                                this.ready = true;
-                                this.transaksi_masuk_model = response.data.data[0];
-                                this.devLog(this.transaksi_masuk_model)
-                                this.total_nilai_temp = this.transaksi_masuk_model.total_nilai.toLocaleString("de-DE")
-                                this.devLog('init axio')
-                                this.initPhoto()
-
-                                if(this.transaksi_masuk_model.biaya_tambahan.length > 0){
-                                    this.getBiayaTambahan();
+                if(localStorage.userLogin){
+                    this.devLog('add trs')
+                    this.ready = true;
+                    this.$http.get(this.api+this.id, {headers : {
+                            Authorization: localStorage.token,
+                        }})
+                        .then(response => {
+                            this.devLog("init axio result code: " + response.status);
+                            if(response.status == 200){
+                                if(!response.data){
+                                    this.devLog('response fail')
+                                }else{
+                                    this.ready = true;
+                                    this.transaksi_masuk_model = response.data.data[0];
+                                    this.devLog(this.transaksi_masuk_model)
+                                    this.total_nilai_temp = this.formatPrice(this.transaksi_masuk_model.total_nilai)
+                                    this.devLog('init axio')
+                                    this.initPhoto()
+                                    this.getNomorKamar();
+    
+                                    if(this.transaksi_masuk_model.biaya_tambahan.length > 0){
+                                        this.getBiayaTambahan();
+                                    }
+    
+                                    // if (this.transaksi_masuk_model.bukti_transfer.photo_path) {
+                                    //     this.updatePhoto();
+                                    // }
                                 }
-
-                                // if (this.transaksi_masuk_model.bukti_transfer.photo_path) {
-                                //     this.updatePhoto();
-                                // }
                             }
-                        }
-                    }).catch((err)=>{
-                        this.devLog(err)
-                        this.error_message = 'Data Empty';
-                        this.color = "red";
-                        this.snackbar = true;
-                        this.ready = false;
-                    });
-            }else if(localStorage.userLogin){
-                this.devLog('add trs')
-                this.ready = true;
+                        }).catch((err)=>{
+                            this.devLog(err)
+                            this.error_message = 'Data Empty';
+                            this.color = "red";
+                            this.snackbar = true;
+                            this.ready = false;
+                        });
+
+                }else{
+                    this.ready = false;
+                }
             }
             else{
-                setInterval(this.getNow(), 1000);
+                if(localStorage.userLogin){
+                    this.ready = true;
+                    setInterval(this.getNow(), 1000);
+                    this.devLog('tanggal tanggal')
+                }else{
+                    this.ready = false;
+                }
             }
         },
 
@@ -424,7 +455,7 @@ export default {
             this.transaksi_masuk_model.biaya_tambahan.name = biayaTambahanTemp.name;
             this.transaksi_masuk_model.biaya_tambahan.nilai = biayaTambahanTemp.nilai;
             this.transaksi_masuk_model.biaya_tambahan.desc = biayaTambahanTemp.desc;
-            this.total_nilai_temp = this.transaksi_masuk_model.total_nilai.toLocaleString("de-DE")
+            this.total_nilai_temp = this.formatPrice(this.transaksi_masuk_model.total_nilai)
         },
 
         getNow() {
@@ -454,17 +485,22 @@ export default {
                 Authorization: localStorage.token,
             }})
             .then(response => {
-                this.devLog("init axio result code: " + response.status);
+                this.devLog("init kamar axio result code: " + response.status);
                 if(response.status == 200){
                     if(!response.data){
                         this.devLog('response fail')
                     }else{
                         this.ready = true;
                         this.kamar_model = response.data.data;
+                        this.devLog(this.kamar_model);
 
                         this.kamar_model.forEach((element) => {
                             this.nomor_kamar.push(element.number)
                         });
+
+                        if(this.transaksi_masuk_model.nomor_kamar){
+                            this.selectNamaPenyewa();
+                        }
                     }
                 }
             }).catch((err)=>{
@@ -527,6 +563,11 @@ export default {
         },
 
         postData(){
+            this.snackbarLoading_message = 'Submitting Data';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
+
             this.devLog('this.switch_harga ' + this.switch_harga);
             this.devLog('this.total_nilai_temp_float ' + this.total_nilai_temp_float);
 
@@ -543,6 +584,7 @@ export default {
             .then(response => {
                 this.devLog("post data trs: " +response.status);
                 if(response.status == 201){
+                    this.snackbarLoading = false;
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
@@ -559,6 +601,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
                 this.color = "red";
                 this.snackbar = true;
@@ -566,6 +609,10 @@ export default {
         },
 
         putData(){
+            this.snackbarLoading_message = 'Submitting Data';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.devLog(this.api+this.id)
 
             this.devLog('this.switch_harga ' + this.switch_harga);
@@ -584,6 +631,7 @@ export default {
             .then(response => {
                 this.devLog("update trs masuk: " +response.status);
                 if(response.status == 202){
+                    this.snackbarLoading = false;
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
@@ -606,6 +654,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
                 this.color = "red";
                 this.snackbar = true;
@@ -657,7 +706,7 @@ export default {
         },
 
         nomorKamarRule(){
-            if(this.transaksi_masuk_model.transaksi_masuk_kategori_id != 6){
+            if(this.transaksi_masuk_model.kategori_name != 'Lain - lain'){
                 return 'Required'
             }else{
                 return true;
@@ -687,12 +736,17 @@ export default {
         },
 
         onFileChange(file) {
+            const { maxSize } = this
             let imageFile = file[0];
+            let size = imageFile.size / maxSize / maxSize
             if (file.length > 0) {
                 if (!imageFile.type.match("image.*")) {
                     this.errorDialog = true;
                     this.errorText = "Please choose an image file";
-                } else {
+                }else if(size>1){
+                        this.errorDialog = true
+                        this.errorText = 'Gambar anda terlalu besar! Pilih gambar dibawah 1MB'
+                }else {
                     let imageURL = URL.createObjectURL(imageFile);
                     this.fileName = imageFile.name;
 
@@ -759,7 +813,7 @@ export default {
             }
 
             this.total_nilai_temp_float = nilai_trs;
-            this.total_nilai_temp = nilai_trs.toLocaleString("de-DE");
+            this.total_nilai_temp = this.formatPrice(nilai_trs);
         },
 
         goEdit(){

@@ -25,7 +25,7 @@
                         <p class="regular-text">Kategori Transaksi</p>
                     </v-layout>
                     <v-select
-                        v-model="transaksi_keluar_model.transaksi_keluar_kategori_id"
+                        v-model="transaksi_keluar_model.kategori_name"
                         placeholder="Masukkan Kategori Transaksi"
                         outlined
                         :items="kategori_transaksi_keluar"
@@ -48,7 +48,7 @@
                 </div>
                 <div class="pengelola-trs-keluar__child-3">
                     <v-layout align-start column>
-                        <p class="regular-text">Nomor Transaksi</p>
+                        <p class="regular-text">Tanggal Transaksi Transaksi</p>
                     </v-layout>
                     <v-text-field
                         v-model="transaksi_keluar_model.tanggal"
@@ -74,6 +74,10 @@
             </v-flex>
         </v-form>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
 
     </v-container>
     
@@ -102,6 +106,9 @@ export default {
     },
     data(){
         return{
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
+
             ready: false,
             id: null,
             valid: false,
@@ -162,43 +169,52 @@ export default {
                 tanggal: '',
                 desc: '',
                 nilai: null,
-                kategori_transaksi: '',
+                kategori_name: '',
             }       
         },
 
         initAxio(){
+            this.devLog('this.nav_title');
             this.devLog(this.nav_title);
             if(this.nav_title == "Ubah" || this.nav_title == "Detail"){
                 this.devLog('this.id');
                 this.devLog(this.api+this.id);
 
-                this.$http.get(this.api+this.id, {headers : {
-                        Authorization: localStorage.token,
-                    }})
-                    .then(response => {
-                        this.devLog("get user result code: " + response.status);
-                        if(response.status == 200){
-                            if(!response.data){
-                                this.devLog('response fail')
-                            }else{
-                                this.devLog(response.data)
-                                this.transaksi_keluar_model = response.data.data[0];
-                                this.devLog(this.transaksi_keluar_model)
-                                this.ready = true
+                if(localStorage.userLogin){
+                    this.ready = true;
+                    this.$http.get(this.api+this.id, {headers : {
+                            Authorization: localStorage.token,
+                        }})
+                        .then(response => {
+                            this.devLog("get user result code: " + response.status);
+                            if(response.status == 200){
+                                if(!response.data){
+                                    this.devLog('response fail')
+                                }else{
+                                    this.devLog(response.data)
+                                    this.transaksi_keluar_model = response.data.data[0];
+                                    this.devLog(this.transaksi_keluar_model)
+                                    this.ready = true
+                                }
                             }
-                        }
-                    }).catch((err)=>{
-                        this.error_message = err.response.data;
-                        this.color = "red";
-                        this.snackbar = true;
-                        this.ready = false;
-                    });
-            }else if(localStorage.userLogin){
-                this.devLog('add trs')
-                this.ready = true;
+                        }).catch((err)=>{
+                            this.error_message = err.response.data;
+                            this.color = "red";
+                            this.snackbar = true;
+                            this.ready = false;
+                        });
+                }else{
+                    this.ready = false;
+                }
             }
             else{
-                setInterval(this.getNow(), 1000);
+                if(localStorage.userLogin){
+                    this.ready = true;
+                    setInterval(this.getNow(), 1000);
+                    this.devLog('tanggal tanggal')
+                }else{
+                    this.ready = false;
+                }
             }
 
         },
@@ -282,12 +298,17 @@ export default {
             this.devLog(this.api)
             this.devLog(this.transaksi_keluar_model);
 
+            this.snackbarLoading_message = 'Submitting Data';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.$http.post(this.api, this.transaksi_keluar_model, {headers : {
                 Authorization: localStorage.token,
             }})
             .then(response => {
                 this.devLog("post data trs: " +response.status);
                 if(response.status == 201){
+                    this.snackbarLoading = false;
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
@@ -304,6 +325,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
                 this.color = "red";
                 this.snackbar = true;
@@ -311,6 +333,10 @@ export default {
         },  
 
         putData(){
+            this.snackbarLoading_message = 'Submitting Data';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.devLog(this.api+this.id)
             this.devLog(JSON.stringify(this.transaksi_keluar_model));
             this.devLog(this.transaksi_keluar_model);
@@ -321,6 +347,7 @@ export default {
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 202){
+                    this.snackbarLoading = false;
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
@@ -338,6 +365,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
                 this.color = "red";
                 this.snackbar = true;

@@ -75,6 +75,11 @@
             </v-card>
         </v-layout> 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
     </v-container>
 </template>
 
@@ -84,6 +89,9 @@
 
         data(){
             return{
+                snackbarLoading: false, 
+                snackbarLoading_message: '',
+
                 snackbar: '',
                 color: '',
                 error_message: '',
@@ -135,11 +143,16 @@
             },
 
             submitForm(){
+                this.snackbarLoading_message = 'Loading';
+                this.color = "orange darken-2";
+                this.snackbarLoading = true;
+
                 // this.devLog(this.model)
                 this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.model)) ;
 
                 this.$http.post(this.API+'/kos-booking', this.model)
                 .then(response => {
+                    this.snackbarLoading = false;
                     this.devLog("Login Result Code: " +response.status);
                     if(response.status == 200){
                         if(response.data.api_status == "fail"){
@@ -162,6 +175,7 @@
                         }
                     }
                 }).catch((err)=>{
+                    this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
                     this.color = "red";
                     this.snackbar = true;

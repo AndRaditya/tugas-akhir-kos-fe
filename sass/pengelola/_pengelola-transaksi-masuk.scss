@@ -132,7 +132,7 @@
             width: 50%;
         }
 
-        @media only screen and (max-width: $bp-mobile) {
+        @media only screen and (max-width: $bp-smallest) {
             width: 70%;
         }
     }
@@ -170,6 +170,14 @@
 
             display: flex;
             justify-content: flex-start;
+
+            @media only screen and (max-width: $bp-smallest) {
+                grid-area: 1 / 1 / 2 / 3; 
+            }
+
+            @media only screen and (max-width: $bp-mobile) {
+                grid-area: 1 / 1 / 2 / 2; 
+            }
         }
 
         &--child-2 { 

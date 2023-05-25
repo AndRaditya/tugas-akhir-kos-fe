@@ -27,10 +27,10 @@ import PengelolaUnduhTransaksi from './components/pengelola/transaksi-unduh/tran
 Vue.use(Router)
 var baseUrl = "";
 
-if( process.env.NODE_ENV != 'development') {
-  baseUrl = "https://api.kost-catleya.space";
-} else {
+if( process.env.NODE_ENV == 'development') {
   baseUrl = "http://127.0.0.1:8000";
+} else {
+  baseUrl = "https://api.kost-catleya.space";
 }
 
 const apiUrl = "/api";
@@ -44,10 +44,10 @@ Vue.mixin({
 });
 
 let routeArr = [];
-routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas'}});
+routeArr.push({ title: 'Dashboard', icon: '', path: '/', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas', apiKamarHarga: api + '/kamar-harga'}});
 
-routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas'}});
-routeArr.push({ title: 'Dashboard', icon: '', path: '/pengelola', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas'}});
+routeArr.push({ title: 'Dashboard', icon: '', path: '/dashboard', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas', apiKamarHarga: api + '/kamar-harga'}});
+routeArr.push({ title: 'Dashboard', icon: '', path: '/pengelola', component: LandingPage, props: {api: api + '/landing-page/2', apiKamar: api + '/kamar-kosong', apiKamarPhotos: api + '/kamar-photos', apiKamarFasilitas: api + '/kamar-fasilitas', apiKamarHarga: api + '/kamar-harga'}});
 
 routeArr.push({ title: 'Login', icon: '', path: '/login', component: Login, props:{api: api+'/login', apiForgot: api + '/forgot-password'}});
 routeArr.push({ title: 'Register', icon: '', path: '/register', component: Register});

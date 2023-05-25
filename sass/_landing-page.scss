@@ -444,6 +444,83 @@
             }
         }
     }
+
+    &__dialog{
+        width: 30% !important;
+
+        @media only screen and (max-width: $bp-largest) {
+            width: 40% !important;
+        }
+
+        @media only screen and (max-width: $bp-medium) {
+            width: 50% !important;
+        }
+
+        @media only screen and (max-width: $bp-small) {
+            width: 70% !important;
+        }
+
+        @media only screen and (max-width: $bp-smallest) {
+            width: 90% !important;
+        }
+
+        &--parent{
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            grid-template-rows: repeat(3, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+        }
+
+        &--child-1 { 
+            grid-area: 1 / 1 / 2 / 3; 
+
+            line-height: 1.8;
+        }
+
+        &--child-2 { 
+            grid-area: 2 / 1 / 3 / 3; 
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 16px;
+        }
+
+        &--child-3 { 
+            grid-area: 3 / 1 / 4 / 3; 
+            margin-top: 16px;
+
+            display: grid;
+            grid-template-columns: repeat(2, 0.5fr);
+            grid-template-rows: 1fr;
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            
+            &__btn{
+                width: 75% !important;
+
+                @media only screen and (max-width: $bp-smallest) {
+                    width: 85% !important;
+                }
+
+                @media only screen and (max-width: $bp-mobile) {
+                    width: 90% !important;
+                }
+            }
+
+            &--1 { 
+                grid-area: 1 / 1 / 2 / 2; 
+            }
+
+            &--2 { 
+                grid-area: 1 / 2 / 2 / 3; 
+            }
+
+        }
+        
+    }
 }
 
 .peraturan-biaya__grid{

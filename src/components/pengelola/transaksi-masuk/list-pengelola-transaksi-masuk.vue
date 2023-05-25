@@ -2,7 +2,7 @@
     <v-container grid-list-md class="pt-0" v-if="ready">
         <div class="pengelola-trs-masuk__list-header">
             <div class="pengelola-trs-masuk__list-header--child-1">
-                <p class="title__main">List Transaksi Masuk</p>
+                <p class="title__main" style="text-align: start">List Transaksi Masuk</p>
             </div>
             <div class="pengelola-trs-masuk__list-header--child-2">
                 <v-btn color="#146C94" elevation="0" class="white--text"  @click="tambahData()">Tambah Transaksi</v-btn>
@@ -33,7 +33,7 @@
         </v-flex>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
-        <v-dialog v-model="dialog_konfirmasi_hapus" persistent max-width="25vw">
+        <v-dialog v-model="dialog_konfirmasi_hapus" persistent content-class="dialog-list__hapus">
             <v-card class="pa-4">
                 <p class="regular-text__medium">Ingin Menghapus Transaksi {{ nomor_trs_temp }}?</p>
                 <v-layout justify-center class="pt-4">
@@ -43,7 +43,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="dialog_transaksi" persistent max-width="40vw">
+        <v-dialog v-model="dialog_transaksi" persistent content-class="dialog-list__unduh">
             <v-card class="pa-4">
                 <p class="bigger--regular-text mb-6 pb-6">Unduh Transaksi Masuk</p>
                 
@@ -109,6 +109,11 @@
              </v-card>
         </v-dialog>
 
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
     </v-container>
 </template>
 
@@ -127,6 +132,9 @@ export default {
     },
     data(){
         return{
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
+
             dialog_transaksi: false,
 
             ready: false,
@@ -148,6 +156,10 @@ export default {
         }
     },
     created(){
+        this.snackbarLoading_message = 'Loading';
+        this.color = "orange darken-2";
+        this.snackbarLoading = true;
+
         this.initHeader();
         this.axioData();
     },
@@ -170,6 +182,7 @@ export default {
                         Authorization: localStorage.token,
                     }})
             .then(response => {
+                this.snackbarLoading = false;
                 this.devLog("Login Result Code: " +response.status);
                 if(response.status == 200){
                     if(response.data.api_status == "fail"){
@@ -179,17 +192,26 @@ export default {
                         this.snackbar = true;
                     }else{
                         this.list.datas = response.data.data;
+                        this.convertPrice();
                         this.devLog(this.list.datas);
                         this.ready = true
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
                 this.ready = false;
             });
         },
+        convertPrice(){
+            this.list.datas.forEach(element => {
+                element.nilai = this.formatPrice(element.nilai);
+                element.total_nilai = this.formatPrice(element.total_nilai);
+            });
+        },
+
         tambahData(){
             this.$router.push(this.$route.path+"/add");
         },
@@ -213,6 +235,11 @@ export default {
             this.nomor_trs_temp = '';
         },
         hapusTransaksi(){
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
+
             const id_temp = this.list_temp.id;
 
             this.dialog_konfirmasi_hapus = false;
@@ -222,12 +249,14 @@ export default {
                         Authorization: localStorage.token,
                     }})
                 .then(response => {
+                    this.snackbarLoading = false;
                     this.devLog(JSON.stringify(response));
                     if(response.status == 204){
                         this.axioData();
                         this.closeDialog();
                     }
                 }).catch((err) => {
+                    this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
                         this.color = "red";
                         this.snackbar = true;
@@ -239,6 +268,10 @@ export default {
         },
 
         exportData(url, filename){
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             let tanggal_mulai = this.transaksi_masuk_mulai
             let tanggal_selesai = this.transaksi_masuk_selesai
             this.devLog(this.apiExport+url+'?tanggal_mulai='+tanggal_mulai+'&tanggal_selesai='+tanggal_selesai);
@@ -247,6 +280,7 @@ export default {
 
             this.$http.get(axioUrl, {responseType: 'arraybuffer'})
             .then((response) => {
+                this.snackbarLoading = false;
                 this.devLog(response);
                 this.devLog("unduh trs result code: " + response.status);
                 if(response.status == 200){
@@ -265,6 +299,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 if(!err.response){
                     this.error_message = err.response;
                     this.color = "red";

@@ -107,6 +107,7 @@
 .subtitle{
     font-weight: 600; 
     font-size: 2rem !important;
+    line-height: 1.6 !important;
 
     @media only screen and (max-width: $bp-small) {
         font-size: 14px !important;
@@ -341,6 +342,34 @@
 
     &__transaksi{
         text-align: left !important;
+    }
+}
+
+.dialog-list{
+
+    &__hapus{
+
+        max-width: 25vw !important;
+        
+        @media only screen and (max-width: $bp-medium) {
+            max-width: 50vw !important;
+        }
+        
+        @media only screen and (max-width: $bp-mobile) {
+            max-width: 60vw !important;
+        }
+    }
+
+    &__unduh{
+        max-width: 40vw !important;
+        
+        @media only screen and (max-width: $bp-medium) {
+            max-width: 50vw !important;
+        }
+        
+        @media only screen and (max-width: $bp-small) {
+            max-width: 90vw !important;
+        }
     }
 }
 

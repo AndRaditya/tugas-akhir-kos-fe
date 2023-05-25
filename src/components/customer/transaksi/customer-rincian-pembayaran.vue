@@ -107,14 +107,14 @@
         </v-layout>
         <v-layout column class="layout-main" mt-6 v-else-if="!this.model_pembayaran || this.kos_booking_model.status != 'Menunggu Konfirmasi Kamar'">
             <p class="title__medium">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
-            <h3 class="subtitle--thin pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
+            <h3 class="subtitle__thin pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
         </v-layout>
         <v-dialog v-model="errorDialog" max-width="300">
             <v-card>
                 <v-card-text class="title__subheading">{{ errorText }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn @click="errorDialog = false" flat>Got it!</v-btn>
+                    <v-btn @click="errorDialog = false" flat>Tutup!</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -294,7 +294,7 @@ import counterVue from '@/components/counter.vue';
 
                 this.tanggal_mulai = tglMulai.toLocaleDateString(["ban", "id"], options)
                 this.tanggal_selesai = tglSelesai.toLocaleDateString(["ban", "id"], options)
-                this.total_harga = this.kos_booking_model.total_price.toLocaleString("de-DE");
+                this.total_harga = this.formatPrice(this.kos_booking_model.total_price);
 
             },
 

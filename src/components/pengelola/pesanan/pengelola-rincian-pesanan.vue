@@ -3,17 +3,15 @@
         <div class="pengelola-pesanan-rincian__header">
             <p class="title__main paragraph">Rincian Pesanan</p>
         </div>
-
-
-        <v-layout column class="layout-main py-6" mt-6 v-if="this.model_transaksi">
+        <v-layout column class="layout-main py-6" mt-6 v-if="this.model_transaksi && !this.submitting_data && this.model_ready">
             <v-card class="card__regular">
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_pesanan_pengelola" autofocus lazy-validation>
                     <div class="pengelola-pesanan-rincian__parent">
                         <div class="pengelola-pesanan-rincian--detail">
                             <div class="pengelola-pesanan-rincian--detail__child-1">
                                 <div class="pengelola-pesanan-rincian--detail__child-1__header-1">
-                                        <p class="bigger--regular-text__bold  paragraph pb-4">{{ kos_booking_model.kode }}</p>
-                                        <p class="bigger--regular-text__medium ">{{ date }}</p>
+                                        <p class="regular-text__bold  paragraph pb-4">{{ kos_booking_model.kode }}</p>
+                                        <p class="regular-text__medium ">{{ date }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-1__header-2">
                                     <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking_model.status }}</p>
@@ -26,53 +24,62 @@
                             </div>
                             <div class="pengelola-pesanan-rincian--detail__child-3">
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-1">
-                                    <p class="bigger--regular-text">Nama Penyewa</p>
+                                    <p class="regular-text">Nama Penyewa</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-2">
-                                    <p class="bigger--regular-text__medium ">{{ kos_booking_model.user.name }}</p>
+                                    <p class="regular-text__medium ">{{ kos_booking_model.user.name }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-3">
-                                    <p class="bigger--regular-text">Nomor Telepon</p>
+                                    <p class="regular-text">Nomor Telepon</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-4">
-                                    <p class="bigger--regular-text__medium ">{{ kos_booking_model.user.phone_number }}</p>
+                                    <p class="regular-text__medium ">{{ kos_booking_model.user.phone_number }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-5">
-                                    <p class="bigger--regular-text">Tanggal Masuk</p>
+                                    <p class="regular-text">Tanggal Masuk</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-6">
-                                    <p class="bigger--regular-text__medium ">{{ tanggal_mulai }}</p>
+                                    <p class="regular-text__medium ">{{ tanggal_mulai }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-7">
-                                    <p class="bigger--regular-text">Tanggal Selesai</p>
+                                    <p class="regular-text">Tanggal Selesai</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-8">
-                                    <p class="bigger--regular-text__medium ">{{ tanggal_selesai }}</p>
+                                    <p class="regular-text__medium ">{{ tanggal_selesai }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-9">
-                                    <p class="bigger--regular-text">Jumlah Kamar</p>
+                                    <p class="regular-text">Jumlah Kamar</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-10">
-                                    <p class="bigger--regular-text__medium ">{{ kos_booking_model.total_kamar }} Kamar</p>
+                                    <p class="regular-text__medium ">{{ kos_booking_model.total_kamar }} Kamar</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-11">
-                                    <p class="bigger--regular-text" v-if="kos_booking_model.kamar.length > 0">Nomor Kamar</p>
+                                    <p class="regular-text" v-if="kos_booking_model.kamar.length > 0">Nomor Kamar</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-3__desc-12">
                                     <div v-for="(nomor, index) in kos_booking_model.kamar" :key="index">
-                                        <p class="bigger--regular-text__medium " v-if="index+1 < kos_booking_model.kamar.length">{{ nomor.number }}, &nbsp; </p>    
-                                        <p class="bigger--regular-text__medium " v-if="index+1 === kos_booking_model.kamar.length">{{ nomor.number }} </p>    
+                                        <p class="regular-text__medium " v-if="index+1 < kos_booking_model.kamar.length">{{ nomor.number }}, &nbsp; </p>    
+                                        <p class="regular-text__medium " v-if="index+1 === kos_booking_model.kamar.length">{{ nomor.number }} </p>    
                                     </div>
                                 </div>
                             </div>
                             <div class="pengelola-pesanan-rincian--detail__child-4">
-                                <p class="bigger--regular-text__medium ">Total Biaya</p>
-                                <p class="bigger--regular-text__bold  paragraph">Rp{{ total_harga }}</p>
+                                <p class="regular-text__medium ">Total Biaya</p>
+                                <p class="regular-text__bold  paragraph">Rp{{ total_harga }}</p>
                             </div>
                         </div>
-                        <div class="pengelola-pesanan-rincian--action" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">
-                            <div class="pengelola-pesanan-rincian--action--child-1" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">
-                                <v-layout v-for="index in kos_booking_model.total_kamar" :key="index">
+                        <div class="pengelola-pesanan-rincian--action">
+                            <div class="pengelola-pesanan-rincian--action--child-1" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola' || kos_booking_model.status == 'Terkonfirmasi'">
+                                <v-btn color="#146C94" outlined elevation="0" @click="imageDialog = true" class="" >Lihat Bukti Transfer</v-btn>
+                            </div>
+                            <div class="pengelola-pesanan-rincian--action--child-2--btn" v-if="kos_booking_model.status == 'Terkonfirmasi' || kos_booking_model.status == 'Terkonfirmasi'">
+                                <v-switch
+                                    v-model="switch_nomor_kamar"
+                                    label="Ubah Nomor Kamar?"
+                                ></v-switch>
+                            </div>
+                            <div class="pengelola-pesanan-rincian--action--child-2" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">
+                                <div v-for="index in kos_booking_model.total_kamar" :key="index">
                                     <v-select
                                         outlined
                                         label="Masukkan Nomor Kamar"
@@ -80,10 +87,18 @@
                                         :items="nomor_kamar_kosong"
                                         :rules=[rules.required]
                                     ></v-select>
-                                </v-layout>
+                                </div>
                             </div>
-                            <div class="pengelola-pesanan-rincian--action--child-2" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">
-                                <v-btn color="#146C94" outlined elevation="0" @click="imageDialog = true" class="" >Lihat Bukti Transfer</v-btn>
+                            <div class="pengelola-pesanan-rincian--action--child-2" v-if="switch_nomor_kamar">
+                                <div v-for="index in kos_booking_model.total_kamar" :key="index">
+                                    <v-select
+                                        outlined
+                                        label="Masukkan Nomor Kamar"
+                                        v-model="nomor_kamar[index-1]"
+                                        :items="nomor_kamar_kosong_edit"
+                                        :rules=[rules.required]
+                                    ></v-select>
+                                </div>
                             </div>
                             <div class="pengelola-pesanan-rincian--action--child-3" v-if="kos_booking_model.status != 'Terkonfirmasi' && kos_booking_model.status != 'Dibatalkan'">
                                 <div class="pengelola-pesanan-rincian--action--child-3--1">
@@ -93,6 +108,11 @@
                                     <v-btn color="#146C94" elevation="0" type="submit" class="btn__main white--text pengelola-pesanan-rincian--action__btn" >Terima</v-btn>
                                 </div>
                             </div>
+                            <div class="pengelola-pesanan-rincian--action--child-3" v-if="switch_nomor_kamar">
+                                <div class="pengelola-pesanan-rincian--action--child-3--1">
+                                    <v-btn color="orange darken-2" elevation="0" type="submit" class="btn__main white--text pengelola-pesanan-rincian--action__btn">Ubah Nomor Kamar</v-btn>
+                                </div>
+                            </div>
                         </div>
                     </div>                        
                 </v-form>
@@ -100,6 +120,9 @@
         </v-layout>
         <v-layout column class="layout-main" mt-6 v-else-if="!this.model_transaksi">
             <p class="title__medium">Belum terdapat transaksi</p>
+        </v-layout>
+        <v-layout column class="layout-main" mt-6 v-else-if="this.submitting_data">
+
         </v-layout>
         
         <v-dialog v-model="dialog_konfirmasi_batal" persistent content-class="pengelola-pesanan-rincian__dialog">
@@ -137,6 +160,28 @@
         </v-dialog>
 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
+
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
+        <v-dialog v-model="dialogHubungiCustomer" persistent content-class="pengelola-pesanan-rincian__dialog-hubungi">
+            <v-card class="pa-4">
+                <div class="pengelola-pesanan-rincian__dialog-hubungi--parent">
+                    <div class="pengelola-pesanan-rincian__dialog-hubungi--child-1">
+                        <p class="regular-text__medium paragraph" style="text-align: center">Harap Hubungi Customer Setelah Membatalkan Pesanan</p>
+                    </div>
+                    <div class="pengelola-pesanan-rincian__dialog-hubungi--child-2">
+                        <v-btn color="#19A7CE" elevation="0" class="button__lihat-foto white--text" :href="link_whatsapp_customer" target="_blank">Hubungi Customer</v-btn>
+                    </div>
+                    <div class="pengelola-pesanan-rincian__dialog-hubungi--child-3">
+                        <v-btn outlined class="pengelola-pesanan-rincian__dialog-hubungi--child-3__btn" @click="redirectUrl()">Tutup</v-btn>
+                    </div>
+                </div>
+            </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
@@ -159,6 +204,16 @@
         },
         data(){
             return{
+                switch_nomor_kamar: false,
+                link_whatsapp_customer: '',
+
+                dialogHubungiCustomer: false,
+
+                snackbarLoading: false, 
+                snackbarLoading_message: '',
+                submitting_data: false,
+                model_ready: false,
+
                 ready: false,
                 valid: false,
                 id: null,
@@ -179,6 +234,7 @@
                 
                 kamar_kosong_model:[],
                 nomor_kamar_kosong: [],
+                nomor_kamar_kosong_edit: [],
 
                 nomor_kamar: [],
                 dialog_konfirmasi_batal: false,
@@ -195,6 +251,10 @@
             }
         },
         created(){
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.initData();
             this.initModel();
         },
@@ -245,6 +305,10 @@
                 this.devLog('submit form');
                 this.devLog(item);
 
+                this.snackbarLoading_message = 'Submitting Data';
+                this.color = "orange darken-2";
+                this.snackbarLoading = true;
+
                 this.kos_booking_model.nomor_kamar = [];
 
                 for(let i = 0; i < this.nomor_kamar.length; i++){
@@ -258,10 +322,14 @@
                 this.devLog(hasDuplicates(this.kos_booking_model.nomor_kamar))
 
                 if(!hasDuplicates(this.kos_booking_model.nomor_kamar)){
-                    if(item === 'Dibatalkan'){
-                        this.kos_booking_model.status = 'Dibatalkan';
-                    }else{
-                        this.kos_booking_model.status = 'Terkonfirmasi';
+                    this.submitting_data = true;
+
+                    if(this.kos_booking_model.status != 'Terkonfirmasi'){
+                        if(item === 'Dibatalkan'){
+                            this.kos_booking_model.status = 'Dibatalkan';
+                        }else{
+                            this.kos_booking_model.status = 'Terkonfirmasi';
+                        }
                     }
                 
                     this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(this.kos_booking_model));
@@ -273,6 +341,7 @@
                         }})
                     .then(response => {
                         this.devLog("Result Code: " +response.status);
+                        this.snackbarLoading = false;
                         if(response.status == 202){
                             if(response.data.api_status == "fail"){
                                 this.devLog('response fail')
@@ -283,12 +352,18 @@
                                 this.sendNotification(this.kos_booking_model.status)
 
                                 this.dialog_konfirmasi_batal = false;
-                                this.$router
-                                    .push({ path: '/pengelola-pesanan' })
-                                    .then(() => { this.$router.go() })
+
+                                if(this.kos_booking_model.status == 'Dibatalkan'){
+                                    this.dialogHubungiCustomer = true;
+                                }else{
+                                    this.$router
+                                        .push({ path: '/pengelola-pesanan' })
+                                        .then(() => { this.$router.go() })
+                                }
                             }
                         }
                     }).catch((err)=>{
+                        this.snackbarLoading = false;
                         this.error_message = err.response.data.message;
                         this.color = "red";
                         this.snackbar = true;
@@ -301,6 +376,13 @@
             
             },
 
+            redirectUrl(){
+                this.dialog_konfirmasi_batal = false;
+                this.$router
+                    .push({ path: '/pengelola-pesanan' })
+                    .then(() => { this.$router.go() }) 
+            },
+
             sendNotification(item){
                 let notification_data;
 
@@ -308,17 +390,20 @@
                     notification_data = {
                         role_id: this.kos_booking_model.user.roles_id,
                         id: this.kos_booking_model.user.id,
-                        message_title: 'Kost Catleya Pesanan Dibatalkan',
+                        message_title: 'Pesanan Dibatalkan',
                         message_body: 'Pesanan Anda Dibatalkan, Mohon tunggu respon pengelola melalui WhatsApp'
                     };
                 }else if(item == 'Terkonfirmasi'){
                     notification_data = {
                         role_id: this.kos_booking_model.user.roles_id,
                         id: this.kos_booking_model.user.id,
-                        message_title: 'Kost Catleya Pesanan Dikonfirmasi',
+                        message_title: 'Pesanan Dikonfirmasi',
                         message_body: 'Pesanan Anda Telah Dikonfirmasi, Mohon tunggu respon pengelola melalui WhatsApp'
                     };
                 }
+
+                this.devLog('notification_data');
+                this.devLog(JSON.stringify(notification_data));
 
                 this.$http.post(this.apiNotification, notification_data, {headers : {
                     Authorization: localStorage.token,
@@ -342,6 +427,8 @@
                 .then(response => {
                     this.devLog("get data Result Code: " +response.status);
                     if(response.status == 200){
+                        this.snackbarLoading = false;
+                        this.model_ready = true;
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
@@ -359,9 +446,13 @@
                             this.model_transaksi = true;
                             this.ready = true;
                             this.getDateAndPrice();
+
+                            this.link_whatsapp_customer = `https://api.whatsapp.com/send/?phone=${ this.kos_booking_model.user.phone_number }&text=Halo,%20Saya%20pengelola%20Kost%20Catleya%20ingin%20memberi%20informasi%20bahwa&type=phone_number&app_absent=0`
                         }
                     }
                 }).catch((err)=>{
+                    this.snackbarLoading = false;
+                    this.model_ready = true;
                     this.devLog(err);
                     this.error_message = err.response;
                     this.color = "red";
@@ -386,7 +477,7 @@
 
                 this.tanggal_mulai = tglMulai.toLocaleDateString(["ban", "id"], options)
                 this.tanggal_selesai = tglSelesai.toLocaleDateString(["ban", "id"], options)
-                this.total_harga = this.kos_booking_model.total_price.toLocaleString("de-DE")
+                this.total_harga = this.formatPrice(this.kos_booking_model.total_price)
 
                 function padTo2Digits(num) {
                     return String(num).padStart(2, '0');
@@ -430,11 +521,23 @@
             getKamarKosong(){
                 this.devLog('kamar kosong model');
                 this.devLog(this.kamar_kosong_model)
-                this.kamar_kosong_model.forEach((element) => {
-                    this.devLog('element');
-                    // this.devLog(element.number);
-                    this.nomor_kamar_kosong.push(element.number);
-                })
+                if(this.kos_booking_model.kamar.length == 0){
+                    this.kamar_kosong_model.forEach((element) => {
+                        this.devLog('element');
+                        // this.devLog(element.number);
+                        this.nomor_kamar_kosong.push(element.number);
+                    })
+                }else{
+                    this.kamar_kosong_model.forEach((element) => {
+                        this.devLog('element');
+                        // this.devLog(element.number);
+                        this.nomor_kamar_kosong_edit.push(element.number);
+                    })
+                    this.kos_booking_model.kamar.forEach((element2) => {
+                        this.nomor_kamar_kosong_edit.push(element2.number);
+                    })
+                    this.nomor_kamar_kosong_edit.sort();
+                }
             }
 
         },

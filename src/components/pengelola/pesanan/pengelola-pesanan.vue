@@ -1,6 +1,11 @@
 <template>
     <v-container grid-list-md class="pt-0" v-if="ready">
-        <div class="pengelola-pesanan__header">
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
+        <div class="pengelola-pesanan__header" v-if="this.model_ready">
             <div class="pengelola-pesanan__child-1">
                 <div class="pengelola-pesanan__child-1__title">
                     <v-layout align-start>
@@ -39,15 +44,15 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr v-if="this.model_ready">
 
-        <v-layout column class="layout-main" mt-6 v-if="this.model_transaksi">
-            <v-card class="card__regular" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
+        <v-layout column class="layout-main" mt-6 v-if="model_transaksi && this.model_ready">
+            <v-card class="card__regular mt-4" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
                 <div class="pengelola-pesanan--detail">
                     <div class="pengelola-pesanan--detail__child-1">
                         <div class="pengelola-pesanan--detail__child-1__header-1">
-                            <p class="bigger--regular-text__bold  paragraph pb-4">{{ kos_booking.kode }}</p>
-                            <p class="bigger--regular-text__medium ">{{ date[index] }}</p>
+                            <p class="regular-text__bold  paragraph pb-4">{{ kos_booking.kode }}</p>
+                            <p class="regular-text__medium ">{{ date[index] }}</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-1__header-2">
                             <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
@@ -60,53 +65,58 @@
                     </div>
                     <div class="pengelola-pesanan--detail__child-3">
                         <div class="pengelola-pesanan--detail__child-3__desc-1">
-                            <p class="bigger--regular-text">Nama Penyewa</p>
+                            <p class="regular-text">Nama Penyewa</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-2">
-                            <p class="bigger--regular-text__medium ">{{ kos_booking.user.name }}</p>
+                            <p class="regular-text__medium ">{{ kos_booking.user.name }}</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-3">
-                            <p class="bigger--regular-text">Tanggal Masuk</p>
+                            <p class="regular-text">Tanggal Masuk</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-4">
-                            <p class="bigger--regular-text__medium ">{{ tanggal_mulai[index] }}</p>
+                            <p class="regular-text__medium ">{{ tanggal_mulai[index] }}</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-5">
-                            <p class="bigger--regular-text">Tanggal Selesai</p>
+                            <p class="regular-text">Tanggal Selesai</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-6">
-                            <p class="bigger--regular-text__medium ">{{ tanggal_selesai[index] }}</p>
+                            <p class="regular-text__medium ">{{ tanggal_selesai[index] }}</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-7">
-                            <p class="bigger--regular-text">Jumlah Kamar</p>
+                            <p class="regular-text">Jumlah Kamar</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-8">
-                            <p class="bigger--regular-text__medium ">{{ kos_booking.total_kamar }} Kamar</p>
+                            <p class="regular-text__medium ">{{ kos_booking.total_kamar }} Kamar</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-9" v-if="kos_booking.kamar.length > 0">
-                            <p class="bigger--regular-text" >Nomor Kamar</p>
+                            <p class="regular-text" >Nomor Kamar</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-3__desc-10" v-if="kos_booking.kamar.length > 0">
                             <div v-for="(nomor, index) in kos_booking.kamar" :key="index">
-                                <p class="bigger--regular-text__medium " v-if="index+1 < kos_booking.kamar.length">{{ nomor.number }}, &nbsp; </p>    
-                                <p class="bigger--regular-text__medium " v-if="index+1 === kos_booking.kamar.length">{{ nomor.number }} </p>    
+                                <p class="regular-text__medium " v-if="index+1 < kos_booking.kamar.length">{{ nomor.number }}, &nbsp; </p>    
+                                <p class="regular-text__medium " v-if="index+1 === kos_booking.kamar.length">{{ nomor.number }} </p>    
                             </div>
                         </div>
 
                     </div>
                     <div class="pengelola-pesanan--detail__child-4">
                         <div class="pengelola-pesanan--detail__child-4__desc-1">
-                            <p class="bigger--regular-text__medium ">Total Biaya</p>
-                            <p class="bigger--regular-text__bold  paragraph">Rp{{ total_harga[index] }}</p>
+                            <p class="regular-text__medium ">Total Biaya</p>
+                            <p class="regular-text__bold  paragraph">Rp{{ total_harga[index] }}</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-4__desc-2">
-                            <v-btn color="#146C94" class="white--text bigger--regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="getDetail(kos_booking.id)">Lihat Detail</v-btn>
+                            <div class="pengelola-pesanan--detail__child-4__desc-2--1" v-if="kos_booking.status != 'Menunggu Konfirmasi Pengelola'">
+                                <v-btn color="#DF2E38" class="white--text regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="deleteItem(kos_booking)">Hapus Pesanan</v-btn>
+                            </div>
+                            <div class="pengelola-pesanan--detail__child-4__desc-2--2">
+                                <v-btn color="#146C94" class="white--text regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="getDetail(kos_booking.id)">Lihat Detail</v-btn>
+                            </div>
                         </div>
                     </div>
                 </div>
             </v-card>
         </v-layout>
-        <v-layout column class="layout-main" mt-6 v-else-if="!this.model_transaksi">
+        <v-layout column class="layout-main" mt-6 v-else-if="!model_transaksi && this.model_ready">
             <p class="title__medium">Belum terdapat transaksi</p>
         </v-layout>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
@@ -303,6 +313,17 @@
                 </v-form>
              </v-card>
         </v-dialog>
+
+        <v-dialog v-model="dialog_konfirmasi_hapus" persistent content-class="dialog-list__hapus">
+            <v-card class="pa-4">
+                <p class="regular-text__medium" style="text-align: center">Ingin Menghapus Pesanan {{ list_temp_title }}?</p>
+                <v-layout justify-center class="pt-4">
+                    <v-btn outlined class="mr-2" @click="closeDialog()">Keluar</v-btn>
+                    <v-btn color="red" class="ml-2 white--text" @click="hapusPesanan()">Hapus</v-btn>
+                </v-layout>
+            </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
@@ -333,6 +354,10 @@ export default {
     },
     data(){
         return{
+            model_ready: false,
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
+
             ready: false,
             snackbar: '',
             color: '',
@@ -362,9 +387,15 @@ export default {
             data_sort: 'Status Menunggu Konfirmasi',
             data_sort_items: ['Status Menunggu Konfirmasi', 'Tanggal Awal - Akhir', 'Tanggal Akhir - Awal', 'Harga Termurah', 'Harga Tertinggi'],
             data_sort_model: {},
+
+            dialog_konfirmasi_hapus: false,
+            list_temp: null,
+            list_temp_title: null,
         }   
     },
     created(){
+
+
         this.initData();
     },
     watch:{ 
@@ -389,6 +420,10 @@ export default {
     },
     methods:{
         initData(){
+            this.snackbarLoading = true;
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+
             this.initModel();
             this.getData();
         },
@@ -431,6 +466,8 @@ export default {
                 Authorization: localStorage.token,
             }})
             .then(response => {
+                this.snackbarLoading = false;
+                this.model_ready = true;
                 this.devLog("axios Result Code: " +response.status);
                 if(response.status == 200){
                     if(response.data.api_status == "fail"){
@@ -448,6 +485,8 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
+                this.model_ready = true;
                 this.devLog(err);
                 this.error_message = err.response.data;
                 this.color = "red";
@@ -481,7 +520,7 @@ export default {
 
                 this.tanggal_mulai.push(tglMulai.toLocaleDateString(["ban", "id"], options))
                 this.tanggal_selesai.push(tglSelesai.toLocaleDateString(["ban", "id"], options))
-                this.total_harga.push(element.total_price.toLocaleString("de-DE"));
+                this.total_harga.push(this.formatPrice(element.total_price));
 
                 function padTo2Digits(num) {
                     return String(num).padStart(2, '0');
@@ -666,31 +705,47 @@ export default {
                 this.model_transaksi = false;
                 this.ready = false;
             });   
-        }
+        },
+
+        deleteItem(item){
+            this.devLog(item)
+            this.dialog_konfirmasi_hapus = true;
+            this.list_temp = item;
+            this.list_temp_title = item.kode;
+        },
+        closeDialog(){
+            this.dialog_konfirmasi_hapus = false;
+            this.list_temp = null;
+        },
+
+        hapusPesanan(){
+            this.snackbarLoading = true;
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+
+            const id_temp = this.list_temp.id;
+
+            this.dialog_konfirmasi_hapus = false;
+            this.devLog(this.api+'/'+id_temp)
+
+            this.$http.delete(this.api+'/'+id_temp, {headers : {
+                    Authorization: localStorage.token,
+                }})
+                .then(response => {
+                    this.snackbarLoading = false;
+                    this.devLog(JSON.stringify(response));
+                    if(response.status == 204){
+                        this.closeDialog();
+                        this.initData();
+                    }
+                }).catch((err) => {
+                    this.snackbarLoading = false;
+                    this.error_message = err.response.data.message;
+                        this.color = "red";
+                        this.snackbar = true;
+                });
+        },
     },
-    
-    computed:{
-        // requiredStartDate(){
-        //     return [
-        //         (v) => {
-        //             if(this.filter.date.end_date === '' && !v){
-        //                 return "Harus Diisi";
-        //             }
-        //         return true;
-        //         }
-        //     ];
-        // },
-        // requiredEndDate(){
-        //     return [
-        //         (v) => {
-        //             if(this.filter.date.start_date === '' && !v){
-        //                 return "Harus Diisi";
-        //             }
-        //         return true;
-        //         }
-        //     ];
-        // }
-    }
 }
 </script>
 

@@ -94,7 +94,7 @@
         
         <v-layout column class="layout-main" mt-6 v-else-if="!this.model_transaksi">
             <p class="title__medium">Silahkan Lakukan Pemesanan Terlebih Dahulu</p>
-            <h3 class="subtitle--thin pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
+            <h3 class="subtitle__thin pt-2">Silahkan Cek Rincian Pesanan jika sudah melakukan  Pesanan</h3>
         </v-layout>
 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
@@ -438,8 +438,9 @@
                     this.tanggal_selesai.push(tglSelesai.toLocaleDateString(["ban", "id"], options))
                     this.date.push(tglPesan.toLocaleDateString(["ban", "id"], options));
 
-                    this.total_harga.push(element.total_price.toLocaleString("de-DE"));
+                    this.total_harga.push(this.formatPrice(element.total_price));
                 })
+                this.devLog('total harga ' + this.total_harga)
             },
 
             xSearch(){

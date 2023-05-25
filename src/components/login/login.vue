@@ -98,6 +98,11 @@
             </div>
         </div>
 
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
     </v-container>
 </template>
@@ -119,6 +124,8 @@
         data(){
             return{
                 reset_password_card: false,
+                snackbarLoading: false, 
+                snackbarLoading_message: '',
 
                 email: '',
                 snackbar: '',
@@ -189,6 +196,11 @@
             },
 
             submitForm(){
+                this.snackbarLoading_message = 'Loading';
+                this.color = "orange darken-2";
+                this.snackbarLoading = true;
+
+
                 let loginData = {
                     email: this.login.email,
                     password: this.login.password,
@@ -197,6 +209,7 @@
                 this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(loginData)) ;
                 this.$http.post(this.api, loginData)
                 .then(response => {
+                    this.snackbarLoading = false;
                     this.devLog("Login Result Code: " +response.status);
                     if(response.status == 200){
                         if(response.data.api_status == "fail"){
@@ -229,6 +242,7 @@
                         }
                     }
                 }).catch((err)=>{
+                    this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
                     this.color = "red";
                     this.snackbar = true;
@@ -244,6 +258,10 @@
             },
 
             sendEmail(){
+                this.snackbarLoading_message = 'Loading';
+                this.color = "orange darken-2";
+                this.snackbarLoading = true;
+
                 let loginData = {
                     email: this.login.email,
                 };
@@ -253,6 +271,7 @@
                 this.snackbar = true;
                 this.$http.post(this.apiForgot, loginData)
                 .then(response => {
+                    this.snackbarLoading = false;
                     this.devLog("Login Result Code: " +response.status);
 
                     if(response.status == 200){
@@ -261,6 +280,7 @@
                         this.snackbar = true;
                     }
                 }).catch((err)=>{
+                    this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
                     this.color = "red";
                     this.snackbar = true;

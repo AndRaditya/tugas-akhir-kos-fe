@@ -1,6 +1,6 @@
 <template>
     <v-container grid-list-md class="pt-0">
-        <v-flex>
+        <v-flex grow >
             <vueper-slides fade :touchable="false" class="px-0" :fixed-height="true">
                 <vueper-slide
                     v-for="(slide, i) in slides"
@@ -11,7 +11,8 @@
                     :content="slide.content" />
             </vueper-slides>
         </v-flex>
-        <v-layout column wrap text-sm-center class="layout-main" id="main_kos">
+
+        <v-layout column wrap text-sm-center class="layout-main" id="main_kos" >
             <v-layout align-start class="mb-3">
                 <p class="title__main-tipe paragraph">{{ kos_model.tipe }}</p>
             </v-layout>
@@ -248,6 +249,7 @@
                                                         min="1"
                                                         label="Masukkan Jumlah Bulan"
                                                         outlined
+                                                        :rules="bulan_rules"
                                                         @input="hargaKamar()"
                                                         :disabled="!status_kamar_terisi"
                                                     ></v-text-field>
@@ -263,7 +265,8 @@
                                                     <v-layout row class="pb-6">
                                                         <p style="color:#146C94" class="title__main">Rp{{ harga_kamar }}</p>&nbsp;<p class="regular-text bulan-text">/bulan</p>
                                                     </v-layout>
-                                                    <v-btn color="#146C94" type="submit" elevation="0" class="button__lihat-foto white--text" width="100%" v-if="status_kamar_terisi">Pesan Sekarang</v-btn>
+                                                    <!-- <v-btn color="#146C94" type="submit" elevation="0" class="button__lihat-foto white--text" width="100%" v-if="status_kamar_terisi">Pesan Sekarang</v-btn> -->
+                                                    <v-btn color="#146C94" elevation="0" class="button__lihat-foto white--text" width="100%" @click="dialogKonfirmasiBooking = true" v-if="status_kamar_terisi">Pesan Sekarang</v-btn>
                                                 </v-form>
                                             </v-layout>
                                         </div>
@@ -287,7 +290,7 @@
 
             <hr class="my-6">
 
-            <v-layout class="pb-4" row> 
+            <v-layout class="pb-4" row v-if="ready"> 
                 <div class="peraturan-biaya__grid">
                     <div class="peraturan-biaya__grid--child-1">
                         <v-card class="card__padding" outlined text-sm-left elevation="0">
@@ -309,6 +312,7 @@
             </v-layout>
 
         </v-layout>
+
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
         <v-dialog v-model="imageDialogKos" :lazy="true" content-class="image-dialog">
@@ -383,6 +387,32 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="dialogKonfirmasiBooking" persistent content-class="landing-booking__dialog">
+            <v-card class="pa-4">
+                <div class="landing-booking__dialog--parent">
+                    <div class="landing-booking__dialog--child-1">
+                        <p class="regular-text__medium paragraph" style="text-align: center">Harap Hubungi Pengelola Terlebih Dahulu Sebelum Pesan Kamar</p>
+                    </div>
+                    <div class="landing-booking__dialog--child-2">
+                        <v-btn color="#19A7CE" outlined elevation="0" class="button__lihat-foto" href="https://api.whatsapp.com/send/?phone=6282214006189&text=Halo,%20Saya%20ingin%20mendapatkan%20informasi%20mengenai%20Kost%20Catleya&type=phone_number&app_absent=0" target="_blank">Tanya Pengelola</v-btn>
+                    </div>
+                    <div class="landing-booking__dialog--child-3">
+                        <div class="landing-booking__dialog--child-3--1">
+                            <v-btn outlined class="landing-booking__dialog--child-3__btn" @click="dialogKonfirmasiBooking = false">Tutup</v-btn>
+                        </div>
+                        <div class="landing-booking__dialog--child-3--2">
+                            <v-btn color="#146C94" class="landing-booking__dialog--child-3__btn white--text" @click="validateForm()">Pesan Sekarang</v-btn>
+                        </div>
+                    </div>
+                </div>
+            </v-card>
+        </v-dialog>
+
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
     </v-container>
 </template>
 
@@ -412,10 +442,18 @@ export default {
             type: String,
             default: "no_data",
         },
+        apiKamarHarga: {
+            type: String,
+            default: "no_data",
+        },
     },
     name: "landing-page",
     data() {
         return{
+            ready: false,
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
+
             imageDialogKos: false,
             imageDialogKamar: false,
             urls_kos: [],
@@ -445,6 +483,10 @@ export default {
                 required: value => !!value || 'Required.',
             },
 
+            bulan_rules:[
+                v => ( v && v >= 1 ) || "Bulan tidak boleh kosong",
+            ],
+
             kamar_rules: [ 
                 v => !!v || "This field is required",
                 v => ( v && v >= 1 ) || "Kamar tidak boleh kosong",
@@ -457,12 +499,15 @@ export default {
             param_pengelola: false,
             peraturan_kos_hypen: [],
             array_kamar_fasilitas: [],
+
+            dialogKonfirmasiBooking: false,
+            harga_axio: ''
         }
     },
     created(){
         this.initData();
         this.initHeader();
-        this.hargaKamar();
+        this.axioHarga();
         this.sisaKamar();
         this.param_pengelola = this.check_pengelola();
         this.reloadOnce();
@@ -498,10 +543,16 @@ export default {
         },
 
         initData(){
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.initModel();
             this.devLog('init data');
             this.$http.get(this.api)
             .then(response => {
+                this.snackbarLoading = false;
+                this.ready = true
                 this.devLog("get kos result code: " + response.status);
                 if(response.status == 200){
                     if(!response.data){
@@ -516,6 +567,8 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
+                this.ready = true
                 this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
@@ -607,6 +660,25 @@ export default {
             this.devLog(this.array_kamar_fasilitas)
         },
 
+        axioHarga(){
+            this.devLog('axio harga fx')
+            this.$http.get(this.apiKamarHarga).then(response => {
+                this.devLog("get harga kamar axio result code: " + response.status);
+                if(response.status == 200){
+                    if(!response.data){
+                        this.devLog('response fail')
+                    }else{
+                        this.harga_axio = response.data.harga;
+                        this.devLog(' harga axio' + this.harga_axio)
+                        this.hargaKamar();
+                        // this.$router.push('/dashboard');
+                    }
+                }
+            }).catch((err)=>{
+                this.error_message = err.response.data;
+            });
+        },
+
         initPhoto() {
             this.devLog('init photo');
             this.devLog(this.kamar_model);
@@ -630,13 +702,15 @@ export default {
         },
 
         hargaKamar(){
-            let harga_utama = 1500000;
+            let harga_utama = this.harga_axio;
+
+            this.devLog('harga utama' + harga_utama)
             
             if(this.kos_booking_model.total_bulan == 1 && this.kos_booking_model.total_kamar == 1){
-                this.harga_kamar = harga_utama.toLocaleString("de-DE");
+                this.harga_kamar = this.formatPrice(harga_utama);
             }else{
                 let hargaTotal = this.kos_booking_model.total_bulan * this.kos_booking_model.total_kamar * harga_utama;
-                this.harga_kamar = hargaTotal.toLocaleString("de-DE");
+                this.harga_kamar = this.formatPrice(hargaTotal);
             }
         },
 
@@ -731,7 +805,8 @@ export default {
 
             let mainPath = path.splice(0, path.length).join('/');
             let param_scroll = mainPath.includes('main_kos');
-            this.devLog('mainPath');
+            this.devLog('mainPath ' + mainPath);
+            this.devLog(param_scroll);
 
             return param_scroll;
         },
@@ -776,8 +851,12 @@ export default {
         }, 
     },
     mounted(){
-        if(this.checkScroll){
-            this.scrollToView()
+        this.devLog('mounted');
+        let scroll = this.checkScroll();
+        this.devLog('scroll ' +scroll);
+        if(scroll){
+            document.getElementById("main_kos")
+                .scrollIntoView({ behavior: 'smooth' });
         }
     },
 }

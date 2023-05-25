@@ -1,6 +1,6 @@
 <template>
     <v-container grid-list-md v-if="ready">
-        <div class="pengelola-kos__grid">
+        <div class="pengelola-kos__grid" v-if="model_ready">
             <div class="pengelola-kos__grid-1">
                 <p class="title__main ">Ubah Data Kos</p>
             </div>
@@ -148,6 +148,11 @@
 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
         <v-dialog v-model="imageDialog" :lazy="true" max-width="60vw">
             <v-card class="rounded-card">
                 <v-toolbar dark color="primary" dense flat>
@@ -193,10 +198,21 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="errorDialog" max-width="500">
+            <v-card>
+                <v-card-text class="subtitle pa-3">{{errorText}}</v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="errorDialog = false" flat>Tutup!</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
 <script>
+
 export default {
     name: 'pengelola-kos',
     props:{
@@ -213,8 +229,14 @@ export default {
             required: true
         },
     },
+
     data(){
         return{
+            model_ready: false,
+
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
+
             ready: false,
             id : 2,
             deletedImages: [],
@@ -240,6 +262,10 @@ export default {
             jenis_listrik: '',
             ukuran_kamar: '',
             kamar_spesifikasi_temp: [],
+
+            maxSize: 1024,
+            errorDialog: null,
+            errorText: "",
         }
     },
     created(){
@@ -248,10 +274,13 @@ export default {
     },
     methods:{
         initData(){
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.getKosFasilitas();
             this.initAxio();
         },
-
         initModel(){
             this.kos_model = {
                 id: null,
@@ -301,6 +330,8 @@ export default {
             .then(response => {
                 this.devLog("Axio: " +response.status);
                 if(response.status == 200){
+                    this.snackbarLoading = false;
+                    this.model_ready = true;
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
@@ -322,6 +353,7 @@ export default {
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.devLog(err);
                 this.ready = false;
                 this.error_message = err.response.data;
@@ -339,12 +371,17 @@ export default {
             this.devLog(this.kos_model);
             this.devLog(this.deletedImages);
 
+            this.snackbarLoading_message = 'Submitting Data';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.$http.put(this.api+this.id, this.kos_model, {headers : {
                 Authorization: localStorage.token,
             }})
             .then(response => {
                 this.devLog("update kos: " +response.status);
                 if(response.status == 202){
+                    this.snackbarLoading = false;
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
@@ -358,12 +395,15 @@ export default {
                             this.devLog("image deleted with api");
                         }
 
+                        this.snackbarLoading = false;
+
                         this.error_message = 'Berhasil Update Data';
                         this.color = "green";
                         this.snackbar = true;
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
                 this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
@@ -412,12 +452,18 @@ export default {
         },
 
         onFileChange(file) {
+            const { maxSize } = this
             let imageFile = file[0];
+            let size = imageFile.size / maxSize / maxSize
             if (file.length > 0) {
                 if (!imageFile.type.match("image.*")) {
                     this.errorDialog = true;
                     this.errorText = "Please choose an image file";
-                } else {
+                } else if(size>1){
+                    this.errorDialog = true
+                    this.errorText = 'Gambar anda terlalu besar! Pilih gambar dibawah 1MB'
+                }
+                else {
                     let imageURL = URL.createObjectURL(imageFile);
                     this.fileName = imageFile.name;
 

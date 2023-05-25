@@ -143,6 +143,7 @@
 .subtitle {
   font-weight: 600;
   font-size: 2rem !important;
+  line-height: 1.6 !important;
 }
 @media only screen and (max-width: 37.5em) {
   .subtitle {
@@ -335,6 +336,33 @@
   text-align: left !important;
 }
 
+.dialog-list__hapus {
+  max-width: 25vw !important;
+}
+@media only screen and (max-width: 56.25em) {
+  .dialog-list__hapus {
+    max-width: 50vw !important;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .dialog-list__hapus {
+    max-width: 60vw !important;
+  }
+}
+.dialog-list__unduh {
+  max-width: 40vw !important;
+}
+@media only screen and (max-width: 56.25em) {
+  .dialog-list__unduh {
+    max-width: 50vw !important;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .dialog-list__unduh {
+    max-width: 90vw !important;
+  }
+}
+
 .theme--light.v-icon {
   color: #146C94 !important;
 }
@@ -375,6 +403,14 @@
 .v-data-table__empty-wrapper td,
 .v-data-footer__pagination {
   font-size: 1.4rem !important;
+}
+@media only screen and (max-width: 37.5em) {
+  .v-data-table-header tr th span,
+  .v-data-footer__select,
+  .v-data-table__empty-wrapper td,
+  .v-data-footer__pagination {
+    font-size: 14px !important;
+  }
 }
 
 tbody tr td {
@@ -450,7 +486,11 @@ li {
 
 .v-data-table__mobile-row__header,
 .v-data-table__mobile-row__cell {
-  font-size: 14px !important;
+  font-size: 12px !important;
+}
+
+.v-data-table__mobile-table-row {
+  margin-bottom: 12px !important;
 }
 
 @media only screen and (max-width: 37.5em) {
@@ -897,6 +937,75 @@ li {
     grid-area: 6/1/7/2;
     padding: 0;
   }
+}
+.landing-booking__dialog {
+  width: 30% !important;
+}
+@media only screen and (max-width: 80em) {
+  .landing-booking__dialog {
+    width: 40% !important;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .landing-booking__dialog {
+    width: 50% !important;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .landing-booking__dialog {
+    width: 70% !important;
+  }
+}
+@media only screen and (max-width: 31.25em) {
+  .landing-booking__dialog {
+    width: 90% !important;
+  }
+}
+.landing-booking__dialog--parent {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.landing-booking__dialog--child-1 {
+  grid-area: 1/1/2/3;
+  line-height: 1.8;
+}
+.landing-booking__dialog--child-2 {
+  grid-area: 2/1/3/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.landing-booking__dialog--child-3 {
+  grid-area: 3/1/4/3;
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 0.5fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.landing-booking__dialog--child-3__btn {
+  width: 75% !important;
+}
+@media only screen and (max-width: 31.25em) {
+  .landing-booking__dialog--child-3__btn {
+    width: 85% !important;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .landing-booking__dialog--child-3__btn {
+    width: 90% !important;
+  }
+}
+.landing-booking__dialog--child-3--1 {
+  grid-area: 1/1/2/2;
+}
+.landing-booking__dialog--child-3--2 {
+  grid-area: 1/2/2/3;
 }
 
 .peraturan-biaya__grid {
@@ -1437,7 +1546,13 @@ li {
   grid-area: 1/2/2/3;
   display: flex;
   align-items: flex-start;
-  align-items: flex-end;
+  justify-content: flex-end;
+}
+@media only screen and (max-width: 56.25em) {
+  .cust-rincian-pesanan__counter--child-2 {
+    align-items: center;
+    justify-content: flex-end;
+  }
 }
 .cust-rincian-pesanan__rincian-transaksi {
   grid-area: 3/1/4/4;
@@ -1687,6 +1802,13 @@ li {
     grid-template-rows: repeat(5, auto);
   }
 }
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pemesan--parent {
+    grid-row-gap: 12px;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(8, auto);
+  }
+}
 .cust-rincian-pesanan__pemesan--child-1 {
   display: flex;
   text-align: left;
@@ -1700,6 +1822,11 @@ li {
 @media only screen and (max-width: 31.25em) {
   .cust-rincian-pesanan__pemesan--child-1 {
     grid-area: 1/1/2/3;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pemesan--child-1 {
+    grid-area: 1/1/2/2;
   }
 }
 .cust-rincian-pesanan__pemesan--child-2 {
@@ -1716,6 +1843,12 @@ li {
 }
 @media only screen and (max-width: 31.25em) {
   .cust-rincian-pesanan__pemesan--child-2 {
+    grid-area: 1/2/2/3;
+    margin-bottom: 0;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pemesan--child-2 {
     grid-area: 2/1/3/3;
     margin-bottom: 0;
   }
@@ -1729,6 +1862,11 @@ li {
   }
 }
 @media only screen and (max-width: 31.25em) {
+  .cust-rincian-pesanan__pemesan--child-3 {
+    grid-area: 3/1/4/2;
+  }
+}
+@media only screen and (max-width: 25em) {
   .cust-rincian-pesanan__pemesan--child-3 {
     grid-area: 3/1/4/2;
   }
@@ -1748,6 +1886,12 @@ li {
     margin-bottom: 0;
   }
 }
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pemesan--child-4 {
+    grid-area: 4/1/5/2;
+    margin-bottom: 10px;
+  }
+}
 .cust-rincian-pesanan__pemesan--child-5 {
   grid-area: 4/1/5/2;
 }
@@ -1759,6 +1903,11 @@ li {
 @media only screen and (max-width: 31.25em) {
   .cust-rincian-pesanan__pemesan--child-5 {
     grid-area: 4/1/5/2;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pemesan--child-5 {
+    grid-area: 5/1/6/2;
   }
 }
 .cust-rincian-pesanan__pemesan--child-6 {
@@ -1776,6 +1925,12 @@ li {
     margin-bottom: 0;
   }
 }
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pemesan--child-6 {
+    grid-area: 6/1/7/2;
+    margin-bottom: 10px;
+  }
+}
 .cust-rincian-pesanan__pemesan--child-7 {
   grid-area: 5/1/6/2;
 }
@@ -1787,6 +1942,11 @@ li {
 @media only screen and (max-width: 31.25em) {
   .cust-rincian-pesanan__pemesan--child-7 {
     grid-area: 5/1/6/2;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pemesan--child-7 {
+    grid-area: 7/1/8/2;
   }
 }
 .cust-rincian-pesanan__pemesan--child-8 {
@@ -1802,6 +1962,11 @@ li {
   .cust-rincian-pesanan__pemesan--child-8 {
     grid-area: 5/2/6/3;
     margin-bottom: 0;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pemesan--child-8 {
+    grid-area: 8/1/9/2;
   }
 }
 .cust-rincian-pesanan__maps {
@@ -2562,7 +2727,7 @@ li {
 }
 @media only screen and (max-width: 31.25em) {
   .pengelola-pesanan--detail__child-1 {
-    grid-template-columns: 0.5fr 1fr;
+    grid-template-columns: 0.8fr 1fr;
     grid-column-gap: 8px;
   }
 }
@@ -2675,6 +2840,22 @@ li {
   display: grid;
   align-items: flex-end;
   justify-content: flex-end;
+  grid-template-columns: repeat(2, 0.25fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 12px;
+  grid-row-gap: 0px;
+}
+.pengelola-pesanan--detail__child-4__desc-2--1 {
+  grid-area: 1/1/2/2;
+  display: grid;
+  align-items: flex-start;
+  justify-content: center;
+}
+.pengelola-pesanan--detail__child-4__desc-2--2 {
+  grid-area: 1/2/2/3;
+  display: grid;
+  align-items: flex-end;
+  justify-content: center;
 }
 .pengelola-pesanan--detail__child-4__desc-2__btn {
   width: 100%;
@@ -2780,7 +2961,7 @@ li {
 }
 @media only screen and (max-width: 31.25em) {
   .pengelola-pesanan-rincian--detail__child-1 {
-    grid-template-columns: 0.5fr 1fr;
+    grid-template-columns: 0.8fr 1fr;
     grid-column-gap: 8px;
   }
 }
@@ -2889,11 +3070,11 @@ li {
   grid-area: 2/1/3/2;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 0.25fr);
+  grid-template-rows: 0.25fr auto repeat(2, 0.25fr);
   grid-column-gap: 36px;
   grid-row-gap: 1.2rem;
 }
-.pengelola-pesanan-rincian--action--template, .pengelola-pesanan-rincian--action--child-4, .pengelola-pesanan-rincian--action--child-2, .pengelola-pesanan-rincian--action--child-1 {
+.pengelola-pesanan-rincian--action--template, .pengelola-pesanan-rincian--action--child-4, .pengelola-pesanan-rincian--action--child-2--btn, .pengelola-pesanan-rincian--action--child-2, .pengelola-pesanan-rincian--action--child-1 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -2907,10 +3088,15 @@ li {
   margin-top: 24px;
 }
 .pengelola-pesanan-rincian--action--child-2 {
+  grid-area: 3/1/4/2;
+  margin-top: 24px;
+}
+.pengelola-pesanan-rincian--action--child-2--btn {
   grid-area: 2/1/3/2;
+  margin-top: 24px;
 }
 .pengelola-pesanan-rincian--action--child-3 {
-  grid-area: 3/1/4/2;
+  grid-area: 4/1/5/2;
   margin-top: 24px;
   display: grid;
   grid-template-columns: repeat(2, 48rem);
@@ -2960,6 +3146,68 @@ li {
 @media only screen and (max-width: 31.25em) {
   .pengelola-pesanan-rincian__dialog {
     max-width: 90vw !important;
+  }
+}
+.pengelola-pesanan-rincian__dialog-hubungi {
+  width: 30% !important;
+}
+@media only screen and (max-width: 80em) {
+  .pengelola-pesanan-rincian__dialog-hubungi {
+    width: 40% !important;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .pengelola-pesanan-rincian__dialog-hubungi {
+    width: 50% !important;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  .pengelola-pesanan-rincian__dialog-hubungi {
+    width: 70% !important;
+  }
+}
+@media only screen and (max-width: 31.25em) {
+  .pengelola-pesanan-rincian__dialog-hubungi {
+    width: 90% !important;
+  }
+}
+.pengelola-pesanan-rincian__dialog-hubungi--parent {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.pengelola-pesanan-rincian__dialog-hubungi--child-1 {
+  grid-area: 1/1/2/3;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.pengelola-pesanan-rincian__dialog-hubungi--child-2 {
+  grid-area: 2/1/3/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.pengelola-pesanan-rincian__dialog-hubungi--child-3 {
+  grid-area: 3/1/4/3;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pengelola-pesanan-rincian__dialog-hubungi--child-3__btn {
+  width: 75% !important;
+}
+@media only screen and (max-width: 31.25em) {
+  .pengelola-pesanan-rincian__dialog-hubungi--child-3__btn {
+    width: 85% !important;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-pesanan-rincian__dialog-hubungi--child-3__btn {
+    width: 90% !important;
   }
 }
 
@@ -3173,7 +3421,7 @@ li {
     width: 50%;
   }
 }
-@media only screen and (max-width: 25em) {
+@media only screen and (max-width: 31.25em) {
   .pengelola-trs-masuk__btn {
     width: 70%;
   }
@@ -3212,6 +3460,16 @@ li {
   display: flex;
   justify-content: flex-start;
 }
+@media only screen and (max-width: 31.25em) {
+  .pengelola-trs-masuk__list-header--child-1 {
+    grid-area: 1/1/2/3;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-trs-masuk__list-header--child-1 {
+    grid-area: 1/1/2/2;
+  }
+}
 .pengelola-trs-masuk__list-header--child-2 {
   grid-area: 1/2/2/3;
   display: flex;
@@ -3246,8 +3504,8 @@ li {
   display: grid;
   grid-template-columns: 1fr 0.1fr 0.1fr;
   grid-template-rows: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  grid-column-gap: 2.4rem;
+  grid-row-gap: 2.4rem;
   align-items: center;
   justify-content: flex-start;
 }
@@ -3267,6 +3525,16 @@ li {
   grid-area: 1/1/2/2;
   display: flex;
   justify-content: flex-start;
+}
+@media only screen and (max-width: 31.25em) {
+  .pengelola-trs-keluar__list-header--child-1 {
+    grid-area: 1/1/2/3;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .pengelola-trs-keluar__list-header--child-1 {
+    grid-area: 1/1/2/2;
+  }
 }
 .pengelola-trs-keluar__list-header--child-2 {
   grid-area: 1/2/2/3;

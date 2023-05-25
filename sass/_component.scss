@@ -35,6 +35,10 @@
 .v-data-table__empty-wrapper td,
 .v-data-footer__pagination{
     font-size: 1.4rem !important;
+
+    @media only screen and (max-width: $bp-small) {
+        font-size: 14px !important;
+    }
 }
 
 tbody tr td{
@@ -120,7 +124,11 @@ li{
 .v-data-table__mobile-row__header,
 .v-data-table__mobile-row__cell
 {
-    font-size: 14px !important;
+    font-size: 12px !important;
+}
+
+.v-data-table__mobile-table-row{
+    margin-bottom: 12px !important;
 }
 
 .v-data-table-header tr th span{

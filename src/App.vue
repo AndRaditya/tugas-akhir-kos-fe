@@ -25,6 +25,7 @@ export default {
   },
   created(){
     this.checkLogin();
+    this.devLog('url ' + this.API)
   },
   methods:{
     checkLogin(){

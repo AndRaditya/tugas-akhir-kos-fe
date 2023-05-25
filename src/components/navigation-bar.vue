@@ -96,6 +96,12 @@
         </div>
       </v-list>
     </v-navigation-drawer>
+
+    <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+        indeterminate
+        color="#fff"
+    ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
   </div>
 </template>
 
@@ -109,6 +115,9 @@ export default {
 
   data(){
     return{
+      snackbarLoading: false, 
+      snackbarLoading_message: '',
+
       is_login_customer: false,
       is_login_pengelola: false,
       username: '',
@@ -181,10 +190,15 @@ export default {
 
     logout(){
       if(localStorage.userLogin){
+          this.snackbarLoading_message = 'Loading';
+        this.color = "orange darken-2";
+        this.snackbarLoading = true;
+
         this.$http.get(this.API + '/logout', {headers : {
                 Authorization: localStorage.token,
             }})
         .then(response => {
+            this.snackbarLoading = false;
             this.devLog("logout: " +response.status);
             if(response.status == 200){
                 if(response.data.api_status == "fail"){
@@ -202,6 +216,7 @@ export default {
                 }
             }
         }).catch((err)=>{
+            this.snackbarLoading = false;
             this.devLog(err);
             this.error_message = err.response;
             this.color = "red";
@@ -209,9 +224,6 @@ export default {
             this.model_transaksi = false;
             this.ready = false;
         });
-
-
-
       }
     },  
 

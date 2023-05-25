@@ -1,5 +1,11 @@
 <template>
     <v-container grid-list-md class="pt-0" v-if="ready">
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
+
         <v-layout align-start row>
             <v-layout align-start>
                 <p class="title__main">List Data Kamar</p>
@@ -8,11 +14,12 @@
                 <v-btn color="#146C94" elevation="0" class="white--text"  @click="tambahKamar()">Tambah Kamar</v-btn>
             </v-layout>
         </v-layout>
-        <v-flex fill-height>
+        <v-flex fill-height v-if="model_ready">
             <v-data-table
                 :headers="list.headers"
                 :items="ordersWithIndex"
                 :items-per-page="10" 
+                :sort-by.sync="sortBy"
                 class="elevation-1"
             >         
                 <template v-slot:[`item.actions`]="{ item }">
@@ -24,7 +31,7 @@
         </v-flex>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
-        <v-dialog v-model="dialog_konfirmasi_hapus" persistent max-width="25vw">
+        <v-dialog v-model="dialog_konfirmasi_hapus" persistent content-class="dialog-list__hapus">
             <v-card class="pa-4">
                 <p class="regular-text__medium">Ingin Menghapus Kamar?</p>
                 <v-layout justify-center class="pt-4">
@@ -50,6 +57,9 @@ export default {
     data(){
         return{
             ready: false, 
+            model_ready: false,
+            snackbarLoading: false, 
+            snackbarLoading_message: '',
 
             snackbar: '',
             color: '',
@@ -61,10 +71,16 @@ export default {
                 headers: [],
                 datas: [],
             },
+            sortBy: 'number'
         }
     },
 
     created(){
+        this.snackbarLoading_message = 'Loading';
+        this.color = "orange darken-2";
+        this.snackbarLoading = true;
+
+
         this.initHeader();
         this.axioData();
     },  
@@ -72,8 +88,7 @@ export default {
     methods:{
         initHeader(){
             this.list.headers = [
-                { text: "No.", value: "index", align: "left", sortable: true},
-                { text: "Nomor Kamar", value: "number", align: "left"},
+                { text: "Nomor Kamar", value: "number", align: "left", sortable: true},
                 { text: "Penyewa", value: "nama_penyewa", align: "left"},
                 { text: "Status Kamar", value: "status", align: "left"},
                 { text: "Harga Kamar", value: "harga", align: "left"},
@@ -85,7 +100,9 @@ export default {
                 Authorization: localStorage.token,
             }})
             .then(response => {
-                this.devLog("Login Result Code: " +response.status);
+                this.snackbarLoading = false;
+                this.model_ready = true;
+                this.devLog("axio Result Code: " +response.status);
                 if(response.status == 200){
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
@@ -94,15 +111,23 @@ export default {
                         this.snackbar = true;
                     }else{
                         this.list.datas = response.data.data;
+                        this.convertPrice();
                         this.devLog(this.list.datas);
                         this.ready = true;
                     }
                 }
             }).catch((err)=>{
+                this.snackbarLoading = false;
+                this.model_ready = true;
                 this.error_message = err.response.data;
                 this.color = "red";
                 this.snackbar = true;
                 this.ready = false;
+            });
+        },
+        convertPrice(){
+            this.list.datas.forEach(element => {
+                element.harga = this.formatPrice(element.harga);
             });
         },
         tambahKamar(){

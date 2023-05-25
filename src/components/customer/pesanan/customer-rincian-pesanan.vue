@@ -124,7 +124,7 @@
                     </v-card>
                 </div>
                 <div class="cust-rincian-pesanan__pemesan">
-                    <v-card class="card-pesanan cust-rincian-pesanan__pemesan--parent">
+                    <v-card class="card-pesanan">
                         <div class="cust-rincian-pesanan__pemesan--parent">
                             <div class="cust-rincian-pesanan__pemesan--child-1">
                                 <p class="bigger--regular-text__medium  paragraph">Rincian Pemesan</p>
@@ -234,6 +234,22 @@
             </v-dialog>
 
             <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
+
+            <v-dialog v-model="errorDialog" max-width="500">
+                <v-card>
+                    <v-card-text class="subtitle pa-3">{{errorText}}</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="errorDialog = false" flat>Tutup!</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+                indeterminate
+                color="#fff"
+            ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
+
         </v-container>
     <!-- </v-main> -->
 </template>
@@ -271,9 +287,11 @@
         },
         data(){
             return{
+                snackbarLoading: false, 
+                snackbarLoading_message: '',
+
                 isSelecting: false,
                 selectedFile: null,
-                errorDialog: null,
                 errorText: "",
                 fileName: '',
                 file: '',
@@ -304,9 +322,16 @@
                 pengelola_user_model: {},
 
                 interval_time: 2000,
+                maxSize: 1024,
+                errorDialog: null,
             }
         },
         created(){
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
+
             this.initData();
             this.initHeader();
         },
@@ -348,6 +373,7 @@
                         Authorization: localStorage.token,
                     }})
                     .then(response => {
+                        this.snackbarLoading = false;
                         this.devLog("get user result code: " + response.status);
                         if(response.status == 200){
                             if(!response.data){
@@ -360,12 +386,13 @@
                             }
                         }
                     }).catch((err)=>{
+                        this.snackbarLoading = false;
                         this.error_message = err.response.data.message;
                         this.color = "red";
                         this.snackbar = true;
                     });
 
-                    this.total_price = this.kos_booking_model.total_price.toLocaleString("de-DE");
+                    this.total_price = this.formatPrice(this.kos_booking_model.total_price);
 
                     
                     let tglMulai = new Date(this.kos_booking_model.tanggal_mulai);
@@ -461,16 +488,21 @@
 
             submitForm(){
                 if(this.kos_booking_model.bukti_transfer){
-                    this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.kos_booking_model));
-                    this.devLog(JSON.stringify(this.kos_booking_model))
+                    this.snackbarLoading_message = 'Submitting Data';
+                    this.color = "orange darken-2";
+                    this.snackbarLoading = true;
 
                     this.kos_booking_model.exp_date = '';
+
+                    this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.kos_booking_model));
+                    this.devLog(JSON.stringify(this.kos_booking_model))
 
                     if(this.status_kamar_terisi == true){
                         this.$http.post(this.api, this.kos_booking_model, {headers : {
                             Authorization: localStorage.token,
                         }})
                         .then(response => {
+                            this.snackbarLoading = false;
                             this.devLog("Result Code: " +response.status);
                             if(response.status == 201){
                                 if(response.data.api_status == "fail"){
@@ -482,12 +514,13 @@
                                     localStorage.removeItem('kosBooking');
                                     this.sendNotification();
 
-                                    // this.$router
-                                    //     .push({ path: '/transaksi' })
-                                    //     .then(() => { this.$router.go() })
+                                    this.$router
+                                        .push({ path: '/transaksi' })
+                                        .then(() => { this.$router.go() })
                                 }
                             }
                         }).catch((err)=>{
+                            this.snackbarLoading = false;
                             this.error_message = err.response.data.message;
                             this.color = "red";
                             this.snackbar = true;
@@ -529,12 +562,17 @@
             },
 
             onFileChange(file) {
+                const { maxSize } = this
                 let imageFile = file[0];
+                let size = imageFile.size / maxSize / maxSize
                 if (file.length > 0) {
                     if (!imageFile.type.match("image.*")) {
                         this.errorDialog = true;
                         this.errorText = "Please choose an image file";
-                    } else {
+                    } else if(size>1){
+                        this.errorDialog = true
+                        this.errorText = 'Gambar anda terlalu besar! Pilih gambar dibawah 1MB'
+                    }else {
                         this.fileName = imageFile.name;
 
                         this.devLog("onfilechange");
