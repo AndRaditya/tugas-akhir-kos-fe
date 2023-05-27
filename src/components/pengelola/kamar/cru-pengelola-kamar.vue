@@ -353,6 +353,11 @@ export default {
         },
 
         initAxio(){
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
+
             this.devLog(this.nav_title);
             if(this.nav_title == "Ubah" || this.nav_title == "Detail"){
                 this.snackbarLoading_message = 'Loading';
@@ -365,7 +370,6 @@ export default {
                         Authorization: localStorage.token,
                     }})
                     .then(response => {
-                        this.snackbarLoading = false;
                         this.devLog("get user result code: " + response.status);
                         if(response.status == 200){
                             if(!response.data){
@@ -380,7 +384,6 @@ export default {
                             }
                         }
                     }).catch((err)=>{
-                        this.snackbarLoading = false;
                         this.error_message = err.response.data;
                         this.color = "red";
                         this.snackbar = true;
@@ -398,6 +401,7 @@ export default {
                     Authorization: localStorage.token,
                 }})
                 .then(response => {
+                    this.snackbarLoading = false;
                     this.devLog("get user result code: " + response.status);
                     if(response.status == 200){
                         if(!response.data){
@@ -408,6 +412,7 @@ export default {
                         }
                     }
                 }).catch((err)=>{
+                    this.snackbarLoading = false;
                     this.error_message = err.response.data;
                     this.color = "red";
                     this.snackbar = true;
@@ -515,9 +520,9 @@ export default {
                         this.color = "green";
                         this.snackbar = true;
 
-                        this.$router
-                            .push({ path: '/kamar' })
-                            .then(() => { this.$router.go() })
+                        // this.$router
+                        //     .push({ path: '/kamar' })
+                        //     .then(() => { this.$router.go() })
                     }
                 }
             }).catch((err)=>{

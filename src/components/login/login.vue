@@ -266,9 +266,6 @@
                     email: this.login.email,
                 };
                 this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(loginData)) ;
-                this.error_message = 'Loading..';
-                this.color = "green";
-                this.snackbar = true;
                 this.$http.post(this.apiForgot, loginData)
                 .then(response => {
                     this.snackbarLoading = false;

@@ -512,7 +512,6 @@
                                     this.snackbar = true;
                                 }else{
                                     localStorage.removeItem('kosBooking');
-                                    this.sendNotification();
 
                                     this.$router
                                         .push({ path: '/transaksi' })
@@ -536,26 +535,6 @@
                     this.snackbar = true;
                 }
             },      
-
-            sendNotification(){
-                let notification_data = {
-                    role_id: '1',
-                    message_title: 'Kost Catleya Pesanan Baru',
-                    message_body: 'Terdapat Pesanan Baru'
-                };
-
-                this.$http.post(this.apiNotification, notification_data, {headers : {
-                    Authorization: localStorage.token,
-                }})
-                .then(response => {
-                    this.devLog("Result Code notification: " +response.status);
-                }).catch((err)=>{
-                    this.error_message = err.response.data.message;
-                    this.color = "red";
-                    this.snackbar = true;
-                });
-                
-            },  
             
             onPickFile() {
                 this.$refs.file.click();

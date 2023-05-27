@@ -17,9 +17,18 @@
                 <p class="title__main-tipe paragraph">{{ kos_model.tipe }}</p>
             </v-layout>
 
-            <v-layout column>
+            <v-layout column
+                    data-aos="fade-up"
+                    data-aos-offset="200"
+                    data-aos-delay="50"
+                    data-aos-duration="750"
+                    data-aos-easing="ease-in-out"
+                    data-aos-mirror="false"
+                    data-aos-once="true"
+                    data-aos-anchor-placement="top-center">
                 <v-layout align-center justify-center wrap>
-                    <div class="image__grid-parent">
+                    <div class="image__grid-parent"                                 
+                            >
                         <div class="image__grid-child-1" :style="{backgroundImage: `url(${urls_kos[0]})`}"> 
                         </div>
                         <div class="image__grid-child-2" :style="{backgroundImage: `url(${urls_kos[1]})`}">
@@ -45,9 +54,17 @@
                 </v-flex>
             </v-layout>
 
-            <v-layout column class="pb-12">
+            <v-layout column class="pb-12"
+                data-aos="fade-up"
+                data-aos-offset="50"
+                data-aos-delay="50"
+                data-aos-duration="750"
+                data-aos-easing="ease-in-out"
+                data-aos-mirror="false"
+                data-aos-once="true"
+                data-aos-anchor-placement="top-center">
                 <div class="landing-content__grid-parent">
-                    <div class="landing-content__grid-child-1">
+                    <div class="landing-content__grid-child-1" >
                         <v-card class="card__padding"  outlined text-sm-left elevation="0" >
                             <v-layout column align-start class="pb-2">
                                 <p class="title__main paragraph">{{ kos_model.name }}</p>
@@ -135,7 +152,15 @@
                 <hr>
             </v-layout>
 
-            <v-card class="card__border card__padding" outlined text-sm-left elevation="0">
+            <v-card class="card__border card__padding" outlined text-sm-left elevation="0"
+                data-aos="fade-up"
+                data-aos-offset="10"
+                data-aos-delay="50"
+                data-aos-duration="750"
+                data-aos-easing="ease-in-out"
+                data-aos-mirror="false"
+                data-aos-once="true"
+                data-aos-anchor-placement="top-center">
                 <div class="landing-booking__grid">
                     <!-- FOTO KAMAR, FASILITAS -->
                     <div class="landing-booking__grid-child-1">
@@ -290,7 +315,8 @@
 
             <hr class="my-6">
 
-            <v-layout class="pb-4" row v-if="ready"> 
+            <v-layout class="pb-4" row v-if="ready"     
+> 
                 <div class="peraturan-biaya__grid">
                     <div class="peraturan-biaya__grid--child-1">
                         <v-card class="card__padding" outlined text-sm-left elevation="0">

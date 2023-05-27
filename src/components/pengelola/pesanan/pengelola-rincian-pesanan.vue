@@ -349,8 +349,6 @@
                                 this.color = "red";
                                 this.snackbar = true;
                             }else{
-                                this.sendNotification(this.kos_booking_model.status)
-
                                 this.dialog_konfirmasi_batal = false;
 
                                 if(this.kos_booking_model.status == 'Dibatalkan'){
@@ -382,41 +380,6 @@
                     .push({ path: '/pengelola-pesanan' })
                     .then(() => { this.$router.go() }) 
             },
-
-            sendNotification(item){
-                let notification_data;
-
-                if(item == 'Dibatalkan'){
-                    notification_data = {
-                        role_id: this.kos_booking_model.user.roles_id,
-                        id: this.kos_booking_model.user.id,
-                        message_title: 'Pesanan Dibatalkan',
-                        message_body: 'Pesanan Anda Dibatalkan, Mohon tunggu respon pengelola melalui WhatsApp'
-                    };
-                }else if(item == 'Terkonfirmasi'){
-                    notification_data = {
-                        role_id: this.kos_booking_model.user.roles_id,
-                        id: this.kos_booking_model.user.id,
-                        message_title: 'Pesanan Dikonfirmasi',
-                        message_body: 'Pesanan Anda Telah Dikonfirmasi, Mohon tunggu respon pengelola melalui WhatsApp'
-                    };
-                }
-
-                this.devLog('notification_data');
-                this.devLog(JSON.stringify(notification_data));
-
-                this.$http.post(this.apiNotification, notification_data, {headers : {
-                    Authorization: localStorage.token,
-                }})
-                .then(response => {
-                    this.devLog("Result Code notification: " +response.status);
-                }).catch((err)=>{
-                    this.error_message = err.response.data.message;
-                    this.color = "red";
-                    this.snackbar = true;
-                });
-                
-            },  
 
             getData(){
                 this.devLog('get data');

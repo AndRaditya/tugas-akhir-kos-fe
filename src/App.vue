@@ -2,7 +2,7 @@
   <v-app>
     <nav-bar></nav-bar>
     <router-view class="router-view" align-center></router-view>
-    <notif-firebase v-if="is_login_pengelola && !is_login_customer"></notif-firebase>
+    <notif-firebase></notif-firebase>
   </v-app>
 </template>
 

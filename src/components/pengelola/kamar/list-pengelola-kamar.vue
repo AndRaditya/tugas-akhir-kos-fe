@@ -76,10 +76,6 @@ export default {
     },
 
     created(){
-        this.snackbarLoading_message = 'Loading';
-        this.color = "orange darken-2";
-        this.snackbarLoading = true;
-
 
         this.initHeader();
         this.axioData();
@@ -96,6 +92,11 @@ export default {
             ];
         },
         axioData(){ 
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
+
             this.$http.get(this.api, {headers : {
                 Authorization: localStorage.token,
             }})

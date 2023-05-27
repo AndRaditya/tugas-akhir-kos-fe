@@ -156,6 +156,7 @@
                     <v-switch
                         v-model="switch_harga"
                         label="Biaya Tambahan"
+                        :readonly="!editable"
                     ></v-switch>
                     <div class="pengelola-trs-masuk__child-5__child" v-if="switch_harga">
                         <div class="pengelola-trs-masuk__child-5__child--1">

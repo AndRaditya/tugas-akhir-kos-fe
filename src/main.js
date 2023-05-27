@@ -3,6 +3,8 @@ import App from './App.vue'
 import vuetify from '@/plugins/vuetify'
 import router from "./router"
 import Vuelidate from 'vuelidate'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 // import LoginPage from './components/login/login'
 import axios from 'axios'
@@ -79,6 +81,7 @@ Vue.mixin({
   },
 })
 
+
 const app = new Vue({
   vuetify,
   Vuelidate,
@@ -105,4 +108,7 @@ const app = new Vue({
 
   },
   router,
+
 });
+
+app.AOS = new AOS.init();

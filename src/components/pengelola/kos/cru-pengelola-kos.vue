@@ -80,7 +80,7 @@
                             <div class="pengelola-kos__grid-2__form-2--child-1">
                                 <p class="regular-text__medium paragraph">Foto Kos</p>
                             </div>
-                            <div class="pengelola-kos__grid-2__form-2--child-2">
+                            <div class="pengelola-kos__grid-2__form-2--child-2" v-if="urls.length != 0">
                                 <div class="pengelola-kos__grid-2__form-2--child-2__photo-1" :style="{backgroundImage: `url(${urls[0]})`}">
                                     <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
                                     @click="removeImage(0)" v-if="urls[0]">
@@ -394,8 +394,6 @@ export default {
                             }
                             this.devLog("image deleted with api");
                         }
-
-                        this.snackbarLoading = false;
 
                         this.error_message = 'Berhasil Update Data';
                         this.color = "green";

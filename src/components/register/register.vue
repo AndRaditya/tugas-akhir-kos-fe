@@ -150,27 +150,25 @@
                 // this.devLog(this.model)
                 this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.model)) ;
 
-                this.$http.post(this.API+'/kos-booking', this.model)
+                this.$http.post(this.API+'/register', this.model)
                 .then(response => {
-                    this.snackbarLoading = false;
-                    this.devLog("Login Result Code: " +response.status);
-                    if(response.status == 200){
+                    this.devLog("register Result Code: " +response.status);
+                    if(response.status == 201){
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
                             this.color = "red";
                             this.snackbar = true;
                         }else{
-                            this.user = response.data.data[0];
-                            localStorage.token= response.data.api_message;
-                            this.devLog("Token: "+ localStorage.token);
-                            this.devLog("Login Result Status: " +response.data.api_status);
-                            localStorage.userLogin = JSON.stringify(this.user);
-                            this.devLog(JSON.parse(localStorage.userLogin));
+                            this.snackbarLoading = false;
 
-                            this.$router
-                                .push({ path: '/dashboard' })
-                                .then(() => { this.$router.go() })
+                            this.error_message = 'Berhasil, Silahkan Login';
+                            this.color = "green";
+                            this.snackbar = true;
+
+                            // this.$router
+                            //     .push({ path: '/dashboard' })
+                            //     .then(() => { this.$router.go() })
                             // this.$router.push('/dashboard');
                         }
                     }

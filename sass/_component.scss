@@ -19,6 +19,10 @@
     @media only screen and (max-width: $bp-small) {
         font-size: 14px !important;
     }
+
+    @media only screen and (max-width: $bp-mobile) {
+        font-size: 10px !important;
+    }
 }
 
 .v-list-item__title{

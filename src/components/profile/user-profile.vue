@@ -128,6 +128,11 @@
             </div>
         </div>
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
+
+        <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
+            indeterminate
+            color="#fff"
+        ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
     </v-container>
 </template>
 
@@ -158,6 +163,9 @@
 
         data(){
             return{
+                snackbarLoading: false, 
+                snackbarLoading_message: '',
+
                 ready: false,
                 valid: false,
                 model: {},
@@ -187,6 +195,10 @@
             }
         },
         created(){
+            this.snackbarLoading_message = 'Loading';
+            this.color = "orange darken-2";
+            this.snackbarLoading = true;
+
             this.param_pengelola = this.check_pengelola();
             this.devLog("Component Product Item Created...");
             this.devLog(`WINDOW: { WIDTH: ${this.WINDOW.WIDTH} , HEIGHT: ${this.WINDOW.HEIGHT} }`);
@@ -220,6 +232,7 @@
                         },
                     })
                     .then(response => {
+                        this.snackbarLoading = false;
                         this.devLog("Login Result Code: " +response.status);
                         if(response.status == 200){
                             if(response.data.api_status == "fail"){
@@ -238,6 +251,7 @@
                             }
                         }
                     }).catch((err)=>{
+                        this.snackbarLoading = false;
                         this.error_message = err.response.data.message;
                         this.color = "red";
                         this.snackbar = true;
@@ -255,6 +269,10 @@
                 }
             },
             validateForm () {
+                this.snackbarLoading_message = 'Loading';
+                this.color = "orange darken-2";
+                this.snackbarLoading = true;
+                
                 this.devLog('valid')
                 this.devLog("validating");
                 // this.devLog(this.valid);
@@ -293,6 +311,7 @@
                         Authorization: localStorage.token,
                     }})
                     .then(response => {
+                        this.snackbarLoading = false;
                         this.devLog("Loading "+ this.api + " - Result Status: " + JSON.stringify(response));
                         
                         // if(!response.data){
@@ -311,6 +330,7 @@
                             }
                         // }
                     }).catch((err) => {
+                        this.snackbarLoading = false;
                         this.devLog('error password')
                         this.devLog(JSON.stringify(err));
                         this.error_message = err.response.data.message;
@@ -331,24 +351,26 @@
                     this.devLog(response.status);
                     this.load = false;
                     if(response.status == 202){
+                        this.snackbarLoading = false;
                         this.devLog("Loading "+ this.API + " - Result Status: " +response.status);
                         this.devLog(response.data);
                         var me = JSON.parse(localStorage.userLogin);
                         this.devLog(`Me ID : ${me.id} vs User ID : ${this.user.id}`);
-                        if(me.id === this.user.id){
+                        if(me.id == this.user.id){
                             this.devLog('me id === user id')
-                            this.updateUserLogin(this.user.id);
                             this.error_message = 'Profile updated!';
                             this.color = "green";
                             this.snackbar = true;
+                            // this.updateUserLogin(this.user.id);
                         } 
-                        this.$router
-                            .push({ path: '/dashboard' })
-                            .then(() => { this.$router.go() })
+                        // this.$router
+                        //     .push({ path: '/dashboard' })
+                        //     .then(() => { this.$router.go() })
                         // this.$router.replace(next);
                         
                     }
-                }).catch((err) => {
+                }).catch((err) => {                   
+                    this.snackbarLoading = false;
                     this.devLog(JSON.stringify(err))
                     this.error_message = err.response.data.message;
                     this.color = "red";

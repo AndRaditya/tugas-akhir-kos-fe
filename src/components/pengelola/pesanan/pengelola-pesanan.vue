@@ -108,7 +108,10 @@
                             <div class="pengelola-pesanan--detail__child-4__desc-2--1" v-if="kos_booking.status != 'Menunggu Konfirmasi Pengelola'">
                                 <v-btn color="#DF2E38" class="white--text regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="deleteItem(kos_booking)">Hapus Pesanan</v-btn>
                             </div>
-                            <div class="pengelola-pesanan--detail__child-4__desc-2--2">
+                            <div class="pengelola-pesanan--detail__child-4__desc-2--2" v-if="kos_booking.status != 'Menunggu Konfirmasi Pengelola'">
+                                <v-btn color="#146C94" class="white--text regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="getDetail(kos_booking.id)">Lihat Detail</v-btn>
+                            </div>
+                            <div class="pengelola-pesanan--detail__child-4__desc-2--2--fix" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">
                                 <v-btn color="#146C94" class="white--text regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="getDetail(kos_booking.id)">Lihat Detail</v-btn>
                             </div>
                         </div>
