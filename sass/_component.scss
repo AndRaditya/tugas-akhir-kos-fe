@@ -5,6 +5,7 @@
 .v-snack__content{
     font-size: 1.4rem !important;
     color: white !important;
+    line-height: 1.6 !important;
 
     @media only screen and (max-width: $bp-small) {
         font-size: 14px !important;
@@ -21,7 +22,7 @@
     }
 
     @media only screen and (max-width: $bp-mobile) {
-        font-size: 10px !important;
+        font-size: 12px !important;
     }
 }
 
@@ -39,6 +40,10 @@
 .v-data-table__empty-wrapper td,
 .v-data-footer__pagination{
     font-size: 1.4rem !important;
+
+    @media only screen and (max-width: $bp-largest) {
+        font-size: 14px !important;
+    }
 
     @media only screen and (max-width: $bp-small) {
         font-size: 14px !important;
@@ -163,4 +168,16 @@ li{
     @media only screen and (max-width: $bp-largest) {
         font-size: 14px !important;
     }  
+}
+
+.mdi-information,
+.mdi-pencil,
+.mdi-delete, 
+.mdi-arrow-up,
+.mdi-arrow-down{
+    font-size: 18px !important;
+}
+
+.v-menu__content{
+    text-align: left !important;
 }

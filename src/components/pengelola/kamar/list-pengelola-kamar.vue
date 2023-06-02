@@ -93,7 +93,7 @@ export default {
         },
         axioData(){ 
             this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
 
@@ -108,7 +108,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     }else{
                         this.list.datas = response.data.data;
@@ -121,7 +121,7 @@ export default {
                 this.snackbarLoading = false;
                 this.model_ready = true;
                 this.error_message = err.response.data;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.ready = false;
             });
@@ -170,7 +170,7 @@ export default {
                     }
                 }).catch((err) => {
                     this.error_message = err.response.data.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                 });
         },

@@ -134,6 +134,7 @@
         }
 
         &__fasilitas-kos{
+            margin-top: 12px;
             padding: 2.4rem;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -149,6 +150,7 @@
             @media only screen and (max-width: $bp-small) {
                 grid-template-columns: repeat(2, auto);
                 padding: 1.8rem;
+                grid-column-gap: 12px;
             }
 
             &--child-1{

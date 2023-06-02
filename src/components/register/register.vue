@@ -1,7 +1,15 @@
 <template>
     <v-container grid-list-md>
         <v-layout align-center justify-center>
-            <v-card class="card__form" elevation="2">
+            <v-card class="card__form" elevation="2"
+                data-aos="fade-zoom-ing"
+                data-aos-offset="50"
+                data-aos-delay="50"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-back"
+                data-aos-mirror="false"
+                data-aos-once="true"
+                data-aos-anchor-placement="top-center">
                 <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_register" autofocus lazy-validation>
                     <v-container column fluid>
                         <v-layout column align-start>
@@ -144,7 +152,7 @@
 
             submitForm(){
                 this.snackbarLoading_message = 'Loading';
-                this.color = "orange darken-2";
+                this.color = "#19A7CE";
                 this.snackbarLoading = true;
 
                 // this.devLog(this.model)
@@ -157,13 +165,13 @@
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                         }else{
                             this.snackbarLoading = false;
 
                             this.error_message = 'Berhasil, Silahkan Login';
-                            this.color = "green";
+                            this.color = "#519259";
                             this.snackbar = true;
 
                             // this.$router
@@ -175,7 +183,7 @@
                 }).catch((err)=>{
                     this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 });
             },
@@ -183,7 +191,7 @@
             login(){
                 this.$router
                     .push({ path: '/login' })
-                    .then(() => { this.$router.go() })
+                    // .then(() => { this.$router.go() })
             },
         }
 

@@ -426,7 +426,7 @@ export default {
                         }).catch((err)=>{
                             this.devLog(err)
                             this.error_message = 'Data Empty';
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                             this.ready = false;
                         });
@@ -507,7 +507,7 @@ export default {
             }).catch((err)=>{
                 this.devLog(err)
                 this.error_message = 'Data Empty';
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.ready = false;
             });
@@ -530,7 +530,7 @@ export default {
             }).catch((err)=>{
                 this.devLog(err)
                 this.error_message = 'Data Empty';
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.ready = false;
             });
@@ -565,7 +565,7 @@ export default {
 
         postData(){
             this.snackbarLoading_message = 'Submitting Data';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
 
@@ -589,29 +589,29 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     }else{
                         this.error_message = 'Berhasil Submit Data';
-                        this.color = "green";
+                        this.color = "#519259";
                         this.snackbar = true;
 
                         this.$router
                             .push({ path: '/transaksi-masuk' })
-                            .then(() => { this.$router.go() })
+                            // .then(() => { this.$router.go() })
                     }
                 }
             }).catch((err)=>{
                 this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },
 
         putData(){
             this.snackbarLoading_message = 'Submitting Data';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
             this.devLog(this.api+this.id)
@@ -636,7 +636,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     }else{
                         if (this.deletedImages.length > 0) {
@@ -646,18 +646,18 @@ export default {
                         }
 
                         this.error_message = 'Berhasil Update Data';
-                        this.color = "green";
+                        this.color = "#519259";
                         this.snackbar = true;
 
                         this.$router
                             .push({ path: '/transaksi-masuk' })
-                            .then(() => { this.$router.go() })
+                            // .then(() => { this.$router.go() })
                     }
                 }
             }).catch((err)=>{
                 this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },  
@@ -676,7 +676,7 @@ export default {
                 })
             .catch((err) => {
                 this.error_message = err.response.data.message;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },
@@ -701,7 +701,7 @@ export default {
                     }
                 }).catch((err)=>{
                     this.error_message = err.response.data.message;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 });        
         },

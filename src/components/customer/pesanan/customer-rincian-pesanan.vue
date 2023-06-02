@@ -1,7 +1,15 @@
 <template>
     <!-- <v-main> -->
         <v-container grid-list-md class="pt-0">
-            <div class="cust-rincian-pesanan mb-12" v-if="this.model_ready">
+            <div class="cust-rincian-pesanan mb-12" v-if="this.model_ready" 
+                data-aos="fade-zoom-ing"
+                data-aos-offset="50"
+                data-aos-delay="50"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-back"
+                data-aos-mirror="false"
+                data-aos-once="true"
+                data-aos-anchor-placement="top-center">
                 <div class="cust-rincian-pesanan__title">
                     <p class="title__medium paragraph">Rincian Pesanan</p>
                 </div>
@@ -9,7 +17,7 @@
                     <v-card class="card__regular">
                         <div class="cust-rincian-pesanan__counter--parent">
                             <div class="cust-rincian-pesanan__counter--child-1">
-                                <p class="bigger--regular-text__thin paragraph">Silahkan transfer sebelum</p>
+                                <p class="bigger--regular-text__thin paragraph" style="line-height: 1.7">Silahkan transfer sebelum</p>
                             </div>
                             <div class="cust-rincian-pesanan__counter--child-2">
                                 <counter-vue :start_date="kos_booking_model.date" :exp_date="kos_booking_model.exp_date" v-if="!expired_status"></counter-vue>
@@ -56,7 +64,7 @@
                                     <p class="regular-text__thin ">Harga Kamar Bulanan</p>
                                 </div>
                                 <div class="cust-rincian-pesanan__pricing--child-1__title-2">
-                                    <p class="mb-3 regular-text__medium">Rp1.500.000</p>
+                                    <p class="mb-3 regular-text__medium">Rp{{ harga_bulanan }}</p>
                                 </div>
                                 <div class="cust-rincian-pesanan__pricing--child-1__title-3">
                                     <p class="regular-text__thin ">Biaya Pesanan</p>
@@ -302,6 +310,7 @@
                 tanggal_mulai: '',
                 tanggal_selesai: '',
                 total_price: null,
+                harga_bulanan: null,
                 dialog_konfirmasi_batal: false,
                 dialog_lokasi: false,
                 
@@ -328,7 +337,7 @@
         },
         created(){
             this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
 
@@ -388,11 +397,12 @@
                     }).catch((err)=>{
                         this.snackbarLoading = false;
                         this.error_message = err.response.data.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     });
 
                     this.total_price = this.formatPrice(this.kos_booking_model.total_price);
+                    this.harga_bulanan = this.formatPrice(this.kos_booking_model.harga_bulanan);
 
                     
                     let tglMulai = new Date(this.kos_booking_model.tanggal_mulai);
@@ -449,7 +459,7 @@
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                         }else{
                             this.pengelola_user_model = response.data.data;
@@ -459,7 +469,7 @@
                 }).catch((err)=>{
                     this.devLog(err);
                     this.error_message = 'Data Empty';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 });
             },
@@ -489,7 +499,7 @@
             submitForm(){
                 if(this.kos_booking_model.bukti_transfer){
                     this.snackbarLoading_message = 'Submitting Data';
-                    this.color = "orange darken-2";
+                    this.color = "#19A7CE";
                     this.snackbarLoading = true;
 
                     this.kos_booking_model.exp_date = '';
@@ -508,20 +518,20 @@
                                 if(response.data.api_status == "fail"){
                                     this.devLog('response fail')
                                     this.error_message = response.data.api_title;
-                                    this.color = "red";
+                                    this.color = "#DF2E38";
                                     this.snackbar = true;
                                 }else{
                                     localStorage.removeItem('kosBooking');
 
                                     this.$router
                                         .push({ path: '/transaksi' })
-                                        .then(() => { this.$router.go() })
+                                        // .then(() => { this.$router.go() })
                                 }
                             }
                         }).catch((err)=>{
                             this.snackbarLoading = false;
                             this.error_message = err.response.data.message;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                         });
                     }else{
@@ -531,7 +541,7 @@
 
                 }else{
                     this.error_message = 'Anda belum unggah bukti pembayaran';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }
             },      
@@ -578,7 +588,7 @@
         
                 this.$router
                     .push({ path: '/dashboard' })
-                    .then(() => { this.$router.go() })
+                    // .then(() => { this.$router.go() })
 
             },
 
@@ -607,7 +617,7 @@
                     }
                 }).catch((err)=>{
                     this.error_message = err.response.data.message;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 });
             },
@@ -625,11 +635,11 @@
                 try {
                     await navigator.clipboard.writeText(mytext);
                     this.error_message = 'Berhasil Salin Nomor Rekening';
-                    this.color = "green";
+                    this.color = "#519259";
                     this.snackbar = true;
                 } catch($e) {
                     this.error_message = 'Tidak Dapat Salin Nomor Rekening';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.devLog('cant copy')
                 }

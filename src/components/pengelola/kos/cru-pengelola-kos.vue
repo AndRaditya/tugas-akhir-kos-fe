@@ -275,7 +275,7 @@ export default {
     methods:{
         initData(){
             this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
             this.getKosFasilitas();
@@ -335,7 +335,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     }else{
                         this.kos_model = response.data.data[0];
@@ -357,7 +357,7 @@ export default {
                 this.devLog(err);
                 this.ready = false;
                 this.error_message = err.response.data;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },  
@@ -372,7 +372,7 @@ export default {
             this.devLog(this.deletedImages);
 
             this.snackbarLoading_message = 'Submitting Data';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
             this.$http.put(this.api+this.id, this.kos_model, {headers : {
@@ -385,7 +385,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     }else{
                         if (this.deletedImages.length > 0) {
@@ -396,14 +396,14 @@ export default {
                         }
 
                         this.error_message = 'Berhasil Update Data';
-                        this.color = "green";
+                        this.color = "#519259";
                         this.snackbar = true;
                     }
                 }
             }).catch((err)=>{
                 this.snackbarLoading = false;
                 this.error_message = err.response.data;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },  
@@ -503,18 +503,18 @@ export default {
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                         }else{
                             this.error_message = 'Berhasil Update Data';
-                            this.color = "green";
+                            this.color = "#519259";
                             this.snackbar = true;
                         }
                     }
                 })
             .catch((err) => {
                 this.error_message = err.response.data.message;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },

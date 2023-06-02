@@ -1,6 +1,14 @@
 <template>
     <v-container grid-list-xs class="pt-0" v-if="ready">
-        <div class="cust-transaksi__header">
+        <div class="cust-transaksi__header"
+                data-aos="fade-zoom-ing"
+                data-aos-offset="50"
+                data-aos-delay="50"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-back"
+                data-aos-mirror="false"
+                data-aos-once="true"
+                data-aos-anchor-placement="top-center">
             <div class="cust-transaksi__child-1">
                 <div class="cust-transaksi__child-1__title">
                     <v-layout align-start>
@@ -41,14 +49,22 @@
         </div>
         <hr>
 
-        <v-layout column class="layout-main" mt-8 v-if="this.model_transaksi">
-            <v-card class="card__regular" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
+        <v-layout column class="layout-main" mt-8 v-if="this.model_transaksi"
+            data-aos="fade-zoom-ing"
+            data-aos-offset="50"
+            data-aos-delay="50"
+            data-aos-duration="500"
+            data-aos-easing="ease-in-back"
+            data-aos-mirror="false"
+            data-aos-once="true"
+            data-aos-anchor-placement="top-center">
+            <v-card class="card__regular mt-4" v-for="(kos_booking, index) in kos_booking_model" :key="'kos_booking-'+index">
                 <div class="cust-transaksi--detail">
                     <div class="cust-transaksi--detail__child-1">
                         <div class="cust-transaksi--detail__child-1__header-1">
                              <v-layout column align-start>
-                                <p class="bigger--regular-text__medium ">{{ date[index] }}</p>
-                                <h3 class="regular-text__thin paragraph pb-2">{{ kos_booking.kode }}</h3>
+                                <p class="regular-text__bold ">{{ date[index] }}</p>
+                                <h3 class="regular-text__medium paragraph pb-2">{{ kos_booking.kode }}</h3>
                             </v-layout>
                         </div>
                         <div class="cust-transaksi--detail__child-1__header-2">
@@ -63,26 +79,26 @@
                     <div class="cust-transaksi--detail__child-3">
                         <div class="cust-transaksi--detail__child-3__desc-1">
                             <v-layout column align-start>
-                                <p class="bigger--regular-text">Tanggal Masuk</p>
-                                <p class="bigger--regular-text">Tanggal Selesai</p>
-                                <p class="bigger--regular-text">Total Bulan</p>
-                                <p class="bigger--regular-text">Jumlah Kamar</p>
+                                <p class="regular-text">Tanggal Masuk</p>
+                                <p class="regular-text">Tanggal Selesai</p>
+                                <p class="regular-text">Total Bulan</p>
+                                <p class="regular-text">Jumlah Kamar</p>
                             </v-layout>
                         </div>
                         <div class="cust-transaksi--detail__child-3__desc-2">
                             <v-layout column align-start>
-                                <p class="bigger--regular-text__medium ">{{ tanggal_mulai[index] }}</p>
-                                <p class="bigger--regular-text__medium ">{{ tanggal_selesai[index] }}</p>
-                                <p class="bigger--regular-text__medium ">{{ kos_booking.total_bulan }} Bulan</p>
-                                <p class="bigger--regular-text__medium ">{{ kos_booking.total_kamar }} Kamar</p>
+                                <p class="regular-text__medium ">{{ tanggal_mulai[index] }}</p>
+                                <p class="regular-text__medium ">{{ tanggal_selesai[index] }}</p>
+                                <p class="regular-text__medium ">{{ kos_booking.total_bulan }} Bulan</p>
+                                <p class="regular-text__medium ">{{ kos_booking.total_kamar }} Kamar</p>
                             </v-layout>
                         </div>
                     </div>
                     <div class="cust-transaksi--detail__child-4">
                         <div class="cust-transaksi--detail__child-4__desc-1">
                             <v-layout column align-start>
-                                <p class="bigger--regular-text__thin">Total Biaya</p>
-                                <p class="bigger--regular-text__bold  paragraph">Rp{{ total_harga[index] }}</p>
+                                <p class="regular-text__thin">Total Biaya</p>
+                                <p class="regular-text__bold  paragraph">Rp{{ total_harga[index] }}</p>
                             </v-layout>
                         </div>
                         <div class="cust-transaksi--detail__child-4__desc-2">
@@ -388,7 +404,7 @@
                             if(response.data.api_status == "fail"){
                                 this.devLog('response fail')
                                 this.error_message = response.data.api_title;
-                                this.color = "red";
+                                this.color = "#DF2E38";
                                 this.snackbar = true;
                                 this.model_transaksi = false;
                             }else{
@@ -404,7 +420,7 @@
                     }).catch((err)=>{
                         this.devLog(err);
                         this.error_message = 'Data Empty';
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         this.model_transaksi = false;
                     });
@@ -462,7 +478,7 @@
                             if(response.data.api_status == "fail"){
                                 this.devLog('response fail')
                                 this.error_message = response.data.api_title;
-                                this.color = "red";
+                                this.color = "#DF2E38";
                                 this.snackbar = true;
                                 this.model_transaksi = false;
                             }else{
@@ -477,7 +493,7 @@
                     }).catch((err)=>{
                         this.devLog(err);
                         this.error_message = err.response;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         this.model_transaksi = false;
                         this.ready = false;
@@ -485,7 +501,7 @@
 
                 }else{
                     this.error_message = "Use minimum of 3 character as Search Keyword!";
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }
             },
@@ -498,18 +514,18 @@
 
                 if(this.filter.date.start_date && !this.filter.date.end_date){
                     this.error_message = 'Silahkan Lengkapi Filter Tanggal Pemesanan';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.valid = false;
                 }else if(!this.filter.date.start_date && this.filter.date.end_date){
                     this.error_message = 'Silahkan Lengkapi Filter Tanggal Pemesanan';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.valid = false;
                 }else if(this.filter.date.start_date && this.filter.date.end_date){
                     if(this.filter.date.start_date > this.filter.date.end_date){
                         this.error_message = 'Masukkan Tanggal dengan Benar';
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         this.valid = false;
                     }
@@ -537,7 +553,7 @@
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                             this.model_transaksi = false;
                         }else{
@@ -555,7 +571,7 @@
                 }).catch((err)=>{
                     this.devLog(err);
                     this.error_message = err.response;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.model_transaksi = false;
                     this.ready = false;
@@ -578,7 +594,7 @@
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                             this.model_transaksi = false;
                         }else{
@@ -594,7 +610,7 @@
                 }).catch((err)=>{
                     this.devLog(err);
                     this.error_message = err.response;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.model_transaksi = false;
                     this.ready = false;

@@ -1,6 +1,6 @@
 {
   "name": "kost-catleya",
-  "version": "0.2.3",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -23,7 +23,8 @@
     "util": "^0.12.5",
     "vue-loading-overlay": "6.0",
     "vuelidate": "^0.7.7",
-    "vueperslides": "^2.16.0"
+    "vueperslides": "^2.16.0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

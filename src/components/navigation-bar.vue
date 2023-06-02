@@ -5,7 +5,7 @@
         <v-layout class="py-4" align-center justify-center>
             <v-layout justify-start align-center>
                 <img :src="logo" width="100vw" @click="redirect_router('dashboard')" style="cursor: pointer" v-if="!this.is_booking">
-                <p v-if="this.param_pengelola" class="bigger--regular-text__thin paragraph pl-6" style="color: #146C94;">Admin</p>
+                <p v-if="this.param_pengelola" class="bigger--regular-text__thin paragraph pl-6" style="color: #146C94;">Pengelola</p>
             </v-layout>
             <v-layout align-center justify-end class="navigation__menu-main">
               <div v-for=" (btn, index) in items" :key="index" class="menu">
@@ -190,8 +190,8 @@ export default {
 
     logout(){
       if(localStorage.userLogin){
-          this.snackbarLoading_message = 'Loading';
-        this.color = "orange darken-2";
+        this.snackbarLoading_message = 'Loading';
+        this.color = "#19A7CE";
         this.snackbarLoading = true;
 
         this.$http.get(this.API + '/logout', {headers : {
@@ -204,11 +204,12 @@ export default {
                 if(response.data.api_status == "fail"){
                     this.devLog('response fail')
                     this.error_message = response.data.api_title;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.model_transaksi = false;
                 }else{
                   localStorage.clear();
+                  localStorage.setItem('authenticated', false);
 
                   this.$router
                     .push({ path: '/login' })
@@ -219,7 +220,7 @@ export default {
             this.snackbarLoading = false;
             this.devLog(err);
             this.error_message = err.response;
-            this.color = "red";
+            this.color = "#DF2E38";
             this.snackbar = true;
             this.model_transaksi = false;
             this.ready = false;
@@ -234,14 +235,14 @@ export default {
       else if(this.param_pengelola){
         this.$router
           .push({ path: '/login' })
-          .then(() => { this.$router.go() })
+          // .then(() => { this.$router.go() })
       }
     },
 
     redirect_router(item){
       this.$router
           .push({ path: '/'+item })
-          .then(() => { this.$router.go() })
+          // .then(() => { this.$router.go() })
     },
 
     dashboardMainKos(){
@@ -322,18 +323,6 @@ export default {
 
   .v-toolbar{
     flex: none;
-  }
-
-  #drawer-header{
-    background: url('../assets/Frame1.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position-x: center;
-    background-position-y: center;
-    background-color: black;
-
-    margin: 3.6rem;
-    margin-bottom: 36px;
   }
 
   /* #app-drawer{

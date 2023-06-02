@@ -15,12 +15,29 @@ Vue.config.productionTip = false
 
 Vue.prototype.$http = axios;
 
+
 router.beforeEach((to, from, next)=>{
-    if (!to.matched.length) {
-        next({name:"404"});
-    } else {
-        next();
+    const isAuthenticated = JSON.parse(localStorage.getItem('authenticated'));
+    // if(to.name !== "Login" || to.name !== "Dashboard" || to.name !== "Register" && !isAuthenticated) next({name: "Login"});
+
+    if(!localStorage.getItem('authenticated')){
+        localStorage.setItem('authenticated', false);
     }
+
+    if((to.name !== "Login" && to.name !== "Dashboard" && to.name !== "Register") && !isAuthenticated) next({name: "Login"});
+    if((to.name === "Login" || to.name === "Register") && isAuthenticated) next({name: "Dashboard"});
+    else next();
+
+
+
+    // }else{
+    //     if(to.name !== "Login" && to.name !== "Dashboard" && to.name !== "Register") next({name: "Login"});
+    // }
+    // if (!to.matched.length) {
+    //     next({name:"404"});
+    // } else {
+    //     next();
+    // }
 });
 
 Vue.mixin({
@@ -69,7 +86,6 @@ Vue.mixin({
                 let path = document.URL.split('/');
 
                 let mainPath = path.splice(0, path.length).join('/');
-                // this.$router.push(mainPath + url);
                 param_pengelola = mainPath.includes('pengelola');
                 this.devLog('mainPath');
                 this.devLog(param_pengelola);

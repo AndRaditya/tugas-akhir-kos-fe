@@ -25,9 +25,16 @@
 
             &__title-2 { 
                 grid-area: 1 / 2 / 2 / 3;
-                display: grid;
+                display: flex;
                 align-items: center;
                 justify-content: flex-end; 
+
+                
+                // @media only screen and (max-width: $bp-small) {
+                //     display: block !important;
+                //     align-items: center;
+                //     justify-content: flex-end; 
+                // }
             }
 
         }

@@ -233,7 +233,7 @@ import counterVue from '@/components/counter.vue';
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                             this.model_pembayaran = false;
                         }else{
@@ -248,7 +248,7 @@ import counterVue from '@/components/counter.vue';
                 }).catch((err)=>{
                     this.devLog(err);
                     this.error_message = 'Data Empty';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.model_pembayaran = false;
                 });
@@ -265,7 +265,7 @@ import counterVue from '@/components/counter.vue';
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                             this.model_pembayaran = false;
                         }else{
@@ -276,7 +276,7 @@ import counterVue from '@/components/counter.vue';
                 }).catch((err)=>{
                     this.devLog(err);
                     this.error_message = 'Data Empty';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.model_pembayaran = false;
                 });
@@ -328,17 +328,17 @@ import counterVue from '@/components/counter.vue';
 
                             this.$router
                                 .push({ path: '/transaksi' })
-                                .then(() => { this.$router.go() })
+                                // .then(() => { this.$router.go() })
                         }
                     }).catch((err) => {
                         // this.devLog(JSON.stringify(err))
                         this.error_message = err.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     });
                 }else{
                     this.error_message = 'Anda belum unggah bukti pembayaran';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }
             },
@@ -356,7 +356,7 @@ import counterVue from '@/components/counter.vue';
                     }).catch((err) => {
                         // this.devLog(JSON.stringify(err))
                         this.error_message = err.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     });
             },
@@ -425,12 +425,12 @@ import counterVue from '@/components/counter.vue';
 
                         this.$router
                             .push({ path: '/transaksi' })
-                            .then(() => { this.$router.go() })
+                            // .then(() => { this.$router.go() })
                     }
                 }).catch((err) => {
                     // this.devLog(JSON.stringify(err))
                     this.error_message = err.message;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 });
             },

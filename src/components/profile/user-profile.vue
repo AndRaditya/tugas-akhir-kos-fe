@@ -196,7 +196,7 @@
         },
         created(){
             this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
             this.param_pengelola = this.check_pengelola();
@@ -238,7 +238,7 @@
                             if(response.data.api_status == "fail"){
                                 this.devLog('response fail')
                                 this.error_message = response.data.api_title;
-                                this.color = "red";
+                                this.color = "#DF2E38";
                                 this.snackbar = true;
                             }else{
                                 this.ready = true;
@@ -253,7 +253,7 @@
                     }).catch((err)=>{
                         this.snackbarLoading = false;
                         this.error_message = err.response.data.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     });
                 }
@@ -270,7 +270,7 @@
             },
             validateForm () {
                 this.snackbarLoading_message = 'Loading';
-                this.color = "orange darken-2";
+                this.color = "#19A7CE";
                 this.snackbarLoading = true;
                 
                 this.devLog('valid')
@@ -320,7 +320,7 @@
                                 this.devLog('error password')
                                 // this.devLog(JSON.stringify(err));
                                 this.error_message = response.data.message;
-                                this.color = "red";
+                                this.color = "#DF2E38";
                                 this.snackbar = true;
 
                                 this.user.not_found = false;
@@ -334,7 +334,7 @@
                         this.devLog('error password')
                         this.devLog(JSON.stringify(err));
                         this.error_message = err.response.data.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     });
             },
@@ -359,7 +359,7 @@
                         if(me.id == this.user.id){
                             this.devLog('me id === user id')
                             this.error_message = 'Profile updated!';
-                            this.color = "green";
+                            this.color = "#519259";
                             this.snackbar = true;
                             // this.updateUserLogin(this.user.id);
                         } 
@@ -373,7 +373,7 @@
                     this.snackbarLoading = false;
                     this.devLog(JSON.stringify(err))
                     this.error_message = err.response.data.message;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 });
             },

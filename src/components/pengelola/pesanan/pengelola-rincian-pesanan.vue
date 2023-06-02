@@ -110,7 +110,7 @@
                             </div>
                             <div class="pengelola-pesanan-rincian--action--child-3" v-if="switch_nomor_kamar">
                                 <div class="pengelola-pesanan-rincian--action--child-3--1">
-                                    <v-btn color="orange darken-2" elevation="0" type="submit" class="btn__main white--text pengelola-pesanan-rincian--action__btn">Ubah Nomor Kamar</v-btn>
+                                    <v-btn color="#19A7CE" elevation="0" type="submit" class="btn__main white--text pengelola-pesanan-rincian--action__btn">Ubah Nomor Kamar</v-btn>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +252,7 @@
         },
         created(){
             this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
             this.initData();
@@ -306,7 +306,7 @@
                 this.devLog(item);
 
                 this.snackbarLoading_message = 'Submitting Data';
-                this.color = "orange darken-2";
+                this.color = "#19A7CE";
                 this.snackbarLoading = true;
 
                 this.kos_booking_model.nomor_kamar = [];
@@ -346,7 +346,7 @@
                             if(response.data.api_status == "fail"){
                                 this.devLog('response fail')
                                 this.error_message = response.data.api_title;
-                                this.color = "red";
+                                this.color = "#DF2E38";
                                 this.snackbar = true;
                             }else{
                                 this.dialog_konfirmasi_batal = false;
@@ -356,19 +356,19 @@
                                 }else{
                                     this.$router
                                         .push({ path: '/pengelola-pesanan' })
-                                        .then(() => { this.$router.go() })
+                                        // .then(() => { this.$router.go() })
                                 }
                             }
                         }
                     }).catch((err)=>{
                         this.snackbarLoading = false;
                         this.error_message = err.response.data.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     });
                 }else{
                     this.error_message = 'Nomor Kamar Terduplikasi';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }
             
@@ -378,7 +378,7 @@
                 this.dialog_konfirmasi_batal = false;
                 this.$router
                     .push({ path: '/pengelola-pesanan' })
-                    .then(() => { this.$router.go() }) 
+                    // .then(() => { this.$router.go() }) 
             },
 
             getData(){
@@ -395,7 +395,7 @@
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                             this.model_transaksi = false;
                             
@@ -418,7 +418,7 @@
                     this.model_ready = true;
                     this.devLog(err);
                     this.error_message = err.response;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.model_transaksi = false;
                     this.ready = false;
@@ -463,7 +463,7 @@
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                             this.model_transaksi = false;
                             
@@ -475,7 +475,7 @@
                 }).catch((err)=>{
                     this.devLog(err);
                     this.error_message = 'Data Empty';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.model_transaksi = false;
                 });

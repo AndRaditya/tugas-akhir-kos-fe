@@ -7,7 +7,7 @@
                     <p class="title__main">{{ nav_title }} Kamar</p>
                 </div>
                 <div class="pengelola-kamar__grid-1__title-2" v-if="!editable">
-                    <v-btn elevation="0" class="white--text btn__go-edit" width="30%" slot="page-button" @click="goEdit()">Edit</v-btn>
+                    <v-btn elevation="0" class="white--text btn__go-edit" width="50%" slot="page-button" @click="goEdit()">Edit</v-btn>
                 </div>
             </div>
             <div class="pengelola-kamar__grid-2">
@@ -353,15 +353,10 @@ export default {
         },
 
         initAxio(){
-            this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
-            this.snackbarLoading = true;
-
-
             this.devLog(this.nav_title);
             if(this.nav_title == "Ubah" || this.nav_title == "Detail"){
                 this.snackbarLoading_message = 'Loading';
-                this.color = "orange darken-2";
+                this.color = "#19A7CE";
                 this.snackbarLoading = true;
                 this.devLog('this.id');
                 this.devLog(this.id);
@@ -385,7 +380,7 @@ export default {
                         }
                     }).catch((err)=>{
                         this.error_message = err.response.data;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         this.ready = false;
                     });
@@ -414,7 +409,7 @@ export default {
                 }).catch((err)=>{
                     this.snackbarLoading = false;
                     this.error_message = err.response.data;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.ready = false;
                 });
@@ -454,7 +449,7 @@ export default {
             if(this.kamar_model.status == 'Dipakai'){
                 if(this.kamar_model.nama_penyewa == '' || !this.kamar_model.nama_penyewa){
                     this.error_message = `Nama Penyewa Harap Diisi`;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }else{
                     this.validate()
@@ -471,7 +466,7 @@ export default {
             if (this.valid == true) {
                 if(this.kamar_model.id == ''){
                     this.error_message = `Nama Kos Kosong`;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }else{
                     this.submitForm();
@@ -499,7 +494,7 @@ export default {
             this.devLog(this.kamar_model);
 
             this.snackbarLoading_message = 'Submitting Data';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
 
@@ -513,11 +508,11 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     }else{
                         this.error_message = 'Berhasil Submit Data';
-                        this.color = "green";
+                        this.color = "#519259";
                         this.snackbar = true;
 
                         // this.$router
@@ -528,14 +523,14 @@ export default {
             }).catch((err)=>{
                 this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },  
 
         putData(){
             this.snackbarLoading_message = 'Submitting Data';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
             this.devLog(this.api+this.id)
@@ -552,7 +547,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     }else{
                         if (this.deletedImages.length > 0) {
@@ -562,14 +557,14 @@ export default {
                             }
                         }
                         this.error_message = 'Berhasil Submit Data';
-                        this.color = "green";
+                        this.color = "#519259";
                         this.snackbar = true;
                     }
                 }
             }).catch((err)=>{
                 this.snackbarLoading = false;
                 this.error_message = err.response.data.message;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },  
@@ -653,18 +648,18 @@ export default {
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                         }else{
                             this.error_message = 'Berhasil Update Data';
-                            this.color = "green";
+                            this.color = "#519259";
                             this.snackbar = true;
                         }
                     }
                 })
             .catch((err) => {
                 this.error_message = err.response.data.message;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },

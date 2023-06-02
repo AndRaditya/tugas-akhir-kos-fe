@@ -55,7 +55,8 @@
                             <p class="regular-text__medium ">{{ date[index] }}</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-1__header-2">
-                            <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
+                            <!-- <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p> -->
+                            <p class="pengelola__sudah--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
                             <p class="pengelola__terkonfirmasi regular-text__medium" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
                             <p class="pengelola__dibatalkan regular-text__medium" v-else-if="kos_booking.status == 'Dibatalkan'">Dibatalkan</p>
                         </div>
@@ -425,7 +426,7 @@ export default {
         initData(){
             this.snackbarLoading = true;
             this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
 
             this.initModel();
             this.getData();
@@ -476,7 +477,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         this.model_transaksi = false;
                     }else{
@@ -492,7 +493,7 @@ export default {
                 this.model_ready = true;
                 this.devLog(err);
                 this.error_message = err.response.data;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.model_transaksi = false;
                 this.ready = false;
@@ -569,7 +570,7 @@ export default {
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                             this.model_transaksi = false;
                         }else{
@@ -584,7 +585,7 @@ export default {
                 }).catch((err)=>{
                     this.devLog(err);
                     this.error_message = err.response;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.model_transaksi = false;
                     this.ready = false;
@@ -592,7 +593,7 @@ export default {
 
             }else{
                 this.error_message = "Use minimum of 3 character as Search Keyword!";
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             }
         },
@@ -605,18 +606,18 @@ export default {
 
             if(this.filter.date.start_date && !this.filter.date.end_date){
                 this.error_message = 'Silahkan Lengkapi Filter Tanggal Pemesanan';
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.valid = false;
             }else if(!this.filter.date.start_date && this.filter.date.end_date){
                 this.error_message = 'Silahkan Lengkapi Filter Tanggal Pemesanan';
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.valid = false;
             }else if(this.filter.date.start_date && this.filter.date.end_date){
                 if(this.filter.date.start_date > this.filter.date.end_date){
                     this.error_message = 'Masukkan Tanggal dengan Benar';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                     this.valid = false;
                 }
@@ -643,7 +644,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         this.model_transaksi = false;
                     }else{
@@ -661,7 +662,7 @@ export default {
             }).catch((err)=>{
                 this.devLog(err);
                 this.error_message = err.response;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.model_transaksi = false;
                 this.ready = false;
@@ -687,7 +688,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         this.model_transaksi = false;
                     }else{
@@ -703,7 +704,7 @@ export default {
             }).catch((err)=>{
                 this.devLog(err);
                 this.error_message = err.response;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.model_transaksi = false;
                 this.ready = false;
@@ -724,7 +725,7 @@ export default {
         hapusPesanan(){
             this.snackbarLoading = true;
             this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
 
             const id_temp = this.list_temp.id;
 
@@ -744,7 +745,7 @@ export default {
                 }).catch((err) => {
                     this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                 });
         },

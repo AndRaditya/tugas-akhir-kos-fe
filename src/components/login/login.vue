@@ -1,7 +1,15 @@
 <template>
     <v-container grid-list-md>
         <div class="login__grid">
-            <div class="login__grid-card">
+            <div class="login__grid-card"
+                data-aos="fade-zoom-ing"
+                data-aos-offset="50"
+                data-aos-delay="50"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-back"
+                data-aos-mirror="false"
+                data-aos-once="true"
+                data-aos-anchor-placement="top-center">
                 <v-card class="card__form" elevation="2" v-if="!reset_password_card">
                     <div class="login__grid--form">
                         <div class="login__grid--form__child-1">
@@ -197,7 +205,7 @@
 
             submitForm(){
                 this.snackbarLoading_message = 'Loading';
-                this.color = "orange darken-2";
+                this.color = "#19A7CE";
                 this.snackbarLoading = true;
 
 
@@ -215,7 +223,7 @@
                         if(response.data.api_status == "fail"){
                             this.devLog('response fail')
                             this.error_message = response.data.api_title;
-                            this.color = "red";
+                            this.color = "#DF2E38";
                             this.snackbar = true;
                         }else{
                             this.user = response.data.data[0];
@@ -223,6 +231,7 @@
                             this.devLog("Token: "+ localStorage.token);
                             this.devLog("Login Result Status: " +response.data.api_status);
                             localStorage.userLogin = JSON.stringify(this.user);
+                            localStorage.setItem('authenticated', true);
                             this.devLog(JSON.parse(localStorage.userLogin));
 
                             if(!this.param_pengelola && this.user.roles_id == 2){
@@ -244,7 +253,7 @@
                 }).catch((err)=>{
                     this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 });
             },
@@ -259,7 +268,7 @@
 
             sendEmail(){
                 this.snackbarLoading_message = 'Loading';
-                this.color = "orange darken-2";
+                this.color = "#19A7CE";
                 this.snackbarLoading = true;
 
                 let loginData = {
@@ -273,13 +282,13 @@
 
                     if(response.status == 200){
                         this.error_message = response.data;
-                        this.color = "green";
+                        this.color = "#519259";
                         this.snackbar = true;
                     }
                 }).catch((err)=>{
                     this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 });
             },
@@ -287,7 +296,7 @@
             register(){
                 this.$router
                     .push({ path: '/register' })
-                    .then(() => { this.$router.go() })
+                    // .then(() => { this.$router.go() })
             },
 
             refreshPage(){

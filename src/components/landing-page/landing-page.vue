@@ -18,11 +18,11 @@
             </v-layout>
 
             <v-layout column
-                    data-aos="fade-up"
+                    data-aos="fade-zoom-ing"
                     data-aos-offset="200"
                     data-aos-delay="50"
-                    data-aos-duration="750"
-                    data-aos-easing="ease-in-out"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-back"
                     data-aos-mirror="false"
                     data-aos-once="true"
                     data-aos-anchor-placement="top-center">
@@ -55,11 +55,11 @@
             </v-layout>
 
             <v-layout column class="pb-12"
-                data-aos="fade-up"
+                data-aos="fade-zoom-ing"
                 data-aos-offset="50"
                 data-aos-delay="50"
-                data-aos-duration="750"
-                data-aos-easing="ease-in-out"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-back"
                 data-aos-mirror="false"
                 data-aos-once="true"
                 data-aos-anchor-placement="top-center">
@@ -153,11 +153,11 @@
             </v-layout>
 
             <v-card class="card__border card__padding" outlined text-sm-left elevation="0"
-                data-aos="fade-up"
+                data-aos="fade-zoom-ing"
                 data-aos-offset="10"
                 data-aos-delay="50"
-                data-aos-duration="750"
-                data-aos-easing="ease-in-out"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-back"
                 data-aos-mirror="false"
                 data-aos-once="true"
                 data-aos-anchor-placement="top-center">
@@ -570,7 +570,7 @@ export default {
 
         initData(){
             this.snackbarLoading_message = 'Loading';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
             this.initModel();
@@ -596,7 +596,7 @@ export default {
                 this.snackbarLoading = false;
                 this.ready = true
                 this.error_message = err.response.data;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },
@@ -622,6 +622,7 @@ export default {
                 total_kamar: 1,
                 tanggal_selesai: '',
                 total_price: null,
+                harga_bulanan: null,
             }
 
             this.kamar_model = {
@@ -646,7 +647,7 @@ export default {
                 }
             }).catch((err)=>{
                 this.error_message = err.response.data;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },
@@ -667,7 +668,7 @@ export default {
                 }
             }).catch((err)=>{
                 this.error_message = err.response.data;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },
@@ -752,12 +753,12 @@ export default {
                     this.submitForm();
                 }else{
                     this.error_message = 'Terdapat kesalahan';
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }
             }else{
                 this.error_message = 'Anda Harus Login Terlebih Dahulu';
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             }
 
@@ -783,8 +784,9 @@ export default {
             this.kos_booking_model.tanggal_selesai = newDate.toISOString().split('T')[0]
 
             this.kos_booking_model.users_id = user_login.id;
-            this.kos_booking_model.total_price = 1500000 * total_bulan * total_kamar;
+            this.kos_booking_model.total_price = this.harga_axio * total_bulan * total_kamar;
             this.kos_booking_model.date = this.getDateTime();
+            this.kos_booking_model.harga_bulanan = this.harga_axio;
 
             // this.devLog(this.kos_booking_model);
             localStorage.kosBooking = JSON.stringify(this.kos_booking_model);
@@ -821,7 +823,7 @@ export default {
                 }
             }).catch((err)=>{
                 this.error_message = err.response.data.emss;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
             });
         },

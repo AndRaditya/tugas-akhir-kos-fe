@@ -5,10 +5,12 @@
                 <p class="title__main">List Transaksi Keluar</p>
             </div>
             <div class="pengelola-trs-keluar__list-header--child-2">
-                <v-btn color="#146C94" elevation="0" class="white--text"  @click="tambahData()">Tambah Transaksi</v-btn>
-            </div>
-            <div class="pengelola-trs-keluar__list-header--child-3">
-                <v-btn color="#146C94" elevation="0" class="white--text"  @click="dialog_transaksi = true">Unduh Transaksi</v-btn>
+                <div class="pengelola-trs-keluar__list-header--child-2__1">
+                    <v-btn color="#146C94" elevation="0" class="white--text pengelola-trs-keluar__list-header__btn"  @click="tambahData()">Tambah Transaksi</v-btn>
+                </div>
+                <div class="pengelola-trs-keluar__list-header--child-2__2">
+                    <v-btn color="#146C94" elevation="0" class="white--text pengelola-trs-keluar__list-header__btn"  @click="dialog_transaksi = true">Unduh Transaksi</v-btn>
+                </div>
             </div>
         </div>
 
@@ -153,7 +155,7 @@ export default {
     },
     created(){
         this.snackbarLoading_message = 'Loading';
-        this.color = "orange darken-2";
+        this.color = "#19A7CE";
         this.snackbarLoading = true;
 
         this.initHeader();
@@ -182,7 +184,7 @@ export default {
                     if(response.data.api_status == "fail"){
                         this.devLog('response fail')
                         this.error_message = response.data.api_title;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                     }else{
                         this.list.datas = response.data.data;
@@ -194,7 +196,7 @@ export default {
             }).catch((err)=>{
                 this.snackbarLoading = false;
                 this.error_message = err.response.data;
-                this.color = "red";
+                this.color = "#DF2E38";
                 this.snackbar = true;
                 this.ready = false;
             });
@@ -228,7 +230,7 @@ export default {
         },
         hapusTransaksi(){        
         this.snackbarLoading_message = 'Loading';
-        this.color = "orange darken-2";
+        this.color = "#19A7CE";
         this.snackbarLoading = true;
 
             const id_temp = this.list_temp.id;
@@ -249,7 +251,7 @@ export default {
                 }).catch((err) => {
                     this.snackbarLoading = false;
                     this.error_message = err.response.data.message;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                 });
         },
@@ -260,7 +262,7 @@ export default {
 
         exportData(url, filename){
         this.snackbarLoading_message = 'Loading';
-        this.color = "orange darken-2";
+        this.color = "#19A7CE";
         this.snackbarLoading = true;  
 
             let tanggal_mulai = this.transaksi_keluar_mulai
@@ -278,7 +280,7 @@ export default {
                     if(!response.data){
                         this.devLog('response fail')
                         this.error_message = response;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         
                     }else{
@@ -293,11 +295,11 @@ export default {
                 this.snackbarLoading = false;
                 if(!err.response){
                     this.error_message = err.response;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }else{
                     this.error_message = 'Code Error ' + err;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }
             });

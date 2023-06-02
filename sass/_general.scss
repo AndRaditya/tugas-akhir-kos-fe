@@ -34,6 +34,10 @@
 
     &__padding{
         padding: 2.4rem !important;
+
+        @media only screen and (max-width: $bp-small) {
+            padding: 14px !important;
+        }
     }
     
     &__margin{
@@ -227,14 +231,20 @@
 
     &__belum--verifikasi{
         color: var(--color-primary);
-        border: thin solid var(--color-primary);
+        // color: var(--color-white);
+        // border: thin solid var(--color-primary);
+        background-color: #30b0d325;
+        // background-color: var(--color-primary);
         @extend .pengelola;
+
+        text-align: end;
     }
 
     &__sudah--verifikasi{
         color: var(--color-white);
         background-color: var(--color-primary);
         @extend .pengelola;
+        text-align: end;
     }
 
     &__terkonfirmasi{
@@ -372,6 +382,27 @@
         }
     }
 }
+
+#drawer-header{
+    background: url('../src/assets/Frame1.png');
+    background-repeat: no-repeat;
+    background-size: 12vw;
+
+    @media only screen and (max-width: $bp-small) {
+        background-size: 23vw !important;
+    }
+
+    @media only screen and (max-width: $bp-mobile) {
+        background-size: 30vw !important;
+    }
+
+    background-position-x: center;
+    background-position-y: center;
+    background-color: black;
+
+    margin: 12px;
+    margin-bottom: 24px;
+  }
 
 
 

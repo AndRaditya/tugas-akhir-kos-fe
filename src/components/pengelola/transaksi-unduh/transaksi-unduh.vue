@@ -291,7 +291,7 @@ export default {
 
         exportData(model, url, filename){
             this.snackbarLoading_message = 'Mengunduh Transaksi';
-            this.color = "orange darken-2";
+            this.color = "#19A7CE";
             this.snackbarLoading = true;
 
             this.devLog(JSON.stringify(model));
@@ -310,7 +310,7 @@ export default {
                     if(!response.data){
                         this.devLog('response fail')
                         this.error_message = response;
-                        this.color = "red";
+                        this.color = "#DF2E38";
                         this.snackbar = true;
                         
                     }else{
@@ -325,11 +325,11 @@ export default {
                 this.snackbarLoading = false;
                 if(!err.response){
                     this.error_message = err.response;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }else{
                     this.error_message = 'Code Error ' + err;
-                    this.color = "red";
+                    this.color = "#DF2E38";
                     this.snackbar = true;
                 }
             });
