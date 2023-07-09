@@ -6,8 +6,16 @@
         grid-column-gap: 0px;
         grid-row-gap: 0px;
 
+        @media only screen and (max-width: $bp-bigger) {
+            grid-template-columns: 1fr 0.25fr 1fr;
+        }
+
         @media only screen and (max-width: $bp-largest) {
             grid-template-columns: 1fr 1fr;
+        }
+
+        @media only screen and (max-width: $bp-large) {
+            grid-template-columns: 0.75fr 1fr;
         }
 
         @media only screen and (max-width: $bp-medium) {

@@ -404,15 +404,22 @@ export default {
     },
     watch:{ 
         'keyword_search'(newVal, oldVal){
-            if(newVal != oldVal){
-                if(newVal == ''){
-                    this.devLog('keyword search watch')
-                    this.devLog('new val = ' + newVal)
-                    this.devLog('old val = ' + oldVal)
-                    this.getData();
+            if(newVal){
+                if(newVal != oldVal){
+                    if(newVal == ''){
+                        this.devLog('keyword search watch')
+                        this.devLog('new val = ' + newVal)
+                        this.devLog('old val = ' + oldVal)
+                        this.getData();
+                    }
                 }
+            }else{
+                this.devLog('keyword search watch')
+                this.devLog('new val = ' + newVal)
+                this.devLog('old val = ' + oldVal)
+                this.getData(); 
             }
-        },        
+        },  
         'data_sort'(newVal, oldVal){
             if(newVal != oldVal){
                 this.devLog('data sort')
@@ -576,10 +583,16 @@ export default {
                         }else{
                             this.devLog(response.data)
                             this.kos_booking_model = response.data;
-                            this.devLog(this.kos_booking_model)
-                            this.model_transaksi = true;
-                            this.getDateAndPrice();
-                            this.ready = true;
+                            if(this.kos_booking_model.length > 0){
+                                this.devLog(this.kos_booking_model)
+                                this.model_transaksi = true;
+                                this.getDateAndPrice();
+                                this.ready = true;
+                            }else{
+                                this.error_message = "Data Kosong";
+                                this.color = "#DF2E38";
+                                this.snackbar = true;
+                            }
                         }
                     }
                 }).catch((err)=>{

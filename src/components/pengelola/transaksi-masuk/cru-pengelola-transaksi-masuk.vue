@@ -69,15 +69,6 @@
                         clearable
                     ></v-textarea>
                     <v-layout align-start column>
-                        <p class="regular-text">Nama Penyewa</p>
-                    </v-layout>
-                    <v-text-field
-                        v-model="transaksi_masuk_model.nama_penyewa"
-                        label="Nama Penyewa"
-                        readonly
-                        outlined
-                    ></v-text-field>
-                    <v-layout align-start column>
                         <p class="regular-text">Nomor Kamar</p>
                     </v-layout>
                     <v-select
@@ -91,6 +82,15 @@
                         @input="selectNamaPenyewa()"
                         clearable
                     ></v-select>
+                    <v-layout align-start column>
+                        <p class="regular-text">Nama Penyewa</p>
+                    </v-layout>
+                    <v-text-field
+                        v-model="transaksi_masuk_model.nama_penyewa"
+                        label="Nama Penyewa"
+                        readonly
+                        outlined
+                    ></v-text-field>
                     <v-layout align-start column>
                         <p class="regular-text">Nomor Pesanan/Booking</p>
                     </v-layout>
@@ -136,6 +136,7 @@
                                 height="300"
                                 contain
                                 class="grey lighten-5"
+                                alt="Kost Putri Jogja"
                                 @click="imageDialog = true" 
                             ></v-img>
                         </v-card>
@@ -209,6 +210,7 @@
                             :src="url"
                             max-width="100%"
                             contain
+                            alt="Kost Putri Jogja"
                             class="grey lighten-5"
                         ></v-img>
                     </v-flex>
@@ -305,18 +307,18 @@ export default {
             total_nilai_temp_float: null,
 
             requiredRule: [
-                v => !!v || 'This is required',
+                v => !!v || 'Harus Diisi',
             ],
 
-            fillRule: (v) => !!v || 'This field is required',
+            fillRule: (v) => !!v || 'Harus Diisi',
 
             nilaiTrsRule: [ 
-                v => !!v || "This field is required",
+                v => !!v || "Harus Diisi",
                 v => ( v && v >= 1 ) || "Tidak boleh kurang dari Rp1",
             ],
 
             biayaTambahanRule: [ 
-                v => !!v || "This field is required",
+                v => !!v || "Harus Diisi",
                 v => ( v && v >= 1 ) || "Tidak boleh kurang dari 0",
             ],
 
@@ -330,6 +332,8 @@ export default {
             maxSize: 1024,
             errorDialog: null,
             errorText: "",
+
+            temp_tanggal: '',
         }
     },
     created(){
@@ -391,6 +395,10 @@ export default {
         initAxio(){
             this.devLog(this.nav_title);
             if(this.nav_title == "Ubah" || this.nav_title == "Detail"){
+                this.snackbarLoading_message = 'Loading';
+                this.color = "#19A7CE";
+                this.snackbarLoading = true;
+
                 this.devLog('this.id');
                 this.devLog(this.id);
 
@@ -401,6 +409,7 @@ export default {
                             Authorization: localStorage.token,
                         }})
                         .then(response => {
+                            this.snackbarLoading = false;
                             this.devLog("init axio result code: " + response.status);
                             if(response.status == 200){
                                 if(!response.data){
@@ -413,30 +422,43 @@ export default {
                                     this.devLog('init axio')
                                     this.initPhoto()
                                     this.getNomorKamar();
+
+                                    this.temp_tanggal = this.transaksi_masuk_model.tanggal;
+
+                                    let tglMulai = new Date(this.transaksi_masuk_model.tanggal);
+
+                                    this.transaksi_masuk_model.tanggal = new Intl.DateTimeFormat(['ban', 'id'], { dateStyle: 'long', timeStyle: 'short', timeZone: 'Asia/Bangkok' }).format(tglMulai);
     
                                     if(this.transaksi_masuk_model.biaya_tambahan.length > 0){
                                         this.getBiayaTambahan();
+                                    }else{
+                                        this.transaksi_masuk_model.biaya_tambahan = {}
                                     }
-    
+
+                                    if(!this.transaksi_masuk_model.bukti_transfer ){
+                                        this.transaksi_masuk_model.bukti_transfer = {};
+                                    }
+
                                     // if (this.transaksi_masuk_model.bukti_transfer.photo_path) {
                                     //     this.updatePhoto();
                                     // }
                                 }
                             }
                         }).catch((err)=>{
+                            this.snackbarLoading = false;
                             this.devLog(err)
                             this.error_message = 'Data Empty';
                             this.color = "#DF2E38";
                             this.snackbar = true;
                             this.ready = false;
                         });
-
                 }else{
                     this.ready = false;
                 }
             }
             else{
                 if(localStorage.userLogin){
+                    this.getNomorKamar();
                     this.ready = true;
                     setInterval(this.getNow(), 1000);
                     this.devLog('tanggal tanggal')
@@ -623,9 +645,15 @@ export default {
                 this.transaksi_masuk_model.total_nilai = this.total_nilai_temp_float;
             }
 
+            if(!this.transaksi_masuk_model.nomor_booking){
+                this.transaksi_masuk_model.nomor_booking = ''
+            }
+
+            this.transaksi_masuk_model.tanggal = this.temp_tanggal;
+            
             this.devLog(JSON.stringify(this.transaksi_masuk_model));
             this.devLog(this.transaksi_masuk_model);
-            
+
             this.$http.put(this.api+this.id, this.transaksi_masuk_model, {headers : {
                         Authorization: localStorage.token,
                     }})
@@ -718,6 +746,7 @@ export default {
             this.devLog(' === init photo')
             if(this.transaksi_masuk_model.bukti_transfer){
                 this.url = this.transaksi_masuk_model.bukti_transfer.photo_path
+                this.devLog(this.url)
             }
         },
 

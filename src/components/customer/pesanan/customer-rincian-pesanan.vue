@@ -1,6 +1,6 @@
 <template>
     <!-- <v-main> -->
-        <v-container grid-list-md class="pt-0">
+        <v-container grid-list-md class="pt-0" >
             <div class="cust-rincian-pesanan mb-12" v-if="this.model_ready" 
                 data-aos="fade-zoom-ing"
                 data-aos-offset="50"
@@ -525,7 +525,7 @@
 
                                     this.$router
                                         .push({ path: '/transaksi' })
-                                        // .then(() => { this.$router.go() })
+                                        .then(() => { this.$router.go() })
                                 }
                             }
                         }).catch((err)=>{
@@ -588,8 +588,7 @@
         
                 this.$router
                     .push({ path: '/dashboard' })
-                    // .then(() => { this.$router.go() })
-
+                    .then(() => { this.$router.go() })
             },
 
             sisaKamar(){
@@ -620,10 +619,6 @@
                     this.color = "#DF2E38";
                     this.snackbar = true;
                 });
-            },
-
-            callBackFunction(){
-                localStorage.removeItem('kosBooking');
             },
 
             closeDialogPindah(e){

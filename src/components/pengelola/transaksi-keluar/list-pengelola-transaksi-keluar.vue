@@ -203,6 +203,10 @@ export default {
         },
         convertPrice(){
             this.list.datas.forEach(element => {
+                let tglMulai = new Date(element.tanggal);
+
+                element.tanggal = new Intl.DateTimeFormat(['ban', 'id'], { dateStyle: 'long', timeStyle: 'short', timeZone: 'Asia/Bangkok' }).format(tglMulai);
+
                 element.nilai = this.formatPrice(element.nilai);
             });
         },

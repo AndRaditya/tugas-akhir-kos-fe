@@ -14,7 +14,7 @@
                                         <p class="regular-text__medium ">{{ date }}</p>
                                 </div>
                                 <div class="pengelola-pesanan-rincian--detail__child-1__header-2">
-                                    <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking_model.status }}</p>
+                                    <p class="pengelola__sudah--verifikasi regular-text__medium" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking_model.status }}</p>
                                     <p class="pengelola__dibatalkan regular-text__medium" v-else-if="kos_booking_model.status == 'Dibatalkan'">{{ kos_booking_model.status }}</p>
                                     <p class="pengelola__terkonfirmasi regular-text__medium" v-else-if="kos_booking_model.status == 'Terkonfirmasi'">Berhasil</p>
                                 </div>
@@ -79,7 +79,8 @@
                                 ></v-switch>
                             </div>
                             <div class="pengelola-pesanan-rincian--action--child-2" v-if="kos_booking_model.status == 'Menunggu Konfirmasi Pengelola'">
-                                <div v-for="index in kos_booking_model.total_kamar" :key="index">
+                                <!-- <div v-for="index in kos_booking_model.total_kamar" :key="index"> -->
+                                <div v-for="index in jumlah_kamar" :key="index">
                                     <v-select
                                         outlined
                                         label="Masukkan Nomor Kamar"
@@ -90,7 +91,7 @@
                                 </div>
                             </div>
                             <div class="pengelola-pesanan-rincian--action--child-2" v-if="switch_nomor_kamar">
-                                <div v-for="index in kos_booking_model.total_kamar" :key="index">
+                                <div v-for="index in jumlah_kamar" :key="index">
                                     <v-select
                                         outlined
                                         label="Masukkan Nomor Kamar"
@@ -146,6 +147,7 @@
                             :src="url_dialog"
                             max-width="100%"
                             contain
+                            alt="Kost Putri Jogja"
                             class="grey lighten-5"
                         ></v-img>
                     </v-flex>
@@ -243,7 +245,7 @@
                 url_dialog: '',
 
                 rules: {
-                    required: value => !!value || 'Required.',
+                    required: value => !!value || 'Harus Diisi',
                     min: v => v.length >= 8 || 'Min 8 characters',
                 },
 
@@ -266,7 +268,6 @@
                 this.devLog('this.id');
                 this.devLog(this.id);
                 this.getData();
-                this.getKamar();
             },
 
             initModel(){
@@ -302,9 +303,6 @@
             },
 
             submitForm(item){
-                this.devLog('submit form');
-                this.devLog(item);
-
                 this.snackbarLoading_message = 'Submitting Data';
                 this.color = "#19A7CE";
                 this.snackbarLoading = true;
@@ -319,8 +317,6 @@
                     return (new Set(array)).size !== array.length;
                 }
 
-                this.devLog(hasDuplicates(this.kos_booking_model.nomor_kamar))
-
                 if(!hasDuplicates(this.kos_booking_model.nomor_kamar)){
                     this.submitting_data = true;
 
@@ -331,11 +327,9 @@
                             this.kos_booking_model.status = 'Terkonfirmasi';
                         }
                     }
-                
-                    this.devLog("Trying to connect... "+ this.api + " with : " + JSON.stringify(this.kos_booking_model));
-                    this.devLog(JSON.stringify(this.kos_booking_model));
-                    this.devLog(this.kos_booking_model);
-    
+
+                    this.devLog(JSON.stringify(this.kos_booking_model))
+
                     this.$http.put(this.api+this.id, this.kos_booking_model, {headers : {
                             Authorization: localStorage.token,
                         }})
@@ -356,7 +350,6 @@
                                 }else{
                                     this.$router
                                         .push({ path: '/pengelola-pesanan' })
-                                        // .then(() => { this.$router.go() })
                                 }
                             }
                         }
@@ -367,11 +360,11 @@
                         this.snackbar = true;
                     });
                 }else{
+                    this.snackbarLoading = false;
                     this.error_message = 'Nomor Kamar Terduplikasi';
                     this.color = "#DF2E38";
                     this.snackbar = true;
                 }
-            
             },
 
             redirectUrl(){
@@ -404,11 +397,13 @@
                             if(this.kos_booking_model.bukti_transfer){
                                 this.url_dialog = this.kos_booking_model.bukti_transfer.photo_path;
                             }
+                            this.devLog('axio data')
                             this.devLog(this.kos_booking_model)
-                            this.jumlah_kamar = this.kos_booking_model.total_kamar;
+                            this.jumlah_kamar = parseInt(this.kos_booking_model.total_kamar);
                             this.model_transaksi = true;
                             this.ready = true;
                             this.getDateAndPrice();
+                            this.getKamar();
 
                             this.link_whatsapp_customer = `https://api.whatsapp.com/send/?phone=${ this.kos_booking_model.user.phone_number }&text=Halo,%20Saya%20pengelola%20Kost%20Catleya%20ingin%20memberi%20informasi%20bahwa&type=phone_number&app_absent=0`
                         }

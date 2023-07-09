@@ -4,7 +4,7 @@
                 data-aos="fade-zoom-ing"
                 data-aos-offset="50"
                 data-aos-delay="50"
-                data-aos-duration="500"
+                data-aos-duration="250"
                 data-aos-easing="ease-in-back"
                 data-aos-mirror="false"
                 data-aos-once="true"
@@ -53,7 +53,7 @@
             data-aos="fade-zoom-ing"
             data-aos-offset="50"
             data-aos-delay="50"
-            data-aos-duration="500"
+            data-aos-duration="250"
             data-aos-easing="ease-in-back"
             data-aos-mirror="false"
             data-aos-once="true"
@@ -118,7 +118,8 @@
         <v-dialog v-model="dialog_filter" persistent content-class="filter-dialog">
             <v-card class="pa-4">
                 <p class="bigger--regular-text__medium  pb-4">Filter Kamar</p>
-                <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_filter" autofocus lazy-validation>
+                <!-- <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_filter" autofocus lazy-validation> -->
+                <v-form @submit.prevent="validateForm()" v-model="valid" ref="form_filter" autofocus>
                     <div class="filter-dialog__tanggal">
                         <div class="filter-dialog__tanggal--child-1">
                             <p class="regular-text">Tanggal Pemesanan</p>
@@ -288,13 +289,20 @@
         },
         watch:{
             'keyword_search'(newVal, oldVal){
-                if(newVal != oldVal){
-                    if(newVal == ''){
-                        this.devLog('keyword search watch')
-                        this.devLog('new val = ' + newVal)
-                        this.devLog('old val = ' + oldVal)
-                        this.getData();
+                if(newVal){
+                    if(newVal != oldVal){
+                        if(newVal == ''){
+                            this.devLog('keyword search watch')
+                            this.devLog('new val = ' + newVal)
+                            this.devLog('old val = ' + oldVal)
+                            this.getData();
+                        }
                     }
+                }else{
+                    this.devLog('keyword search watch')
+                    this.devLog('new val = ' + newVal)
+                    this.devLog('old val = ' + oldVal)
+                    this.getData(); 
                 }
             },        
             'data_sort'(newVal, oldVal){
@@ -460,49 +468,60 @@
             },
 
             xSearch(){
-                if(this.keyword_search.length > 2){
-                    this.devLog(this.keyword_search);
-                    let url = this.apiSearch + '?keyword=' +this.keyword_search + '&users_id=' + this.user_id;
-
-                    this.devLog(url);
-
-                    this.kos_booking_model = {};
-                    this.$http.get(url, 
-                        {
-                            headers : {Authorization: localStorage.token}
-                        },
-                        )
-                    .then(response => {
-                        this.devLog("get search Result Code: " +response.status);
-                        if(response.status == 200){
-                            if(response.data.api_status == "fail"){
-                                this.devLog('response fail')
-                                this.error_message = response.data.api_title;
-                                this.color = "#DF2E38";
-                                this.snackbar = true;
-                                this.model_transaksi = false;
-                            }else{
-                                this.devLog(response.data)
-                                this.kos_booking_model = response.data;
-                                this.devLog(this.kos_booking_model)
-                                this.model_transaksi = true;
-                                this.getDateAndPrice();
-                                this.ready = true;
+                this.devLog(this.keyword_search);
+                if(this.keyword_search){
+                    if(this.keyword_search.length > 2){
+                        this.devLog(this.keyword_search);
+                        let url = this.apiSearch + '?keyword=' +this.keyword_search + '&users_id=' + this.user_id;
+    
+                        this.devLog(url);
+    
+                        this.kos_booking_model = {};
+                        this.$http.get(url, 
+                            {
+                                headers : {Authorization: localStorage.token}
+                            },
+                            )
+                        .then(response => {
+                            this.devLog("get search Result Code: " +response.status);
+                            if(response.status == 200){
+                                if(response.data.api_status == "fail"){
+                                    this.devLog('response fail')
+                                    this.error_message = response.data.api_title;
+                                    this.color = "#DF2E38";
+                                    this.snackbar = true;
+                                    this.model_transaksi = false;
+                                }else{
+                                    this.devLog(response.data)
+                                    this.kos_booking_model = response.data;
+                                    if(this.kos_booking_model.length > 0){
+                                        this.devLog(this.kos_booking_model)
+                                        this.model_transaksi = true;
+                                        this.getDateAndPrice();
+                                        this.ready = true;
+                                    }else{
+                                        this.error_message = "Data Kosong";
+                                        this.color = "#DF2E38";
+                                        this.snackbar = true;
+                                    }
+                                }
                             }
-                        }
-                    }).catch((err)=>{
-                        this.devLog(err);
-                        this.error_message = err.response;
+                        }).catch((err)=>{
+                            this.devLog(err);
+                            this.error_message = err.response;
+                            this.color = "#DF2E38";
+                            this.snackbar = true;
+                            this.model_transaksi = false;
+                            this.ready = false;
+                        });    
+    
+                    }else{
+                        this.error_message = "Use minimum of 3 character as Search Keyword!";
                         this.color = "#DF2E38";
                         this.snackbar = true;
-                        this.model_transaksi = false;
-                        this.ready = false;
-                    });    
-
+                    }
                 }else{
-                    this.error_message = "Use minimum of 3 character as Search Keyword!";
-                    this.color = "#DF2E38";
-                    this.snackbar = true;
+                    this.getData();
                 }
             },
 

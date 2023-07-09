@@ -24,10 +24,11 @@ router.beforeEach((to, from, next)=>{
         localStorage.setItem('authenticated', false);
     }
 
-    if((to.name !== "Login" && to.name !== "Dashboard" && to.name !== "Register") && !isAuthenticated) next({name: "Login"});
-    if((to.name === "Login" || to.name === "Register") && isAuthenticated) next({name: "Dashboard"});
+    // if((to.name !== "Login" && to.name !== "Dashboard" && to.name !== "Register") && !isAuthenticated) next({name: "Login"});
+    if((to.path !== "/login" && to.path !== "/dashboard" && to.path !== "/dashboard/" && to.path !== "/register") && !isAuthenticated) next({name: "Login"});
+    // if((to.name === "Login" || to.name === "Register") && isAuthenticated) next({name: "Dashboard"});
+    if((to.path === "/login" || to.path === "/register") && isAuthenticated) next({name: "Dashboard"});
     else next();
-
 
 
     // }else{
@@ -65,9 +66,9 @@ Vue.mixin({
                 return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
             });
         },
-        confirm(title, message, options) {
-            return app.confirm(title, message, options);
-        },
+        // confirm(title, message, options) {
+        //     return app.confirm(title, message, options);
+        // },
         check_pengelola(){
             let param_pengelola;
 

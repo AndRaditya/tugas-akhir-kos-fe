@@ -181,6 +181,7 @@
                                     height="200"
                                     contain
                                     class="grey lighten-5"
+                                    alt="Kost Putri Jogja"
                                 ></v-img>
                             </v-card>
                             <v-flex v-if="url" mt-2>
@@ -387,11 +388,13 @@ export default {
             }else if(localStorage.userLogin){
                 this.devLog('add kamar')
                 this.ready = true;
+                this.initListKos();
             }
 
         },
 
         initListKos(){
+            this.devLog('list kos')
             this.$http.get(this.apiListKos, {headers : {
                     Authorization: localStorage.token,
                 }})
@@ -403,6 +406,7 @@ export default {
                             this.devLog('response fail')
                         }else{
                             this.listKos = response.data;
+                            this.devLog(this.listKos)
                             this.ready = true;
                         }
                     }
@@ -446,16 +450,23 @@ export default {
             this.devLog("validating");
             this.devLog(this.kamar_model.status);
             this.devLog(this.kamar_model.nama_penyewa);
-            if(this.kamar_model.status == 'Dipakai'){
-                if(this.kamar_model.nama_penyewa == '' || !this.kamar_model.nama_penyewa){
-                    this.error_message = `Nama Penyewa Harap Diisi`;
-                    this.color = "#DF2E38";
-                    this.snackbar = true;
+
+            if(this.kamar_model.kamar_photos.length > 0){
+                if(this.kamar_model.status == 'Dipakai'){
+                    if(this.kamar_model.nama_penyewa == '' || !this.kamar_model.nama_penyewa){
+                        this.error_message = `Nama Penyewa Harap Diisi`;
+                        this.color = "#DF2E38";
+                        this.snackbar = true;
+                    }else{
+                        this.validate()
+                    }
                 }else{
                     this.validate()
                 }
             }else{
-                this.validate()
+                this.error_message = `Harap unggah foto kamar`;
+                this.color = "#DF2E38";
+                this.snackbar = true;
             }
         },
 
@@ -532,11 +543,6 @@ export default {
             this.snackbarLoading_message = 'Submitting Data';
             this.color = "#19A7CE";
             this.snackbarLoading = true;
-
-            this.devLog(this.api+this.id)
-            this.devLog(JSON.stringify(this.kamar_model));
-            this.devLog(this.kamar_model);
-
             this.$http.put(this.api+this.id, this.kamar_model, {headers : {
                 Authorization: localStorage.token,
             }})

@@ -158,6 +158,10 @@ export default {
         }
     },
     created(){
+        this.snackbarLoading_message = 'Loading';
+        this.color = "#19A7CE";
+        this.snackbarLoading = true;
+
         this.initHeader();
         this.axioData();
     },
@@ -176,10 +180,6 @@ export default {
             ];
         },
         axioData(){ 
-            this.snackbarLoading_message = 'Loading';
-            this.color = "#19A7CE";
-            this.snackbarLoading = true;
-
             this.$http.get(this.api, {headers : {
                         Authorization: localStorage.token,
                     }})
@@ -207,10 +207,21 @@ export default {
                 this.ready = false;
             });
         },
+
+        parseISOString(s) {
+            var b = s.split(/\D+/);
+            return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+        },
+
         convertPrice(){
+
             this.list.datas.forEach(element => {
+                let tglMulai = new Date(element.tanggal);
+
                 element.nilai = this.formatPrice(element.nilai);
                 element.total_nilai = this.formatPrice(element.total_nilai);
+
+                element.tanggal = new Intl.DateTimeFormat(['ban', 'id'], { dateStyle: 'long', timeStyle: 'short', timeZone: 'Asia/Bangkok' }).format(tglMulai);
             });
         },
 

@@ -9,22 +9,22 @@
             </v-layout>
             <v-layout align-center justify-end class="navigation__menu-main">
               <div v-for=" (btn, index) in items" :key="index" class="menu">
-                <v-btn color="#146C94" text elevation="0" @click="checkLink(btn.link)" v-if="!btn.outline && !btn.filled && btn.title != 'Transaksi'" >{{ btn.title }}</v-btn>
-                <v-btn color="#146C94" outlined elevation="0" @click="checkLink(btn.link)" v-if="btn.outline && !btn.filled && btn.link != 'profile'" class="">{{ btn.title }}</v-btn>
+                <v-btn text elevation="0" @click="checkLink(btn.link)" v-if="!btn.outline && !btn.filled && btn.title != 'Transaksi'" class="btn--color">{{ btn.title }}</v-btn>
+                <v-btn outlined elevation="0" @click="checkLink(btn.link)" v-if="btn.outline && !btn.filled && btn.link != 'profile'" class="btn--color">{{ btn.title }}</v-btn>
                 <v-menu offset-y v-if="btn.title == 'Transaksi'">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="#146C94" class="mr-2" text elevation="0" v-bind="attrs" v-on="on">
+                    <v-btn class="mr-2 btn--color" text elevation="0" v-bind="attrs" v-on="on">
                       {{ btn.title }} <span class="material-symbols-outlined" style="color: #146C94">expand_more</span>
                     </v-btn>
                   </template>
-                  <v-layout column style="background-color: #fff">
+                  <v-layout column class="layout-color">
                     <div v-for=" (sublink, index) in btn.sublinks" :key="index">
-                      <v-btn color="#146C94" class="ma-2" text elevation="0" @click="checkLink(sublink.link)">{{ sublink.title }}</v-btn>
+                      <v-btn class="ma-2 btn--color" text elevation="0" @click="checkLink(sublink.link)">{{ sublink.title }}</v-btn>
                     </div>
                   </v-layout>
                 </v-menu>
-                <v-btn color="#146C94" outlined elevation="0" @click="checkLink(btn.link)" v-if="btn.outline && !btn.filled && btn.link == 'profile' && btn.title != 'Transaksi'" class=" mr-2">{{ btn.title }} {{ username }}</v-btn>
-                <v-btn color="#146C94" elevation="0" @click="checkLink(btn.link)" v-if="!btn.outline && btn.filled && btn.title != 'Transaksi'" class=" white--text ml-2">{{ btn.title }}</v-btn>
+                <v-btn outlined elevation="0" @click="checkLink(btn.link)" v-if="btn.outline && !btn.filled && btn.link == 'profile' && btn.title != 'Transaksi'" class=" mr-2 btn--color">{{ btn.title }} {{ username }}</v-btn>
+                <v-btn elevation="0" @click="checkLink(btn.link)" v-if="!btn.outline && btn.filled && btn.title != 'Transaksi'" class=" white--text ml-2 btn--color-keluar">{{ btn.title }}</v-btn>
               </div>
             </v-layout>
 
@@ -38,7 +38,7 @@
     </v-toolbar>
 
     <v-navigation-drawer id="app-drawer" fixed temporary v-model="drawer" right>
-      <v-toolbar color="#fff" flat id="drawer-header">
+      <v-toolbar flat id="drawer-header" color="white">
       </v-toolbar>
       <v-spacer></v-spacer>
       
@@ -96,12 +96,6 @@
         </div>
       </v-list>
     </v-navigation-drawer>
-
-    <v-snackbar v-model="snackbarLoading" :color="color" timeout="-1" bottom class="white--text"><v-progress-circular
-        indeterminate
-        color="#fff"
-    ></v-progress-circular> {{ snackbarLoading_message }}</v-snackbar>
-
   </div>
 </template>
 
@@ -195,8 +189,8 @@ export default {
         this.snackbarLoading = true;
 
         this.$http.get(this.API + '/logout', {headers : {
-                Authorization: localStorage.token,
-            }})
+              Authorization: localStorage.token,
+          }})
         .then(response => {
             this.snackbarLoading = false;
             this.devLog("logout: " +response.status);
@@ -335,5 +329,17 @@ export default {
 
   .v-application--is-ltr .v-list--dense.v-list--nav .v-list-group--no-action > .v-list-group__items > .v-list-item {
     padding: 0 8px;
+  }
+
+  .btn--color{
+    color:#146C94 !important;
+  }
+
+  .btn--color-keluar{
+    background-color:#146C94 !important;
+  }
+
+  .layout-color{
+    background-color: #fff !important;
   }
 </style>

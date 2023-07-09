@@ -3,23 +3,16 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- worker-src blob:; 
-    child-src blob: gap:; -->
-    <!-- <meta http-equiv="Content-Security-Policy" 
-    content="
-      img-src 'self' blob: data:;
-      default-src * data: 'unsafe-eval' 'unsafe-inline' blob:""> -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *;
-    img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
-    style-src  'self' 'unsafe-inline' *"> -->
     <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' http://localhost:8082/ 'unsafe-inline' 'unsafe-eval';"> -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Kost Catleya</title>
 
-    <link rel="shortcut icon" type="image/png" href="/public/favicon.ico"/>
+    <!-- <link rel="shortcut icon" type="image/png" href="/public/favicon.ico"/> -->
+    <link rel="shortcut icon" href="#">
+    <link rel="apple-touch-icon" href="/public/img/icons/apple-touch-icon.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materftialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +23,16 @@
     rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6H7NZ78X7">
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W6H7NZ78X7');
+    </script>
     
   </head>
   

@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <nav-bar></nav-bar>
-    <router-view class="router-view" align-center></router-view>
+    <!-- <v-lazy> -->
+      <router-view class="router-view" align-center></router-view>
+    <!-- </v-lazy> -->
     <notif-firebase></notif-firebase>
   </v-app>
 </template>

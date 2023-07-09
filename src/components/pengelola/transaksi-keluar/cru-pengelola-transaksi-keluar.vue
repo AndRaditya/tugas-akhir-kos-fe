@@ -127,6 +127,9 @@ export default {
             requiredRule: [
                 v => !!v || 'This is required',
             ],
+
+            temp_tanggal: '',
+
         }
     },
     created(){
@@ -195,6 +198,11 @@ export default {
                                     this.transaksi_keluar_model = response.data.data[0];
                                     this.devLog(this.transaksi_keluar_model)
                                     this.ready = true
+                                    this.temp_tanggal = this.transaksi_keluar_model.tanggal;
+
+                                    let tglMulai = new Date(this.transaksi_keluar_model.tanggal);
+
+                                    this.transaksi_keluar_model.tanggal = new Intl.DateTimeFormat(['ban', 'id'], { dateStyle: 'long', timeStyle: 'short', timeZone: 'Asia/Bangkok' }).format(tglMulai);
                                 }
                             }
                         }).catch((err)=>{
@@ -341,8 +349,10 @@ export default {
             this.devLog(JSON.stringify(this.transaksi_keluar_model));
             this.devLog(this.transaksi_keluar_model);
 
+            this.transaksi_keluar_model.tanggal = this.temp_tanggal;
+
             this.$http.put(this.api+this.id, this.transaksi_keluar_model, {headers : {
-                Authorization: localStorage.token,
+                Authorization: localStorage,
             }})
             .then(response => {
                 this.devLog("update kos: " +response.status);

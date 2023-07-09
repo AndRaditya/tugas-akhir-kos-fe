@@ -69,7 +69,7 @@
             <div class="transaksi-unduh__child-3">
                 <div class="transaksi-unduh__tanggal">
                     <div class="transaksi-unduh__tanggal--child-1">
-                        <p class="bigger--regular-text__medium">Transaksi Keluar</p>
+                        <p class="bigger--regular-text__medium paragraph">Transaksi Keluar</p>
                     </div>
                     <div class="transaksi-unduh__tanggal--child-2">
                         <v-menu
@@ -131,7 +131,7 @@
             <div class="transaksi-unduh__child-4">
                 <div class="transaksi-unduh__tanggal">
                     <div class="transaksi-unduh__tanggal--child-1">
-                        <p class="bigger--regular-text__medium  pb-2">Semua Transaksi</p>
+                        <p class="bigger--regular-text__medium paragraph">Semua Transaksi</p>
                     </div>
                     <div class="transaksi-unduh__tanggal--child-2">
                         <v-menu
@@ -190,6 +190,68 @@
                     </div>
                 </div>
             </div>
+            <div class="transaksi-unduh__child-5">
+                <div class="transaksi-unduh__tanggal">
+                    <div class="transaksi-unduh__tanggal--child-1">
+                        <p class="bigger--regular-text__medium paragraph">Laporan Harian Semua Transaksi</p>
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-2">
+                        <v-menu
+                            ref="dialogTrsLaporan"
+                            v-model="menu_trs_laporan_mulai"
+                            :return-value.sync="transaksi_laporan_mulai"
+                            :close-on-content-click="false"
+                            elevation="0"
+                            min-width="0%"
+                        >
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                    v-model="transaksi_laporan_mulai"
+                                    label="Tanggal Mulai"
+                                    append-icon="event"
+                                    readonly
+                                    v-on="on"
+                                    outlined
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="transaksi_laporan_mulai" scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu_trs_laporan_mulai = false">Cancel</v-btn>
+                                <v-btn text color="primary" @click="$refs.dialogTrsLaporan.save(transaksi_laporan_mulai)">OK</v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-3">
+                        <v-menu
+                            ref="dialogTrsLaporan2"
+                            v-model="menu_trs_laporan_selesai"
+                            :return-value.sync="transaksi_laporan_selesai"
+                            :close-on-content-click="false"
+                            elevation="0"
+                            min-width="0%"
+                        >
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                    v-model="transaksi_laporan_selesai"
+                                    label="Tanggal Selesai"
+                                    append-icon="event"
+                                    readonly
+                                    v-on="on"
+                                    outlined
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="transaksi_laporan_selesai" scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="menu_trs_laporan_selesai = false">Cancel</v-btn>
+                                <v-btn text color="primary" @click="$refs.dialogTrsLaporan2.save(transaksi_laporan_selesai)">OK</v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </div>
+                    <div class="transaksi-unduh__tanggal--child-4">
+                        <v-btn elevation="0" class="white--text btn__unduh transaksi-unduh__tanggal--child-4__btn" @click="confirmExport('transaksi_laporan')">Unduh</v-btn>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
@@ -235,9 +297,15 @@ export default {
             transaksi_semua_selesai: new Date().toISOString().substr(0, 10),
             menu_trs_semua_selesai: false,
 
+            transaksi_laporan_mulai: new Date().toISOString().substr(0, 10),
+            menu_trs_laporan_mulai: false,
+            transaksi_laporan_selesai: new Date().toISOString().substr(0, 10),
+            menu_trs_laporan_selesai: false,
+
             transaksi_masuk_model:{},
             transaksi_keluar_model:{},
             transaksi_semua_model:{},
+            transaksi_laporan_model:{},
 
         }
     },
@@ -268,6 +336,11 @@ export default {
                 tanggal_mulai : '',
                 tanggal_selesai : '',
             }
+
+            this.transaksi_laporan_model = {
+                tanggal_mulai : '',
+                tanggal_selesai : '',
+            }
         },
 
         confirmExport(exporter){
@@ -286,6 +359,11 @@ export default {
                 this.transaksi_semua_model.tanggal_selesai = this.transaksi_semua_selesai;
 
                 this.exportData(this.transaksi_semua_model, 'transaksi-semua', 'Semua Transaksi')
+            }else if(exporter == 'transaksi_laporan'){
+                this.transaksi_laporan_model.tanggal_mulai = this.transaksi_laporan_mulai;
+                this.transaksi_laporan_model.tanggal_selesai = this.transaksi_laporan_selesai;
+
+                this.exportData(this.transaksi_laporan_model, 'transaksi-report', 'Laporan Harian Semua Transaksi')
             }
         },
 
@@ -294,33 +372,21 @@ export default {
             this.color = "#19A7CE";
             this.snackbarLoading = true;
 
-            this.devLog(JSON.stringify(model));
             let tanggal_mulai = model.tanggal_mulai
             let tanggal_selesai = model.tanggal_selesai
-            this.devLog(this.apiExport+url+'?tanggal_mulai='+tanggal_mulai+'&tanggal_selesai='+tanggal_selesai);
-
             let axioUrl = this.apiExport+url+'?tanggal_mulai='+tanggal_mulai+'&tanggal_selesai='+tanggal_selesai;
-
             this.$http.get(axioUrl, {responseType: 'arraybuffer'})
             .then((response) => {
                 this.devLog(response);
                 this.devLog("unduh trs result code: " + response.status);
                 if(response.status == 200){
                     this.snackbarLoading = false;
-                    if(!response.data){
-                        this.devLog('response fail')
-                        this.error_message = response;
-                        this.color = "#DF2E38";
-                        this.snackbar = true;
-                        
-                    }else{
-                        let blob = new Blob([response.data], { type: 'application/pdf' });
-                        let link = document.createElement('a');
-                        link.href = window.URL.createObjectURL(blob);
-                        link.download = filename+'.pdf';
-                        link.click();
-                    }
-                }
+                    let blob = new Blob([response.data], { type: 'application/pdf' });
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = filename+'.pdf';
+                    link.click();
+                            }
             }).catch((err)=>{
                 this.snackbarLoading = false;
                 if(!err.response){

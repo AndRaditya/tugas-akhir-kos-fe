@@ -181,3 +181,23 @@ li{
 .v-menu__content{
     text-align: left !important;
 }
+
+.vueperslides__arrow,
+.vueperslides__arrow--next svg,
+.vueperslides__arrow--prev svg{
+    color: #fff !important;
+}
+
+.vueperslides__bullet{
+    color: #fff !important;
+}
+
+.vueperslide__content {
+    text-align: center;
+    position: absolute;
+    top: 100%;
+    margin-top: 0.5em;
+    left: 0;
+    right: 0;
+    z-index: 2;
+  }

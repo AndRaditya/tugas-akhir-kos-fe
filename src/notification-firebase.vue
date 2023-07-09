@@ -28,7 +28,38 @@ onMessage(messaging, (payload) => {
   if ( process.env.NODE_ENV == 'development' ) {
       console.log('Message received. ', payload);
   }
+
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+      body: payload.notification.body,
+      icon: payload.notification.icon,        
+  };
+
+  if (!("Notification" in window)) {
+      console.log("This browser does not support system notifications");
+  }
+  // Let's check whether notification permissions have already been granted
+  else if (Notification.permission === "granted") {
+      // If it's okay let's create a notification
+      var notification = new Notification(notificationTitle,notificationOptions);
+      notification.onclick = function(event) {
+          event.preventDefault(); // prevent the browser from focusing the Notification's tab
+          window.open(payload.notification.click_action , '_blank');
+          notification.close();
+      }
+  }
+
+  navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(registration => {
+      registration.showNotification(
+          payload.notification.title,
+          payload.notification
+      )
+  });
 });
+
+// messaging.onMessage(function(payload) {
+//   local_registration.active.postMessage(payload);
+// });
 
 getToken(messaging, { vapidKey: 'BP2GadiKl-yWOQDE0KnPwt9clvNWwEd9YEtFh_gm32VYqlqgToyfZ1SBoZKw-geyen17oyZhkZRSqEXK2QiLi5M' }).then((currentToken) => {
   if (currentToken) {

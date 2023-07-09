@@ -371,6 +371,7 @@
 }
 
 #drawer-header {
+  color: #fff !important;
   background: url("../src/assets/Frame1.png");
   background-repeat: no-repeat;
   background-size: 12vw;
@@ -575,6 +576,26 @@ li {
 
 .v-menu__content {
   text-align: left !important;
+}
+
+.vueperslides__arrow,
+.vueperslides__arrow--next svg,
+.vueperslides__arrow--prev svg {
+  color: #fff !important;
+}
+
+.vueperslides__bullet {
+  color: #fff !important;
+}
+
+.vueperslide__content {
+  text-align: center;
+  position: absolute;
+  top: 100%;
+  margin-top: 0.5em;
+  left: 0;
+  right: 0;
+  z-index: 2;
 }
 
 .image__grid, .image__grid-child-5, .image__grid-child-4, .image__grid-child-3, .image__grid-child-2 {
@@ -1131,7 +1152,12 @@ li {
   grid-row-gap: 0px;
   margin-bottom: 2.4rem;
 }
-@media only screen and (max-width: 80em) {
+@media only screen and (max-width: 100em) {
+  .login__grid {
+    grid-template-columns: 0.5fr 0.75fr 0.5fr;
+  }
+}
+@media only screen and (max-width: 68.75em) {
   .login__grid {
     grid-template-columns: 0.5fr 1fr 0.5fr;
   }
@@ -1154,7 +1180,7 @@ li {
 .login__grid-card {
   grid-area: 1/3/3/4;
 }
-@media only screen and (max-width: 80em) {
+@media only screen and (max-width: 100em) {
   .login__grid-card {
     grid-area: 1/2/3/3;
   }
@@ -1225,6 +1251,11 @@ li {
   grid-column-gap: 0;
   grid-row-gap: 0;
 }
+@media only screen and (max-width: 100em) {
+  .user-profile__grid {
+    grid-template-columns: 0.75fr 1fr 0.75fr;
+  }
+}
 @media only screen and (max-width: 80em) {
   .user-profile__grid {
     grid-template-columns: 0.5fr 1fr 0.5fr;
@@ -1256,9 +1287,19 @@ li {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+@media only screen and (max-width: 100em) {
+  .cust-transaksi__header {
+    grid-template-columns: 1fr 0.25fr 1fr;
+  }
+}
 @media only screen and (max-width: 80em) {
   .cust-transaksi__header {
     grid-template-columns: 1fr 1fr;
+  }
+}
+@media only screen and (max-width: 68.75em) {
+  .cust-transaksi__header {
+    grid-template-columns: 0.75fr 1fr;
   }
 }
 @media only screen and (max-width: 56.25em) {
@@ -1691,6 +1732,11 @@ li {
     grid-area: 1/1/2/5;
   }
 }
+@media only screen and (max-width: 25em) {
+  .cust-rincian-pesanan__pricing--child-1 {
+    grid-column-gap: 8px;
+  }
+}
 .cust-rincian-pesanan__pricing--child-1--template, .cust-rincian-pesanan__pricing--child-1__title-4, .cust-rincian-pesanan__pricing--child-1__title-3, .cust-rincian-pesanan__pricing--child-1__title-2, .cust-rincian-pesanan__pricing--child-1__title-1 {
   display: grid;
   align-items: flex-start;
@@ -2049,12 +2095,17 @@ li {
 .cust-rincian-pesanan .btn-transfer {
   width: 35%;
 }
-@media only screen and (max-width: 68.75em) {
+@media only screen and (max-width: 100em) {
   .cust-rincian-pesanan .btn-transfer {
     width: 50%;
   }
 }
-@media only screen and (max-width: 37.5em) {
+@media only screen and (max-width: 68.75em) {
+  .cust-rincian-pesanan .btn-transfer {
+    width: 60%;
+  }
+}
+@media only screen and (max-width: 56.25em) {
   .cust-rincian-pesanan .btn-transfer {
     width: 100%;
   }
@@ -2631,9 +2682,19 @@ li {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+@media only screen and (max-width: 100em) {
+  .pengelola-pesanan__header {
+    grid-template-columns: 1fr 0.25fr 1fr;
+  }
+}
 @media only screen and (max-width: 80em) {
   .pengelola-pesanan__header {
     grid-template-columns: 1fr 1fr;
+  }
+}
+@media only screen and (max-width: 68.75em) {
+  .pengelola-pesanan__header {
+    grid-template-columns: 0.75fr 1fr;
   }
 }
 @media only screen and (max-width: 56.25em) {
@@ -3334,7 +3395,7 @@ li {
 .transaksi-unduh__grid {
   display: grid;
   grid-template-columns: 1fr 0.5fr;
-  grid-template-rows: auto repeat(3, 1fr);
+  grid-template-rows: auto repeat(4, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
@@ -3364,6 +3425,9 @@ li {
 .transaksi-unduh__child-4 {
   grid-area: 4/1/5/2;
 }
+.transaksi-unduh__child-5 {
+  grid-area: 5/1/6/2;
+}
 .transaksi-unduh__tanggal {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -3378,10 +3442,11 @@ li {
   }
 }
 .transaksi-unduh__tanggal--child-1 {
-  grid-area: 1/1/2/2;
+  grid-area: 1/1/2/3;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  text-align: left;
 }
 @media only screen and (max-width: 31.25em) {
   .transaksi-unduh__tanggal--child-1 {

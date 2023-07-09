@@ -16,6 +16,7 @@
                                 label="Masukkan Tipe Kos"
                                 v-model="kos_model.tipe"
                                 :items="tipe_kos"
+                                :rules="[(v) => !!v || 'Item is required']"
                             ></v-select>
                             <v-layout column align-start>
                                 <p class="regular-text__medium">Ukuran Kamar</p>
@@ -24,6 +25,7 @@
                                 outlined
                                 label="Masukkan Ukuran Kamar"
                                 v-model="ukuran_kamar"
+                                :rules="requiredRule"
                             ></v-text-field>
                             <div class="pengelola-kos__grid-2__form-1__listrik">
                                 <div class="pengelola-kos__grid-2__form-1__listrik--child-1">
@@ -58,6 +60,7 @@
                                 multiple
                                 chips
                                 :items="kos_fasilitas_items"
+                                :rules="[(v) => !!v || 'Item is required']"
                             ></v-select>
                             <v-layout column align-start class="mt-4">
                                 <p class="regular-text__medium">Deskripsi Kos</p>
@@ -66,6 +69,7 @@
                                 outlined
                                 label="Masukkan Deskripsi Kos"
                                 v-model="kos_model.deskripsi"
+                                :rules="requiredRule"
                             ></v-textarea>
                             <v-layout column align-start>
                                 <p class="regular-text__medium">Peraturan Kos</p>
@@ -74,6 +78,7 @@
                                 outlined
                                 label="Masukkan Peraturan Kos"
                                 v-model="kos_model.peraturan"
+                                :rules="requiredRule"
                             ></v-textarea>
                         </div>
                         <div class="pengelola-kos__grid-2__form-2">
@@ -174,6 +179,7 @@
                                     height="200"
                                     contain
                                     class="grey lighten-5"
+                                    alt="Kost Putri Jogja"
                                 ></v-img>
                             </v-card>
                             <v-flex v-if="url" mt-2>
@@ -263,6 +269,16 @@ export default {
             ukuran_kamar: '',
             kamar_spesifikasi_temp: [],
 
+            requiredRule: [
+                v => !!v || 'This is required',
+            ],
+            requiredRule2: [
+                v => v.length>0|| 'This is required',
+            ],
+
+            rules:  [v => Boolean(Object.keys(v || {})[0]) || "Field is required"]
+            ,
+
             maxSize: 1024,
             errorDialog: null,
             errorText: "",
@@ -311,16 +327,22 @@ export default {
         },
 
         validateForm () {
-                this.devLog('valid')
-                this.devLog("validating");
-                this.valid = (this.$refs.form_data_kos).validate();
-                this.devLog(this.valid);
+            this.devLog('valid')
+            this.devLog("validating");
+            this.valid = (this.$refs.form_data_kos).validate();
+            this.devLog(this.valid);
 
+            if(this.kos_model.kos_fasilitas.length > 0 && this.kos_model.kos_photos.length > 0){
                 if (this.valid == true) {
                     this.submitForm();
                 }else{
                     window.scrollTo(0,0);
                 }
+            }else{
+                this.error_message = "Terdapat Data Kosong";
+                this.color = "#DF2E38";
+                this.snackbar = true;
+            }
         },
 
         initAxio(){

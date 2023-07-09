@@ -21,29 +21,35 @@
                                 <p class="regular-text__thin">Nama Lengkap</p>
                             </v-layout>
                             <v-text-field
-                                outlined
-                                label="Masukkan Nama Lengkap"
-                                v-model="model.name"
-                                :rules="[rules.required]"
+                                    outlined
+                                    label="Masukkan Nama Lengkap"
+                                    v-model="model.name"
+                                    :rules="[rules.required]"
                                 ></v-text-field>
                                 <v-layout column align-start>
                                     <p class="regular-text__thin">Nomor Telepon</p>
                                 </v-layout>
                                 <v-text-field
-                                outlined
-                                label="Masukkan Nomor Telepon"
-                                v-model="model.phone_number"
-                                :rules="[rules.required]"
+                                    outlined
+                                    label="Masukkan Nomor"
+                                    v-model="model.phone_number"
+                                    :rules="phone_number_rules"
+                                    @input="checkPhoneNumber()"
+                                    :success="phone_number_ok==1 ? true : false"
+                                    :error="phone_number_ok==-1 ? true : false"
                                 ></v-text-field>
                                 <v-layout column align-start>
                                     <p class="regular-text__thin">Email</p>
                                 </v-layout>
                                 <v-text-field
-                                outlined
-                                label="Masukkan Email"
-                                v-model="model.email"
-                                type="email"
-                                :rules="[rules.required]"
+                                    outlined
+                                    label="Masukkan Email"
+                                    v-model="model.email"
+                                    :rules="email_rules"
+                                    @input="checkEmail()"
+                                    :success="email_ok==1 ? true : false"
+                                    :error="email_ok==-1 ? true : false"
+                                    type="email"
                                 ></v-text-field>
                                 <v-layout column align-start>
                                     <p class="regular-text__thin">Password</p>
@@ -53,7 +59,7 @@
                                 label="Masukkan Password"
                                 v-model="model.password"
                                 :append-icon="model.show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                :rules="[rules.required]"
+                                :rules="pass.rule"
                                 :type="model.show1 ? 'text' : 'password'"
                                 @click:append="model.show1 = !model.show1"
                                 >
@@ -108,9 +114,28 @@
                 
                 user:[],
                 rules: {
-                    required: value => !!value || 'Required.',
-                    min: v => v.length >= 8 || 'Min 8 characters',
+                    required: value => !!value || 'Harus Diisi',
+                    min: v => v.length >= 8 || 'Minimal 8 karakter',
                 },
+                pass: {
+                    visible: false,
+                    ok: 0,
+                    rule: [
+                        v => (v != "") || 'Password tidak boleh kosong!',
+                        v => (v.length >= 5) || 'Password tidak boleh kurang dari 5 karakter',
+                    ],
+                },
+                email_rules: [
+                    v => !!v || "Harus Diisi",
+                    v => /^[^@]+@\w+(\.\w+)+\w$/.test(v) || 'E-mail harus benar'
+                ],
+                email_ok: 0,
+                phone_number_rules: [
+                    v => !!v || "Harus Diisi",
+                    // v => (v.length <= 9 || v.length > 11) || 'Phone Number between 10 - 13', 
+                    v => /^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/.test(v) || 'Nomor Telepon harus benar',
+                ],
+                phone_number_ok: 0,
             }
         },
         created(){
@@ -136,14 +161,30 @@
                     phone_number: '',
                 }
             },
+            checkEmail() {
+                if(	/^[^@]+@\w+(\.\w+)+\w$/.test(this.model.email) && this.model.email.length > 0){
+                    this.email_ok = 1;
+                }else{
+                    this.email_ok = -1;
+                }
+            },
+            checkPhoneNumber(){
+                if(	/^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/.test(this.model.phone_number) && this.model.phone_number.length > 0){
+                    this.phone_number_ok = 1;
+                }else{
+                    this.phone_number_ok = -1;
+                }
+            },
             validateForm () {
                 this.devLog('valid')
                 this.devLog("validating");
                 // this.devLog(this.valid);
                 this.valid = (this.$refs.form_register).validate();
                 this.devLog(this.valid);
+                this.checkEmail();
+                this.checkPhoneNumber();
 
-                if (this.valid == true) {
+                if (this.valid == true && this.email_ok == 1 && this.phone_number_ok == 1) {
                     this.submitForm();
                 }else{
                     window.scrollTo(0,0);
@@ -174,9 +215,9 @@
                             this.color = "#519259";
                             this.snackbar = true;
 
-                            // this.$router
-                            //     .push({ path: '/dashboard' })
-                            //     .then(() => { this.$router.go() })
+                            this.$router
+                                .push({ path: '/login' })
+                                .then(() => { this.$router.go() })
                             // this.$router.push('/dashboard');
                         }
                     }

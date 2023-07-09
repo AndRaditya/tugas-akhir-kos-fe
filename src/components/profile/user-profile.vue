@@ -18,6 +18,7 @@
                                     outlined
                                     label="Masukkan Nama Lengkap"
                                     v-model="user.name"
+                                    :rules="rules"
                                 ></v-text-field>
                                 <v-layout column align-start>
                                     <p class="regular-text__medium">Nomor Telepon</p>
@@ -26,6 +27,10 @@
                                     outlined
                                     label="Masukkan Nomor Telepon"
                                     v-model="user.phone_number"
+                                    :rules="phone_number_rules"
+                                    @input="checkPhoneNumber()"
+                                    :success="phone_number_ok==1 ? true : false"
+                                    :error="phone_number_ok==-1 ? true : false"
                                 ></v-text-field>
                                 <v-layout column align-start>
                                     <p class="regular-text__medium">Email</p>
@@ -34,23 +39,23 @@
                                     outlined
                                     label="Masukkan Email"
                                     v-model="user.email"
+                                    :rules="email_rules"
+                                    @input="checkEmail()"
+                                    :success="email_ok==1 ? true : false"
+                                    :error="email_ok==-1 ? true : false"
                                     type="email"
                                 ></v-text-field>
-
                                 <v-layout column v-if="this.param_pengelola">
                                     <v-layout column align-start>
                                         <p class="regular-text__medium">Nama Bank</p>
                                     </v-layout>
-                                    <!-- <v-text-field
-                                        outlined
-                                        label="Masukkan Bank"
-                                        v-model="user.bank"
-                                    ></v-text-field> -->
                                     <v-select
                                         outlined
                                         label="Masukkan Bank"
                                         v-model="user.bank"
                                         :items="nama_bank"
+                                                                            :rules="rules"
+
                                     ></v-select>
                                     <v-layout column align-start>
                                         <p class="regular-text__medium">Nomor Rekening</p>
@@ -59,6 +64,10 @@
                                         outlined
                                         label="Masukkan Nomor Rekening"
                                         v-model="user.rekening"
+                                        type="number"
+                                        hide-spin-buttons
+                                                                            :rules="rules"
+
                                     ></v-text-field>
                                 </v-layout>
 
@@ -67,11 +76,6 @@
                                     <v-layout column align-start>
                                         <p class="regular-text__medium">Password Lama</p>
                                     </v-layout>
-                                    <!-- v-model="user.password"
-                                    :append-icon="model.show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                    :rules="[rules.required]"
-                                    :type="model.show1 ? 'text' : 'password'"
-                                    @click:append="model.show1 = !model.show1" -->
                                     <v-text-field
                                         outlined
                                         label="Masukkan Password Lama"
@@ -186,9 +190,25 @@
                 },
                 param_pengelola: false,
 
+                rules: [
+                    v => !!v || "Harus Diisi",
+                ],
+                email_rules: [
+                    v => !!v || "Harus Diisi",
+                    v => /^[^@]+@\w+(\.\w+)+\w$/.test(v) || 'E-mail must be valid'
+                ],
+                email_ok: 0,
+                
+                phone_number_rules: [
+                    v => !!v || "Harus Diisi",
+                    // v => (v.length <= 9 || v.length > 11) || 'Phone Number between 10 - 13', 
+                    v => /^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/.test(v) || 'Phone Number must be valid',
+                ],
+                phone_number_ok: 0,
+
                 
                 // rules: {
-                //     required: value => !!value || 'Required.',
+                //     required: value => !!value || 'Harus Diisi',
                 //     min: v => v.length >= 8 || 'Min 8 characters',
                 // },
                 pass: {old: passField(), new: passField(), retype: passField()},
@@ -207,7 +227,7 @@
             ];
             this.pass.new.rule= [
                 v => (this.pass.old.value == "" || v != "") || 'Password is required',
-                // v => (v == "" ||  v.length >= 6) || 'Password must not be less than 6 characters',
+                v => (v == "" ||  v.length >= 5) || 'Password must not be less than 5 characters',
             ],
             this.pass.retype.rule = Array.from(this.pass.new.rule);
             this.pass.retype.rule.push(
@@ -217,6 +237,20 @@
             this.initData();
         },
         methods:{
+            checkEmail() {
+                if(	/^[^@]+@\w+(\.\w+)+\w$/.test(this.user.email) && this.user.email.length > 0){
+                    this.email_ok = 1;
+                }else{
+                    this.email_ok = -1;
+                }
+            },
+            checkPhoneNumber(){
+                if(	/^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/.test(this.user.phone_number) && this.user.phone_number.length > 0){
+                    this.phone_number_ok = 1;
+                }else{
+                    this.phone_number_ok = -1;
+                }
+            },
             initData(){
                 // this.initModel();
                 this.devLog('init data');
@@ -278,17 +312,22 @@
                 // this.devLog(this.valid);
                 this.valid = (this.$refs.form_profile).validate();
                 this.devLog(this.valid);
+                
+                this.checkEmail();
+                this.checkPhoneNumber();
 
-                if (this.valid == true) {
+                this.devLog(this.email_ok)
+                this.devLog(this.phone_number_ok)
+
+                if (this.valid == true && this.email_ok == 1 && this.phone_number_ok == 1) {
                     this.submitForm();
                 }else{
                     window.scrollTo(0,0);
+                    this.snackbarLoading = false;
                 }
             },
 
             submitForm(){
-                this.devLog(this.model)
-
                 if((this.pass.old.value == "" && this.pass.old.ok !=-1) || (this.pass.new.ok == 1 && this.pass.old.ok == 1)){
                     if(this.pass.old.ok == 1){
                         this.user.oldPassword = this.pass.old.value;
@@ -300,39 +339,25 @@
                 }else{
                     alert("Please fill required data first!");
                 }
-                
             },
 
             putPassword(){
-                this.devLog("Updating User Password: put to "+ this.API+'/users/'+this.user.id);
-                this.devLog(JSON.stringify(this.user));
                 this.$http.put(this.apiPassword, this.user, {
                     headers: {
                         Authorization: localStorage.token,
                     }})
                     .then(response => {
                         this.snackbarLoading = false;
-                        this.devLog("Loading "+ this.api + " - Result Status: " + JSON.stringify(response));
-                        
-                        // if(!response.data){
-                            this.devLog('!response data')
-                            if(response.data.api_status == "fail"){
-                                this.devLog('error password')
-                                // this.devLog(JSON.stringify(err));
-                                this.error_message = response.data.message;
-                                this.color = "#DF2E38";
-                                this.snackbar = true;
-
-                                this.user.not_found = false;
-                                this.devLog("user now: " + JSON.stringify(this.user));
-                            }else{
-                                this.putData();
-                            }
-                        // }
+                        if(response.data.api_status == "fail"){
+                            this.error_message = response.data.message;
+                            this.color = "#DF2E38";
+                            this.snackbar = true;
+                            this.user.not_found = false;
+                        }else{
+                            this.putData();
+                        }
                     }).catch((err) => {
                         this.snackbarLoading = false;
-                        this.devLog('error password')
-                        this.devLog(JSON.stringify(err));
                         this.error_message = err.response.data.message;
                         this.color = "#DF2E38";
                         this.snackbar = true;
@@ -341,37 +366,22 @@
 
                 /// For updating user data
             putData() {
-                // this.devLog("Updating User : put to "+ this.API+this.id);
-                this.devLog("User : ");
-                this.devLog(this.user);
                 this.$http.put(this.api+this.user.id, this.user,  {headers: {
                     Authorization: localStorage.token,},
                 })
                 .then(response => {
-                    this.devLog(response.status);
                     this.load = false;
                     if(response.status == 202){
                         this.snackbarLoading = false;
-                        this.devLog("Loading "+ this.API + " - Result Status: " +response.status);
-                        this.devLog(response.data);
                         var me = JSON.parse(localStorage.userLogin);
-                        this.devLog(`Me ID : ${me.id} vs User ID : ${this.user.id}`);
                         if(me.id == this.user.id){
-                            this.devLog('me id === user id')
                             this.error_message = 'Profile updated!';
                             this.color = "#519259";
                             this.snackbar = true;
-                            // this.updateUserLogin(this.user.id);
-                        } 
-                        // this.$router
-                        //     .push({ path: '/dashboard' })
-                        //     .then(() => { this.$router.go() })
-                        // this.$router.replace(next);
-                        
+                        }   
                     }
                 }).catch((err) => {                   
                     this.snackbarLoading = false;
-                    this.devLog(JSON.stringify(err))
                     this.error_message = err.response.data.message;
                     this.color = "#DF2E38";
                     this.snackbar = true;

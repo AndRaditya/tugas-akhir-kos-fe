@@ -144,19 +144,19 @@
                 show1: false,
                 param_pengelola: false,
                 rules: {
-                    required: value => !!value || 'Required.'
+                    required: value => !!value || 'Harus diisi'
                 },
                 pass: {
                     visible: false,
                     ok: 0,
                     rule: [
-                        v => (v != "") || 'Password must not be empty!',
-                        v => (v.length >= 5) || 'Password must not be less than 5 characters!',
+                        v => (v != "") || 'Password tidak boleh kosong',
+                        v => (v.length >= 5) || 'Password tidak boleh kurang dari 5 karakter',
                     ],
                 },
                 email_rules: [
-                    v => !!v || "Field is required",
-                    v => /^[^@]+@\w+(\.\w+)+\w$/.test(v) || 'E-mail must be valid'
+                    v => !!v || "Harus diisi",
+                    v => /^[^@]+@\w+(\.\w+)+\w$/.test(v) || 'E-mail harus benar'
                 ],
                 email_ok: 0,
 
@@ -227,7 +227,7 @@
                             this.snackbar = true;
                         }else{
                             this.user = response.data.data[0];
-                            localStorage.token= response.data.api_message;
+                            localStorage.token = response.data.api_message;
                             this.devLog("Token: "+ localStorage.token);
                             this.devLog("Login Result Status: " +response.data.api_status);
                             localStorage.userLogin = JSON.stringify(this.user);
@@ -252,7 +252,7 @@
                     }
                 }).catch((err)=>{
                     this.snackbarLoading = false;
-                    this.error_message = err.response.data.message;
+                    this.error_message = err.response.data;
                     this.color = "#DF2E38";
                     this.snackbar = true;
                 });
@@ -287,7 +287,7 @@
                     }
                 }).catch((err)=>{
                     this.snackbarLoading = false;
-                    this.error_message = err.response.data.message;
+                    this.error_message = err.response.data;
                     this.color = "#DF2E38";
                     this.snackbar = true;
                 });

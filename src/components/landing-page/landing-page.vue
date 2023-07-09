@@ -8,6 +8,7 @@
                     :image="slide.image"
                     :title="slide.title"
                     :link="slide.link"
+                    :style="'color: '+['#fff']"
                     :content="slide.content" />
             </vueper-slides>
         </v-flex>
@@ -21,23 +22,22 @@
                     data-aos="fade-zoom-ing"
                     data-aos-offset="200"
                     data-aos-delay="50"
-                    data-aos-duration="500"
+                    data-aos-duration="250"
                     data-aos-easing="ease-in-back"
                     data-aos-mirror="false"
                     data-aos-once="true"
                     data-aos-anchor-placement="top-center">
                 <v-layout align-center justify-center wrap>
-                    <div class="image__grid-parent"                                 
-                            >
-                        <div class="image__grid-child-1" :style="{backgroundImage: `url(${urls_kos[0]})`}"> 
+                    <div class="image__grid-parent">
+                        <div class="image__grid-child-1" v-bind:style="{backgroundImage: `url(${urls_kos[0]})`}"> 
                         </div>
-                        <div class="image__grid-child-2" :style="{backgroundImage: `url(${urls_kos[1]})`}">
+                        <div class="image__grid-child-2" v-bind:style="{backgroundImage: `url(${urls_kos[1]})`}">
                         </div>
-                        <div class="image__grid-child-3" :style="{backgroundImage: `url(${urls_kos[2]})`}">
+                        <div class="image__grid-child-3" v-bind:style="{backgroundImage: `url(${urls_kos[2]})`}">
                         </div>
-                        <div class="image__grid-child-4" :style="{backgroundImage: `url(${urls_kos[3]})`}">
+                        <div class="image__grid-child-4" v-bind:style="{backgroundImage: `url(${urls_kos[3]})`}">
                         </div>
-                        <div class="image__grid-child-5" :style="{backgroundImage: `url(${urls_kos[4]})`}"> 
+                        <div class="image__grid-child-5" v-bind:style="{backgroundImage: `url(${urls_kos[4]})`}"> 
                         </div>
                     </div>
                 </v-layout>
@@ -58,7 +58,7 @@
                 data-aos="fade-zoom-ing"
                 data-aos-offset="50"
                 data-aos-delay="50"
-                data-aos-duration="500"
+                data-aos-duration="250"
                 data-aos-easing="ease-in-back"
                 data-aos-mirror="false"
                 data-aos-once="true"
@@ -156,7 +156,7 @@
                 data-aos="fade-zoom-ing"
                 data-aos-offset="10"
                 data-aos-delay="50"
-                data-aos-duration="500"
+                data-aos-duration="250"
                 data-aos-easing="ease-in-back"
                 data-aos-mirror="false"
                 data-aos-once="true"
@@ -167,11 +167,11 @@
                         <div class="landing-booking__grid-child-1__parent">
                             <div class="landing-booking__grid-child-1--child-1">
                                 <div class="landing-booking__grid__foto-kamar__parent">
-                                    <div class="landing-booking__grid__foto-kamar--child-1" :style="{backgroundImage: `url(${urls_kamar[0]})`}">
+                                    <div class="landing-booking__grid__foto-kamar--child-1" v-bind:style="{backgroundImage: `url(${urls_kamar[0]})`}">
                                     </div>
-                                    <div class="landing-booking__grid__foto-kamar--child-2" :style="{backgroundImage: `url(${urls_kamar[1]})`}">
+                                    <div class="landing-booking__grid__foto-kamar--child-2" v-bind:style="{backgroundImage: `url(${urls_kamar[1]})`}">
                                     </div>
-                                    <div class="landing-booking__grid__foto-kamar--child-3" :style="{backgroundImage: `url(${urls_kamar[2]})`}">
+                                    <div class="landing-booking__grid__foto-kamar--child-3" v-bind:style="{backgroundImage: `url(${urls_kamar[2]})`}">
                                     </div>
                                     <div class="landing-booking__grid__foto-kamar--child-4">
                                         <p class="regular-text__bold btn__daftar-anchor" style="cursor: pointer; text-align: left" @click="imageDialogKamar = true">Lihat foto kamar lebih lanjut</p>
@@ -287,10 +287,12 @@
                                                         :rules="kamar_rules"
                                                         :disabled="!status_kamar_terisi"
                                                     ></v-text-field>
-                                                    <v-layout row class="pb-6">
-                                                        <p style="color:#146C94" class="title__main">Rp{{ harga_kamar }}</p>&nbsp;<p class="regular-text bulan-text">/bulan</p>
+                                                    <v-layout v-if="harga_kamar != '1.600.000'">
+                                                        <p class="regular-text bulan-text">Total Harga &nbsp;</p>
                                                     </v-layout>
-                                                    <!-- <v-btn color="#146C94" type="submit" elevation="0" class="button__lihat-foto white--text" width="100%" v-if="status_kamar_terisi">Pesan Sekarang</v-btn> -->
+                                                    <v-layout row class="pb-6">
+                                                        <p style="color:#146C94" class="title__main">Rp{{ harga_kamar }}</p>&nbsp;<p class="regular-text bulan-text" v-if="harga_kamar == '1.600.000'">/bulan</p>
+                                                    </v-layout>
                                                     <v-btn color="#146C94" elevation="0" class="button__lihat-foto white--text" width="100%" @click="dialogKonfirmasiBooking = true" v-if="status_kamar_terisi">Pesan Sekarang</v-btn>
                                                 </v-form>
                                             </v-layout>
@@ -315,8 +317,7 @@
 
             <hr class="my-6">
 
-            <v-layout class="pb-4" row v-if="ready"     
-> 
+            <v-layout class="pb-4" row v-if="ready">
                 <div class="peraturan-biaya__grid">
                     <div class="peraturan-biaya__grid--child-1">
                         <v-card class="card__padding" outlined text-sm-left elevation="0">
@@ -336,12 +337,11 @@
                     </div>
                 </div>
             </v-layout>
-
         </v-layout>
 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom class="white--text">{{ error_message }}</v-snackbar>
 
-        <v-dialog v-model="imageDialogKos" :lazy="true" content-class="image-dialog">
+        <v-dialog v-model="imageDialogKos" content-class="image-dialog">
             <v-card class="rounded-card">
                 <v-toolbar dark color="#19A7CE" dense flat>
                 </v-toolbar>
@@ -362,6 +362,7 @@
                                     height="200"
                                     fill
                                     class="grey lighten-5"
+                                    alt="Kost Putri Jogja"
                                 ></v-img>
                             <!-- </v-card> -->
                         </v-layout>
@@ -377,7 +378,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="imageDialogKamar" :lazy="true" content-class="image-dialog">
+        <v-dialog v-model="imageDialogKamar" content-class="image-dialog">
             <v-card class="rounded-card">
                 <v-toolbar dark color="#19A7CE" dense flat>
                 </v-toolbar>
@@ -398,6 +399,7 @@
                                     height="200"
                                     fill
                                     class="grey lighten-5"
+                                    alt="Kost Putri Jogja"
                                 ></v-img>
                             <!-- </v-card> -->
                         </v-layout>
@@ -506,7 +508,7 @@ export default {
             total_kamar_kosong: null,
             kamar_kosong: [],
             rules: {
-                required: value => !!value || 'Required.',
+                required: value => !!value || 'Harus Diisi',
             },
 
             bulan_rules:[
@@ -514,7 +516,7 @@ export default {
             ],
 
             kamar_rules: [ 
-                v => !!v || "This field is required",
+                v => !!v || "Harus Diisi",
                 v => ( v && v >= 1 ) || "Kamar tidak boleh kosong",
                 v => ( v && v <= this.total_kamar_kosong ) || "Hanya tersisa " + this.total_kamar_kosong + ' kamar',
             ],
@@ -536,21 +538,21 @@ export default {
         this.axioHarga();
         this.sisaKamar();
         this.param_pengelola = this.check_pengelola();
-        this.reloadOnce();
+        // this.reloadOnce();
 
         this.devLog('process.env.NODE_ENV');
         this.devLog(process.env.NODE_ENV);
     },  
     methods:{
-        reloadOnce(){
-            this.devLog('reload test');
-            window.onload = function () {
-                if (!localStorage.justOnce) {
-                    localStorage.setItem("justOnce", "true");
-                    window.location.reload();
-                }
-            }
-        },
+        // reloadOnce(){
+        //     this.devLog('reload test');
+        //     window.onload = function () {
+        //         if (!localStorage.justOnce) {
+        //             localStorage.setItem("justOnce", "true");
+        //             window.location.reload();
+        //         }
+        //     }
+        // },
 
         initHeader(){
             this.locations = [{ message: 'Coffee Shop' }, 
@@ -577,18 +579,20 @@ export default {
             this.devLog('init data');
             this.$http.get(this.api)
             .then(response => {
-                this.snackbarLoading = false;
                 this.ready = true
                 this.devLog("get kos result code: " + response.status);
                 if(response.status == 200){
                     if(!response.data){
                         this.devLog('response fail')
+                        this.snackbarLoading = false;
                     }else{
                         this.kos_model = response.data.data[0];
                         this.devLog(this.kos_model)
                         this.getKamarPhotos();
                         this.getKamarFasilitas();
                         this.checkHypen();
+
+                        this.snackbarLoading = false;
                         // this.$router.push('/dashboard');
                     }
                 }
@@ -764,15 +768,6 @@ export default {
 
         },
 
-        addMonths(date, months) {
-            let d = date.getDate();
-            date.setMonth(date.getMonth() + +months);
-            if (date.getDate() != d) {
-            date.setDate(0);
-            }
-            return date;
-        },
-
         submitForm(){
             let localStorageUser = localStorage.getItem('userLogin');
             let user_login = JSON.parse(localStorageUser);
@@ -788,14 +783,25 @@ export default {
             this.kos_booking_model.date = this.getDateTime();
             this.kos_booking_model.harga_bulanan = this.harga_axio;
 
-            // this.devLog(this.kos_booking_model);
-            localStorage.kosBooking = JSON.stringify(this.kos_booking_model);
-            localStorage.setItem("justOnce", "false");
+            let tgl_sekarang = this.getDate();
 
+            this.devLog(tgl_sekarang);
+            this.devLog(this.kos_booking_model.tanggal_mulai);
 
-            this.$router
-                .push({ path: '/pesanan' })
-                .then(() => { this.$router.go() })
+            if(this.kos_booking_model.tanggal_mulai >= tgl_sekarang){
+                this.devLog(this.kos_booking_model)
+                localStorage.setItem("justOnce", "false");
+                localStorage.kosBooking = JSON.stringify(this.kos_booking_model);
+
+                this.$router
+                    .push({ path: '/pesanan' })
+                    .then(() => { this.$router.go() })
+            }else{
+                this.error_message = 'Anda Memesan Tanggal yang Salah!';
+                this.color = "#DF2E38";
+                this.snackbar = true;
+            }
+
         },
 
         sisaKamar(){
@@ -846,9 +852,19 @@ export default {
             this.devLog(this.peraturan_kos_hypen);
         },
 
-        scrollToView(){
-            document.getElementById("main_kos")
-                .scrollIntoView({ behavior: 'smooth' });
+        getDate(){
+            var now     = new Date(); 
+            var year    = now.getFullYear();
+            var month   = now.getMonth()+1; 
+            var day     = now.getDate();
+            if(month.toString().length == 1) {
+                month = '0'+month;
+            }
+            if(day.toString().length == 1) {
+                day = '0'+day;
+            }   
+            var date = year+'-'+month+'-'+day;   
+            return date;
         },
 
         getDateTime() {

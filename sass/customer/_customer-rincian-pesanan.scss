@@ -162,6 +162,10 @@
                 grid-area: 1 / 1 / 2 / 5; 
             }
 
+            @media only screen and (max-width: $bp-mobile) {
+                grid-column-gap: 8px;
+            }
+
             &--template{
                 display: grid;
                 align-items: flex-start;
@@ -547,11 +551,15 @@
     .btn-transfer{
         width: 35%;
 
-        @media only screen and (max-width: $bp-large) {
+        @media only screen and (max-width: $bp-bigger) {
             width: 50%;
         }
 
-        @media only screen and (max-width: $bp-small) {
+        @media only screen and (max-width: $bp-large) {
+            width: 60%;
+        }
+
+        @media only screen and (max-width: $bp-medium) {
             width: 100%;
         }
     }
