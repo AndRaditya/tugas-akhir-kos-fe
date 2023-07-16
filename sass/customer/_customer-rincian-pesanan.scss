@@ -124,6 +124,10 @@
         &--child-7 { 
             grid-area: 5 / 1 / 6 / 2; 
             @extend .cust-rincian-pesanan__rincian-transaksi--template;
+
+            display: grid;
+            align-items: center;
+            justify-content: flex-start;
         }
         
         &--child-8 { 
@@ -142,7 +146,7 @@
         &__parent{
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(7, auto);
+            grid-template-rows: repeat(8, auto);
             grid-column-gap: 0px;
             grid-row-gap: 1.2rem;
         }
@@ -312,6 +316,20 @@
 
         &--child-7 { 
             grid-area: 7 / 1 / 8 / 5; 
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            flex-direction: column;
+            padding: 1.8rem;
+            line-height: 2;
+
+            @media only screen and (max-width: $bp-small) {
+                margin-bottom: 16px;
+            }
+        }
+
+        &--child-8 { 
+            grid-area: 8 / 1 / 9 / 5; 
             display: flex;
             align-items: flex-start;
             justify-content: flex-start;
@@ -537,6 +555,7 @@
     }
     
     &__button{
+        display: none;
         grid-area: 5 / 4 / 6 / 6; 
 
         @media only screen and (max-width: $bp-small) {

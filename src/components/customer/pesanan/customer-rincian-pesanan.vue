@@ -100,7 +100,7 @@
                             </div>
                             <div class="cust-rincian-pesanan__pricing--child-5">
                                 <v-btn 
-                                    color="#146C94" 
+                                    color="#19A7CE" 
                                     class="white--text btn-transfer" 
                                     elevation="0" 
                                     :loading="isSelecting" 
@@ -112,9 +112,13 @@
                                 <p class="regular-text__medium mt-6">{{ fileName }}</p>
                             </div>
                             <div class="cust-rincian-pesanan__pricing--child-6">
-                                <p class="regular-text__thin paragraph">Silahkan tekan tombol Bayar <br> Jika Anda sudah Unggah Bukti Transfer</p>
+                                <p class="regular-text__thin paragraph">Silahkan tekan tombol Pesan <br> Jika Anda sudah Unggah Bukti Transfer</p>
                             </div>
                             <div class="cust-rincian-pesanan__pricing--child-7">
+                                <p class="regular-text__medium">Pastikan pesanan Anda sudah benar</p>
+                                <v-btn color="#146C94" class="white--text btn-transfer" @click="submitForm()">Pesan</v-btn>
+                            </div>
+                            <div class="cust-rincian-pesanan__pricing--child-8">
                                 <p class="paragraph regular-text">Masih Ragu dengan Pesanan Anda?</p>
                                 <a class="regular-text__bold pt-2 batal-anchor" @click="dialog_batal()">Batalkan Pesanan</a>
                             </div>

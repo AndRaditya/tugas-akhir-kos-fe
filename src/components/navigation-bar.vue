@@ -284,7 +284,7 @@ export default {
           {title: 'Transaksi', outline: false, filled: false, icon: 'receipt_long', class: 'nav-list__title nav-list__transaksi pl-2', sublinks: [
             {title: 'Transaksi Masuk', link: 'transaksi-masuk', outline: false, filled: false, icon: 'list_alt', class: 'nav-list__item-menu pl-1'},
             {title: 'Transaksi Keluar', link: 'transaksi-keluar', outline: false, filled: false, icon: 'list_alt', class: 'nav-list__item-menu pl-1'},
-            {title: 'Unduh Transaksi', link: 'transaksi-unduh', outline: false, filled: false, icon: 'file_download', class: 'nav-list__item-menu pl-1'},
+            {title: 'Laporan Transaksi', link: 'transaksi-unduh', outline: false, filled: false, icon: 'file_download', class: 'nav-list__item-menu pl-1'},
           ]},
           {title: 'Hai, Pengelola ', link: 'profile', outline: true, filled: false, icon: 'account_circle', class: 'nav-list__title' , class2: 'mt-4'},
           {title: 'Keluar', link: 'logout', outline: false, filled: true, class: 'nav-list__title-keluar', class2: 'nav-list__btn-keluar mt-2'},

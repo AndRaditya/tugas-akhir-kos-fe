@@ -55,8 +55,8 @@
                             <p class="regular-text__medium ">{{ date[index] }}</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-1__header-2">
-                            <!-- <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p> -->
-                            <p class="pengelola__sudah--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
+                            <!-- <p class="pengelola__belum--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Bukti Transfer'">{{ kos_booking.status }}</p> -->
+                            <p class="pengelola__sudah--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Bukti Transfer'">{{ kos_booking.status }}</p>
                             <p class="pengelola__terkonfirmasi regular-text__medium" v-else-if="kos_booking.status == 'Terkonfirmasi'">Berhasil</p>
                             <p class="pengelola__dibatalkan regular-text__medium" v-else-if="kos_booking.status == 'Dibatalkan'">Dibatalkan</p>
                         </div>
@@ -89,14 +89,18 @@
                         <div class="pengelola-pesanan--detail__child-3__desc-8">
                             <p class="regular-text__medium ">{{ kos_booking.total_kamar }} Kamar</p>
                         </div>
-                        <div class="pengelola-pesanan--detail__child-3__desc-9" v-if="kos_booking.kamar.length > 0">
-                            <p class="regular-text" >Nomor Kamar</p>
+                        <div class="pengelola-pesanan--detail__child-3__desc-9">
+                            <p class="regular-text" v-if="kos_booking.kamar.length > 0">Nomor Kamar</p>
+                            <p class="regular-text" v-if="kos_booking.status == 'Dibatalkan'">Alasan Pembatalan</p>
                         </div>
-                        <div class="pengelola-pesanan--detail__child-3__desc-10" v-if="kos_booking.kamar.length > 0">
-                            <div v-for="(nomor, index) in kos_booking.kamar" :key="index">
-                                <p class="regular-text__medium " v-if="index+1 < kos_booking.kamar.length">{{ nomor.number }}, &nbsp; </p>    
-                                <p class="regular-text__medium " v-if="index+1 === kos_booking.kamar.length">{{ nomor.number }} </p>    
+                        <div class="pengelola-pesanan--detail__child-3__desc-10" >
+                            <div v-if="kos_booking.kamar.length > 0">
+                                <div v-for="(nomor, index) in kos_booking.kamar" :key="index" >
+                                    <p class="regular-text__medium " v-if="index+1 < kos_booking.kamar.length">{{ nomor.number }}, &nbsp; </p>    
+                                    <p class="regular-text__medium " v-if="index+1 === kos_booking.kamar.length">{{ nomor.number }} </p>    
+                                </div>
                             </div>
+                            <p class="regular-text__medium" v-if="kos_booking.status == 'Dibatalkan' ">{{ kos_booking.alasan_pembatalan ? kos_booking.alasan_pembatalan : `&ndash;` }}</p>
                         </div>
 
                     </div>
@@ -106,13 +110,13 @@
                             <p class="regular-text__bold  paragraph">Rp{{ total_harga[index] }}</p>
                         </div>
                         <div class="pengelola-pesanan--detail__child-4__desc-2">
-                            <div class="pengelola-pesanan--detail__child-4__desc-2--1" v-if="kos_booking.status != 'Menunggu Konfirmasi Pengelola'">
+                            <!-- <div class="pengelola-pesanan--detail__child-4__desc-2--1" v-if="kos_booking.status != 'Menunggu Konfirmasi Bukti Transfer'">
                                 <v-btn color="#DF2E38" class="white--text regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="deleteItem(kos_booking)">Hapus Pesanan</v-btn>
                             </div>
-                            <div class="pengelola-pesanan--detail__child-4__desc-2--2" v-if="kos_booking.status != 'Menunggu Konfirmasi Pengelola'">
+                            <div class="pengelola-pesanan--detail__child-4__desc-2--2" v-if="kos_booking.status != 'Menunggu Konfirmasi Bukti Transfer'">
                                 <v-btn color="#146C94" class="white--text regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="getDetail(kos_booking.id)">Lihat Detail</v-btn>
-                            </div>
-                            <div class="pengelola-pesanan--detail__child-4__desc-2--2--fix" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">
+                            </div> -->
+                            <div class="pengelola-pesanan--detail__child-4__desc-2--2--fix">
                                 <v-btn color="#146C94" class="white--text regular-text__thin pengelola-pesanan--detail__child-4__desc-2__btn" elevation="0" @click="getDetail(kos_booking.id)">Lihat Detail</v-btn>
                             </div>
                         </div>

@@ -54,8 +54,7 @@
                                         label="Masukkan Bank"
                                         v-model="user.bank"
                                         :items="nama_bank"
-                                                                            :rules="rules"
-
+                                        :rules="rules"
                                     ></v-select>
                                     <v-layout column align-start>
                                         <p class="regular-text__medium">Nomor Rekening</p>
@@ -66,9 +65,45 @@
                                         v-model="user.rekening"
                                         type="number"
                                         hide-spin-buttons
-                                                                            :rules="rules"
-
+                                        :rules="rules"
                                     ></v-text-field>
+                                </v-layout>
+                                <v-layout column v-else>
+                                    <v-layout column align-start>
+                                        <p class="regular-text__thin">Alamat</p>
+                                    </v-layout>
+                                    <v-textarea
+                                        outlined
+                                        label="Masukkan Alamat"
+                                        v-model="user.alamat"
+                                        :rules="[rules.required]"
+                                    ></v-textarea>
+                                    <v-layout column align-start>
+                                        <p class="regular-text__thin">Pekerjaan</p>
+                                    </v-layout>
+                                    <v-text-field
+                                        outlined
+                                        label="Masukkan Pekerjaan"
+                                        v-model="user.pekerjaan"
+                                        :rules="[rules.required]"
+                                    ></v-text-field>
+                                    <v-btn 
+                                        color="#19A7CE" 
+                                        class="white--text btn-transfer mt-2 mb-4" 
+                                        elevation="0" 
+                                        :loading="isSelecting" 
+                                        @click="onPickFile()"
+                                        v-if="!urls"
+                                    >
+                                    Harap unggah foto ktp
+                                    </v-btn>
+                                    <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
+                                    <div class="login__grid-card__photo my-6" :style="{backgroundImage: `url(${urls})`}" v-if="urls">
+                                        <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
+                                        @click="removeImage()" v-if="urls">
+                                        <span class="material-icons">delete</span>
+                                        </v-btn>
+                                    </div>
                                 </v-layout>
 
                                 <v-layout column class="py-4">
@@ -167,6 +202,13 @@
 
         data(){
             return{
+                urls: '',
+                isSelecting: false,
+                selectedFile: null,
+                errorText: "",
+                fileName: '',
+                file: '',
+
                 snackbarLoading: false, 
                 snackbarLoading_message: '',
 
@@ -187,6 +229,8 @@
                     bank: '',
                     phone_number: '',
                     rekening: '',
+                    photo_path: '',
+                    foto_ktp: '',
                 },
                 param_pengelola: false,
 
@@ -251,6 +295,7 @@
                     this.phone_number_ok = -1;
                 }
             },
+
             initData(){
                 // this.initModel();
                 this.devLog('init data');
@@ -282,6 +327,7 @@
                                 this.devLog("Token: "+ localStorage.token);
                                 this.devLog("Login Result Status: " +response.data.api_status);
                                 // this.$router.push('/dashboard');
+                                this.initPhoto();
                             }
                         }
                     }).catch((err)=>{
@@ -295,6 +341,7 @@
                     this.ready = false;
                 }
             },
+
             initModel(){
                 this.devLog('init model');
                 this.model = {
@@ -302,6 +349,7 @@
                     show1: false,
                 }
             },
+
             validateForm () {
                 this.snackbarLoading_message = 'Loading';
                 this.color = "#19A7CE";
@@ -328,7 +376,7 @@
             },
 
             submitForm(){
-                if((this.pass.old.value == "" && this.pass.old.ok !=-1) || (this.pass.new.ok == 1 && this.pass.old.ok == 1)){
+                if(this.urls && ((this.pass.old.value == "" && this.pass.old.ok !=-1) || (this.pass.new.ok == 1 && this.pass.old.ok == 1))){
                     if(this.pass.old.ok == 1){
                         this.user.oldPassword = this.pass.old.value;
                         this.user.newPassword = this.pass.new.value;
@@ -336,7 +384,13 @@
                     }else{
                         this.putData();
                     }
-                }else{
+                }else if(!this.urls){
+                    this.snackbarLoading = false;
+                    this.error_message = 'Anda belum unggah foto KTP';
+                    this.color = "#DF2E38";
+                    this.snackbar = true;
+                } 
+                else{
                     alert("Please fill required data first!");
                 }
             },
@@ -364,8 +418,10 @@
                     });
             },
 
-                /// For updating user data
+            // For updating user data
             putData() {
+                this.devLog(JSON.stringify(this.user))
+
                 this.$http.put(this.api+this.user.id, this.user,  {headers: {
                     Authorization: localStorage.token,},
                 })
@@ -397,10 +453,12 @@
                     // this.pass.old.ok = -1;
                 // }
             },
+
             checkNewPass() {
                 this.pass.retype.value = "";
                 this.checkOldPass();
             },
+
             checkRePass() {
                 if(this.pass.new.value == this.pass.retype.value){
                     this.pass.new.ok = 1;
@@ -409,6 +467,48 @@
                 }
                 this.checkOldPass();
             },
+
+            initPhoto() {
+                this.urls = this.user.photo_path
+            },
+
+            onPickFile() {
+                this.$refs.file.click();
+            },
+
+            onFileChange(file) {
+                const { maxSize } = this
+                let imageFile = file[0];
+                let size = imageFile.size / maxSize / maxSize
+                if (file.length > 0) {
+                    if (!imageFile.type.match("image.*")) {
+                        this.errorDialog = true;
+                        this.errorText = "Please choose an image file";
+                    } else if(size>1){
+                        this.errorDialog = true
+                        this.errorText = 'Gambar anda terlalu besar! Pilih gambar dibawah 1MB'
+                    }else {
+                        let imageURL = URL.createObjectURL(imageFile);
+                        this.fileName = imageFile.name;
+
+                        this.devLog("onfilechange");
+                        let reader = new FileReader();
+                        reader.onloadend = (e) => {
+                            this.devLog(e.target);
+                            let image_url = e.target.result;
+
+                            this.user.foto_ktp = image_url;
+                        };
+                        reader.readAsDataURL(imageFile);
+                        this.urls = imageURL;
+                    }
+                }
+            },
+
+            removeImage() {
+                this.urls = '';
+            },
+
         }
 
     }

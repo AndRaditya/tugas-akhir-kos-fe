@@ -175,7 +175,7 @@ export default {
                 { text: "Nilai", value: "nilai", align: "left"},
                 { text: "Total Nilai", value: "total_nilai", align: "left"},
                 { text: "Biaya Tambahan", value: "biaya_tambahan[0].name", align: "left"},
-                { text: "Deskripsi", value: "desc", align: "left"},
+                // { text: "Deskripsi", value: "desc", align: "left"},
                 { text: "Actions", value: "actions", sortable: false, align: "center" },
             ];
         },

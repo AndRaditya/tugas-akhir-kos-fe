@@ -216,8 +216,8 @@
                                         <p class="subtitle" style="text-align: left">Spesifikasi Kamar</p>
                                         <v-layout column align-start style="text-align: left">
                                             <ul v-for="(spesifikasi, index) in kos_model.kamar_spesifikasi" :key="index" class="pl-0 pb-3">
-                                                <li class="regular-text ma-0 pb-2" v-if="spesifikasi.desc != '3x5'">{{ spesifikasi.desc }}</li>
-                                                <li class="regular-text ma-0 pb-2" v-else>Ukuran Kamar {{ spesifikasi.desc }} m<sup>2</sup></li>
+                                                <li class="regular-text ma-0 pb-2" v-if="spesifikasi.ukuran != '3x5'">{{ spesifikasi.ukuran }}</li>
+                                                <li class="regular-text ma-0 pb-2" v-else>Ukuran Kamar {{ spesifikasi.ukuran }} m<sup>2</sup></li>
                                             </ul>
                                         </v-layout>
                                     </div>

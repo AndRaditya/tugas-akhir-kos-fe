@@ -81,7 +81,7 @@
 
             display: grid;
             grid-template-columns: 0.5fr 1fr;
-            grid-template-rows: repeat(6, auto);
+            grid-template-rows: repeat(7, auto);
             grid-column-gap: 0px;
             grid-row-gap: 0px;
 
@@ -104,7 +104,6 @@
             &__desc-1 {
                 @extend .pengelola-pesanan--detail__child-3--template;
                 grid-area: 1 / 1 / 2 / 2; 
-
             }
             
             &__desc-2 { 
@@ -169,6 +168,11 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-start;
+            }
+
+            &__desc-13 { 
+                @extend .pengelola-pesanan--detail__child-3--template;
+                grid-area: 7 / 1 / 8 / 3;
             }
         }
 
@@ -342,5 +346,106 @@
             }
         }
         
+    }
+
+    &__dialog{
+        &--data-diri{
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr auto;
+            grid-column-gap: 0px;
+            grid-row-gap: 12px;
+
+            &__1{
+                grid-area: 1 / 1 / 2 / 2;
+
+                display: grid;
+                grid-template-columns: 0.75fr 1fr;
+                grid-template-rows: repeat(7, auto);
+                grid-column-gap: 0px;
+                grid-row-gap: 0px;  
+    
+                @media only screen and (max-width: $bp-smallest) {
+                    grid-template-columns: 1fr 1fr;
+                }
+    
+                &--template{
+                    display: grid !important;
+                    align-items: center !important;
+                    justify-content: flex-start !important;
+                    text-align: left;
+                }
+
+                
+                &__desc-1 {
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+                    grid-area: 1 / 1 / 2 / 2; 
+                }
+                
+                &__desc-2 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+                    grid-area: 1 / 2 / 2 / 3; 
+
+                }
+                
+                &__desc-3 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+                    grid-area: 2 / 1 / 3 / 2; 
+                }
+                
+                &__desc-4 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+                    grid-area: 2 / 2 / 3 / 3;
+                }
+
+                &__desc-5 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+                    grid-area: 3 / 1 / 4 / 2; 
+    
+                }
+                
+                &__desc-6 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+                    grid-area: 3 / 2 / 4 / 3; 
+    
+                }
+                
+                &__desc-7 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+                    grid-area: 4 / 1 / 5 / 2; 
+    
+                }
+                
+                &__desc-8 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+                    grid-area: 4 / 2 / 5 / 3; 
+    
+                }
+    
+                &__desc-9 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+
+                    grid-area: 5 / 1 / 6 / 3; 
+                }
+
+                &__desc-10 { 
+                    @extend .pengelola-pesanan-rincian__dialog--data-diri__1--template;
+
+                    height: 50vh;
+                    background-position-x: center;
+                    background-position-y: center;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+
+                    grid-area: 6 / 1 / 7 / 3; 
+                }
+                
+
+            }
+
+            &__2{
+                grid-area: 2 / 1 / 3 / 2;
+            }
+        }
     }
 }

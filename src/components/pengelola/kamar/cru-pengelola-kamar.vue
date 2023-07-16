@@ -61,6 +61,29 @@
                                 :readonly="!editable"
                                 :disabled="penyewa_disabled"
                             ></v-text-field>
+                            <div class="pengelola-kamar__grid-2__form-1__listrik">
+                                <div class="pengelola-kamar__grid-2__form-1__listrik--child-1">
+                                    <p class="regular-text__medium paragraph">Listrik</p>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-1__listrik--child-2">
+                                    <p class="regular-text__thin paragraph">Termasuk Listrik</p>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-1__listrik--child-3">
+                                    <v-radio-group row class="ma-0 pa-0 ml-4" v-model="termasuk_listrik">
+                                        <v-radio label="Ya" value="Termasuk Listrik"></v-radio>
+                                        <v-radio label="Tidak" value="Tidak Termasuk Listrik"></v-radio>
+                                    </v-radio-group>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-1__listrik--child-4">
+                                    <p class="regular-text__thin paragraph">Jenis Listrik</p>
+                                </div>
+                                <div class="pengelola-kamar__grid-2__form-1__listrik--child-5">
+                                    <v-radio-group row class="ma-0 pa-0 ml-4" v-model="jenis_listrik">
+                                        <v-radio label="Token" value="Listrik Token"></v-radio>
+                                        <v-radio label="Meteran" value="Listrik Meteran"></v-radio>
+                                    </v-radio-group>
+                                </div>
+                            </div>
                             <v-layout align-start column>
                                 <p class="regular-text">Fasilitas Kamar</p>
                             </v-layout>
@@ -312,6 +335,10 @@ export default {
             maxSize: 1024,
             errorDialog: null,
             errorText: "",
+
+            termasuk_listrik: '',
+            jenis_listrik: '',
+            kamar_fasilitas_temp: [],
         }
     },
 
@@ -376,6 +403,7 @@ export default {
                                 this.initListKos();
                                 this.getKamarFasilitasAxio();
                                 this.initPhoto();
+                                this.getKamarFasilitasListrik();
                                 this.ready = true;
                             }
                         }
@@ -470,6 +498,28 @@ export default {
             }
         },
 
+        addListrikKamarFasilitas(){
+            this.kamar_model.kamar_fasilitas = this.kamar_model.kamar_fasilitas.filter(function(e) { return e !== 'Termasuk Listrik' })
+            this.kamar_model.kamar_fasilitas = this.kamar_model.kamar_fasilitas.filter(function(e) { return e !== 'Tidak Termasuk Listrik' })
+            this.kamar_model.kamar_fasilitas = this.kamar_model.kamar_fasilitas.filter(function(e) { return e !== 'Listrik Token' })
+            this.kamar_model.kamar_fasilitas = this.kamar_model.kamar_fasilitas.filter(function(e) { return e !== 'Listrik Meteran' })
+
+            this.kamar_model.kamar_fasilitas.push(this.termasuk_listrik)
+            this.kamar_model.kamar_fasilitas.push(this.jenis_listrik)
+        },
+
+        getKamarFasilitasListrik(){
+            this.kamar_model.kamar_fasilitas.forEach((element) => {
+                if(element == 'Termasuk Listrik' || element == 'Tidak Termasuk Listrik'){
+                    this.termasuk_listrik = element
+                } 
+                else if(element == 'Listrik Token' || element == 'Listrik Meteran'){
+                    this.jenis_listrik = element
+                }
+            })
+
+        },
+
         validate(){
             this.valid = (this.$refs.form_data_kamar).validate();
             this.devLog('valid + '+ this.valid);
@@ -488,6 +538,8 @@ export default {
         },
 
         submitForm(){
+            this.addListrikKamarFasilitas();
+
             switch (this.nav_title) {
                 case "Tambah":
                     this.postData();
@@ -540,6 +592,8 @@ export default {
         },  
 
         putData(){
+            this.devLog(JSON.stringify(this.kamar_model));
+
             this.snackbarLoading_message = 'Submitting Data';
             this.color = "#19A7CE";
             this.snackbarLoading = true;
@@ -574,7 +628,6 @@ export default {
                 this.snackbar = true;
             });
         },  
-
 
         getKamarFasilitasAxio(){
             this.devLog('get kamar fasilitas axio')

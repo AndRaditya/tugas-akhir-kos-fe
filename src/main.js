@@ -5,6 +5,7 @@ import router from "./router"
 import Vuelidate from 'vuelidate'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import VueApexCharts from 'vue-apexcharts'
 
 // import LoginPage from './components/login/login'
 import axios from 'axios'
@@ -102,6 +103,7 @@ Vue.mixin({
 const app = new Vue({
   vuetify,
   Vuelidate,
+  VueApexCharts,
   el: '#app',
   render: h => h(App),
 

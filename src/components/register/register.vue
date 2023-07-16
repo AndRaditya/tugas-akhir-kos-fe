@@ -21,38 +21,56 @@
                                 <p class="regular-text__thin">Nama Lengkap</p>
                             </v-layout>
                             <v-text-field
-                                    outlined
-                                    label="Masukkan Nama Lengkap"
-                                    v-model="model.name"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
-                                <v-layout column align-start>
-                                    <p class="regular-text__thin">Nomor Telepon</p>
-                                </v-layout>
-                                <v-text-field
-                                    outlined
-                                    label="Masukkan Nomor"
-                                    v-model="model.phone_number"
-                                    :rules="phone_number_rules"
-                                    @input="checkPhoneNumber()"
-                                    :success="phone_number_ok==1 ? true : false"
-                                    :error="phone_number_ok==-1 ? true : false"
-                                ></v-text-field>
-                                <v-layout column align-start>
-                                    <p class="regular-text__thin">Email</p>
-                                </v-layout>
-                                <v-text-field
-                                    outlined
-                                    label="Masukkan Email"
-                                    v-model="model.email"
-                                    :rules="email_rules"
-                                    @input="checkEmail()"
-                                    :success="email_ok==1 ? true : false"
-                                    :error="email_ok==-1 ? true : false"
-                                    type="email"
-                                ></v-text-field>
-                                <v-layout column align-start>
-                                    <p class="regular-text__thin">Password</p>
+                                outlined
+                                label="Masukkan Nama Lengkap"
+                                v-model="model.name"
+                                :rules="[rules.required]"
+                            ></v-text-field>
+                            <v-layout column align-start>
+                                <p class="regular-text__thin">Nomor Telepon</p>
+                            </v-layout>
+                            <v-text-field
+                                outlined
+                                label="Masukkan Nomor"
+                                v-model="model.phone_number"
+                                :rules="phone_number_rules"
+                                @input="checkPhoneNumber()"
+                                :success="phone_number_ok==1 ? true : false"
+                                :error="phone_number_ok==-1 ? true : false"
+                            ></v-text-field>
+                            <v-layout column align-start>
+                                <p class="regular-text__thin">Alamat</p>
+                            </v-layout>
+                            <v-textarea
+                                outlined
+                                label="Masukkan Alamat"
+                                v-model="model.alamat"
+                                :rules="[rules.required]"
+                            ></v-textarea>
+                            <v-layout column align-start>
+                                <p class="regular-text__thin">Pekerjaan</p>
+                            </v-layout>
+                            <v-text-field
+                                outlined
+                                label="Masukkan Pekerjaan"
+                                v-model="model.pekerjaan"
+                                :rules="[rules.required]"
+                            ></v-text-field>
+                            <v-layout column align-start>
+                                <p class="regular-text__thin">Email</p>
+                            </v-layout>
+                            <v-text-field
+                                outlined
+                                label="Masukkan Email"
+                                v-model="model.email"
+                                :rules="email_rules"
+                                @input="checkEmail()"
+                                :success="email_ok==1 ? true : false"
+                                :error="email_ok==-1 ? true : false"
+                                type="email"
+                            ></v-text-field>
+                            <v-layout column align-start>
+                                <p class="regular-text__thin">Password</p>
                             </v-layout>
                             <v-text-field
                                 outlined
@@ -65,8 +83,24 @@
                                 >
                             </v-text-field>
 
+                            <v-btn 
+                                color="#19A7CE" 
+                                class="white--text btn-transfer mt-2 mb-4" 
+                                elevation="0" 
+                                :loading="isSelecting" 
+                                @click="onPickFile()"
+                            >
+                            Harap unggah foto ktp
+                            </v-btn>
+                            <input type="file" class="form-control" ref="file" @change="onFileChange($event.target.files)" style="display: none">
+                            <div class="login__grid-card__photo my-6" :style="{backgroundImage: `url(${urls})`}" v-if="urls">
+                                <v-btn icon small class="error my-auto pengelola-kos__grid-2__form-2--child-2__button" 
+                                @click="removeImage()" v-if="urls">
+                                <span class="material-icons">delete</span>
+                                </v-btn>
+                            </div>
 
-                            <v-btn color="#146C94" elevation="0" class="white--text" ref="form_register" type="submit">Daftar Sekarang</v-btn>
+                            <v-btn color="#146C94" elevation="0" class="white--text mt-6" ref="form_register" type="submit">Daftar Sekarang</v-btn>
                             <hr class="mt-6">
 
                             <div class="btn-akun--1">
@@ -103,6 +137,13 @@
 
         data(){
             return{
+                urls: '',
+                isSelecting: false,
+                selectedFile: null,
+                errorText: "",
+                fileName: '',
+                file: '',
+
                 snackbarLoading: false, 
                 snackbarLoading_message: '',
 
@@ -159,6 +200,8 @@
                     passwordUlang: '',
                     name: '',
                     phone_number: '',
+                    alamat: '',
+                    pekerjaan: '',
                 }
             },
             checkEmail() {
@@ -184,9 +227,14 @@
                 this.checkEmail();
                 this.checkPhoneNumber();
 
-                if (this.valid == true && this.email_ok == 1 && this.phone_number_ok == 1) {
+                if (this.valid == true && this.email_ok == 1 && this.phone_number_ok == 1 && this.urls) {
                     this.submitForm();
-                }else{
+                }else if(!this.urls){
+                    this.error_message = 'Anda belum unggah foto KTP';
+                    this.color = "#DF2E38";
+                    this.snackbar = true;
+                }
+                else{
                     window.scrollTo(0,0);
                 }
             },
@@ -196,8 +244,7 @@
                 this.color = "#19A7CE";
                 this.snackbarLoading = true;
 
-                // this.devLog(this.model)
-                this.devLog("Trying to connect... "+ this.API + " with : " + JSON.stringify(this.model)) ;
+                this.devLog(JSON.stringify(this.model)) ;
 
                 this.$http.post(this.API+'/register', this.model)
                 .then(response => {
@@ -229,10 +276,47 @@
                 });
             },
 
+            onPickFile() {
+                this.$refs.file.click();
+            },
+
+            onFileChange(file) {
+                const { maxSize } = this
+                let imageFile = file[0];
+                let size = imageFile.size / maxSize / maxSize
+                if (file.length > 0) {
+                    if (!imageFile.type.match("image.*")) {
+                        this.errorDialog = true;
+                        this.errorText = "Please choose an image file";
+                    } else if(size>1){
+                        this.errorDialog = true
+                        this.errorText = 'Gambar anda terlalu besar! Pilih gambar dibawah 1MB'
+                    }else {
+                        let imageURL = URL.createObjectURL(imageFile);
+                        this.fileName = imageFile.name;
+
+                        this.devLog("onfilechange");
+                        let reader = new FileReader();
+                        reader.onloadend = (e) => {
+                            this.devLog(e.target);
+                            let image_url = e.target.result;
+
+                            this.model.foto_ktp = image_url;
+                        };
+                        reader.readAsDataURL(imageFile);
+                        this.urls = imageURL;
+                    }
+                }
+            },
+
             login(){
                 this.$router
                     .push({ path: '/login' })
                     // .then(() => { this.$router.go() })
+            },
+
+            removeImage() {
+                this.urls = '';
             },
         }
 

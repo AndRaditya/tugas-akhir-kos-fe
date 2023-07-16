@@ -2,9 +2,63 @@
     <v-container grid-list-md class="pt-0" v-if="ready">
         <div class="transaksi-unduh__grid">
             <div class="transaksi-unduh__child-1">
-                <p class="title__main">Unduh Transaksi</p>
+                <p class="title__main">Laporan Transaksi</p>
             </div>
             <div class="transaksi-unduh__child-2">
+                <div class="transaksi-unduh__child-2__grand-1">
+                    <div class="transaksi-unduh__child-2__template-1">
+                        <p class="bigger--regular-text__medium paragraph">Grafik Transaksi Masuk</p>
+                    </div>
+                    <div class="transaksi-unduh__child-2__template-2">
+                        <v-select
+                            outlined
+                            label="Tahun"
+                            v-model="data_chart_tahun_masuk"
+                            :items="data_chart_tahun_items"
+                            hide-details
+                        ></v-select>
+                    </div>
+                    <div class="transaksi-unduh__child-2__template-3">
+                        <v-select
+                            outlined
+                            label="Tahun"
+                            v-model="data_chart_kategori_masuk"
+                            :items="data_chart_kategori_masuk_items"
+                            hide-details
+                        ></v-select>
+                    </div>
+                    <div class="transaksi-unduh__child-2__template-4">
+                        <apexcharts width="100%" height="auto" type="bar" :options="chartOptionsMasuk" :series="seriesMasuk"></apexcharts>
+                    </div>
+                </div>
+                <div class="transaksi-unduh__child-2__grand-2">
+                    <div class="transaksi-unduh__child-2__template-1">
+                        <p class="bigger--regular-text__medium paragraph">Grafik Transaksi Keluar</p>
+                    </div>
+                    <div class="transaksi-unduh__child-2__template-2">
+                        <v-select
+                            outlined
+                            label="Tahun"
+                            v-model="data_chart_tahun_keluar"
+                            :items="data_chart_tahun_items"
+                            hide-details
+                        ></v-select>
+                    </div>
+                    <div class="transaksi-unduh__child-2__template-3">
+                        <v-select
+                            outlined
+                            label="Tahun"
+                            v-model="data_chart_kategori_keluar"
+                            :items="data_chart_kategori_keluar_items"
+                            hide-details
+                        ></v-select>
+                    </div>
+                    <div class="transaksi-unduh__child-2__template-4">
+                        <apexcharts width="100%" height="auto" type="bar" :options="chartOptionsKeluar" :series="seriesKeluar"></apexcharts>
+                    </div>
+                </div>
+            </div>
+            <div class="transaksi-unduh__child-3 mt-6">
                 <div class="transaksi-unduh__tanggal">
                     <div class="transaksi-unduh__tanggal--child-1">
                         <p class="bigger--regular-text__medium paragraph">Transaksi Masuk</p>
@@ -66,7 +120,7 @@
                     </div>
                 </div>
             </div>
-            <div class="transaksi-unduh__child-3">
+            <div class="transaksi-unduh__child-4">
                 <div class="transaksi-unduh__tanggal">
                     <div class="transaksi-unduh__tanggal--child-1">
                         <p class="bigger--regular-text__medium paragraph">Transaksi Keluar</p>
@@ -128,7 +182,7 @@
                     </div>
                 </div>
             </div>
-            <div class="transaksi-unduh__child-4">
+            <div class="transaksi-unduh__child-5">
                 <div class="transaksi-unduh__tanggal">
                     <div class="transaksi-unduh__tanggal--child-1">
                         <p class="bigger--regular-text__medium paragraph">Semua Transaksi</p>
@@ -190,7 +244,7 @@
                     </div>
                 </div>
             </div>
-            <div class="transaksi-unduh__child-5">
+            <div class="transaksi-unduh__child-6">
                 <div class="transaksi-unduh__tanggal">
                     <div class="transaksi-unduh__tanggal--child-1">
                         <p class="bigger--regular-text__medium paragraph">Laporan Harian Semua Transaksi</p>
@@ -264,13 +318,27 @@
 </template>
 
 <script>
+import VueApexCharts from 'vue-apexcharts';
+
 export default {
     name: 'transaksi-unduh',
+    components: {
+        apexcharts: VueApexCharts
+    },
     props:{
         apiExport: {
             type: String,
             required: true
         },
+        apiChartMasuk: {
+            type: String,
+            required: true
+        },
+        apiChartKeluar: {
+            type: String,
+            required: true
+        },
+
     },
     data(){
         return{
@@ -307,10 +375,86 @@ export default {
             transaksi_semua_model:{},
             transaksi_laporan_model:{},
 
+            chartOptionsMasuk: {
+                chart: {
+                id: 'Transaksi Masuk'
+                },
+                xaxis: {
+                    categories: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+                },
+                colors: ['#19A7CE']
+            },
+            seriesMasuk: [],
+
+            chartOptionsKeluar: {
+                chart: {
+                id: 'Transaksi Masuk'
+                },
+                xaxis: {
+                    categories: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+                },
+                colors: ['#2c3e50']
+            },
+            seriesKeluar: [],
+
+            data_chart_tahun_items: ['2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+
+            data_chart_tahun_masuk: '2023',
+            data_chart_kategori_masuk: 'Pembayaran Booking',
+            data_chart_kategori_masuk_items: ['Bayar 1 Bulan', 'Bayar 2 Bulan', 'Bayar 3 Bulan', 'Bayar 6 Bulan', 'Bayar 12 Bulan', 'Lain - lain', 'Pembayaran Booking'],
+
+            data_chart_tahun_keluar: '2023',
+            data_chart_kategori_keluar: 'Gaji Bulanan',
+            data_chart_kategori_keluar_items: ['Gaji Bulanan', 'Perbaikan', 'Perawatan', 'Lain-lain'],
+
+            data_chart_model_masuk: {
+                "tahun": null,
+                "kategori": ''
+            },
+
+            data_chart_model_keluar: {
+                "tahun": null,
+                "kategori": ''
+            },
+
         }
     },
     created(){
         this.initData();
+    },
+    watch:{
+        'data_chart_tahun_masuk'(newVal, oldVal){
+            if(newVal != oldVal){
+                this.devLog('data sort')
+                this.devLog('new val = ' + newVal)
+                this.devLog('old val = ' + oldVal)
+                this.grafikTransaksiMasuk(newVal, this.data_chart_kategori_masuk);
+            }
+        },
+        'data_chart_kategori_masuk'(newVal, oldVal){
+            if(newVal != oldVal){
+                this.devLog('data sort')
+                this.devLog('new val = ' + newVal)
+                this.devLog('old val = ' + oldVal)
+                this.grafikTransaksiMasuk(this.data_chart_tahun_masuk, newVal);
+            }
+        },
+        'data_chart_tahun_keluar'(newVal, oldVal){
+            if(newVal != oldVal){
+                this.devLog('data sort')
+                this.devLog('new val = ' + newVal)
+                this.devLog('old val = ' + oldVal)
+                this.grafikTransaksiKeluar(newVal, this.data_chart_kategori_keluar);
+            }
+        },
+        'data_chart_kategori_keluar'(newVal, oldVal){
+            if(newVal != oldVal){
+                this.devLog('data sort')
+                this.devLog('new val = ' + newVal)
+                this.devLog('old val = ' + oldVal)
+                this.grafikTransaksiKeluar(this.data_chart_tahun_keluar, newVal);
+            }
+        },
     },
     methods:{
         initData(){
@@ -318,7 +462,8 @@ export default {
                 this.ready = true;
             }
             this.initModel();
-            // this.getData();
+            this.grafikTransaksiMasuk(this.data_chart_tahun_masuk, this.data_chart_kategori_masuk);
+            this.grafikTransaksiKeluar(this.data_chart_tahun_keluar, this.data_chart_kategori_keluar);
         },
         
         initModel(){
@@ -400,6 +545,84 @@ export default {
                 }
             });
         },
+
+        grafikTransaksiMasuk(tahun, kategori){
+            this.data_chart_model_masuk.tahun = tahun;
+            this.data_chart_model_masuk.kategori = kategori;
+
+            this.seriesMasuk = [];
+
+            this.$http.post(this.apiChartMasuk, this.data_chart_model_masuk, {
+                    headers : {Authorization: localStorage.token}}
+                )
+            .then(response => {
+                this.devLog("sort data Result Code: " +response.status);
+                if(response.status == 200){
+                    if(response.data.api_status == "fail"){
+                        this.devLog('response fail')
+                        this.error_message = response.data.api_title;
+                        this.color = "#DF2E38";
+                        this.snackbar = true;
+                    }
+                    else{
+                        let obj = {
+                            name: 'Transaksi Masuk',
+                            data: response.data
+                        }
+
+                        this.seriesMasuk.push(obj)
+                    }
+                }
+            }).catch((err)=>{
+                this.devLog(err);
+                this.error_message = err.response;
+                this.color = "#DF2E38";
+                this.snackbar = true;
+                this.model_transaksi = false;
+                this.ready = false;
+            });   
+        },
+
+        grafikTransaksiKeluar(tahun, kategori){
+            this.data_chart_model_keluar.tahun = tahun;
+            this.data_chart_model_keluar.kategori = kategori;
+
+            this.seriesKeluar = [];
+
+            this.$http.post(this.apiChartKeluar, this.data_chart_model_keluar, {
+                    headers : {Authorization: localStorage.token}}
+                )
+            .then(response => {
+                this.devLog("sort data Result Code: " +response.status);
+                if(response.status == 200){
+                    if(response.data.api_status == "fail"){
+                        this.devLog('response fail')
+                        this.error_message = response.data.api_title;
+                        this.color = "#DF2E38";
+                        this.snackbar = true;
+                    }
+                    else{
+                        this.devLog('trs keluar');
+                        this.devLog(response.data);
+                        let obj = {
+                            name: 'Transaksi Keluar',
+                            data: response.data
+                        } 
+
+                        this.seriesKeluar.push(obj)
+
+                        this.devLog(this.seriesKeluar)
+                    }
+                }
+            }).catch((err)=>{
+                this.devLog(err);
+                this.error_message = err.response;
+                this.color = "#DF2E38";
+                this.snackbar = true;
+                this.model_transaksi = false;
+                this.ready = false;
+            });   
+        }
     }
 }
 </script>

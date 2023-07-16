@@ -27,11 +27,11 @@ import PengelolaUnduhTransaksi from './components/pengelola/transaksi-unduh/tran
 Vue.use(Router)
 var baseUrl = "";
 
-// if( process.env.NODE_ENV == 'development') {
-//   baseUrl = "http://127.0.0.1:8000";
-// } else {
+if( process.env.NODE_ENV == 'development') {
+  baseUrl = "http://127.0.0.1:8000";
+} else {
   baseUrl = "https://api.kost-catleya.space";
-// }
+}
 
 const apiUrl = "/api";
 const api = baseUrl+apiUrl;
@@ -85,7 +85,7 @@ routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/ad
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/edit/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: true, apiKategori: api + '/transaksi-keluar-kategori'}});
 routeArr.push({ title: 'Transaksi Keluar', icon: '', path: '/transaksi-keluar/:id', component: PengelolaCruTransaksiKeluar, props:{api: api+'/transaksi-keluar/', editable: false, apiKategori: api + '/transaksi-keluar-kategori'}});
 
-routeArr.push({ title: 'Transaksi Unduh', icon: '', path: '/transaksi-unduh', component: PengelolaUnduhTransaksi, props:{apiExport: api+'/export/'}});
+routeArr.push({ title: 'Transaksi Unduh', icon: '', path: '/transaksi-unduh', component: PengelolaUnduhTransaksi, props:{apiExport: api+'/export/', apiChartMasuk: api+'/transaksi-masuk-chart', apiChartKeluar: api+'/transaksi-keluar-chart'}});
 
 
 routeArr.push({ title: 'Page Not Found', name:'404', path:'*', component: {

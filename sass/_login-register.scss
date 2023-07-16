@@ -37,6 +37,35 @@
         @media only screen and (max-width: $bp-small) {
             grid-area: 1 / 2 / 3 / 3;
         } 
+
+        &__photo{
+            height: 30vh;
+            background-position-x: center;
+            background-position-y: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+            border-radius: 6px;
+
+            @media only screen and (max-width: $bp-large) {
+                height: 20vh;
+            }
+
+            @media only screen and (max-width: $bp-medium) {
+                height: 25vh;
+            }
+
+            @media only screen and (max-width: $bp-mobile) {
+                height: 20vh;
+            }
+
+            // grid-area: 1 / 1 / 2 / 2; 
+            position: relative;
+
+            // @media only screen and (max-width: $bp-medium) {
+            //     grid-area: 1 / 1 / 2 / 2; 
+            // }
+        }
     }
 
     &--form{

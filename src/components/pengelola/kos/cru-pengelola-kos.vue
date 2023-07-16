@@ -27,7 +27,7 @@
                                 v-model="ukuran_kamar"
                                 :rules="requiredRule"
                             ></v-text-field>
-                            <div class="pengelola-kos__grid-2__form-1__listrik">
+                            <!-- <div class="pengelola-kos__grid-2__form-1__listrik">
                                 <div class="pengelola-kos__grid-2__form-1__listrik--child-1">
                                     <p class="regular-text__medium paragraph">Listrik</p>
                                 </div>
@@ -49,7 +49,7 @@
                                         <v-radio label="Meteran" value="Listrik Meteran"></v-radio>
                                     </v-radio-group>
                                 </div>
-                            </div>
+                            </div> -->
                             <v-layout column align-start class="mt-4">
                                 <p class="regular-text__medium">Fasilitas Kos</p>
                             </v-layout>
@@ -310,19 +310,18 @@ export default {
             }
         },
         kamarSpesifikasi(){
-            this.kamar_spesifikasi_temp.push({
-                jenis: 'termasuk_listrik',
-                desc: this.termasuk_listrik,
-            });
+            // this.kamar_spesifikasi_temp.push({
+            //     jenis: 'termasuk_listrik',
+            //     desc: this.termasuk_listrik,
+            // });
 
-            this.kamar_spesifikasi_temp.push({
-                jenis: 'jenis_listrik',
-                desc: this.jenis_listrik,
-            });
+            // this.kamar_spesifikasi_temp.push({
+            //     jenis: 'jenis_listrik',
+            //     desc: this.jenis_listrik,
+            // });
             
             this.kamar_spesifikasi_temp.push({
-                jenis: 'ukuran_kamar',
-                desc: this.ukuran_kamar,
+                ukuran: this.ukuran_kamar,
             });
         },
 
@@ -397,6 +396,10 @@ export default {
             this.color = "#19A7CE";
             this.snackbarLoading = true;
 
+            // this.devLog(JSON.stringify(this.kos_model))
+
+
+
             this.$http.put(this.api+this.id, this.kos_model, {headers : {
                 Authorization: localStorage.token,
             }})
@@ -444,17 +447,9 @@ export default {
         },
 
         getTextKamarSpec(){
-            this.kos_model.kamar_spesifikasi.forEach((element) => {
-                if(element.jenis == 'termasuk_listrik'){
-                    this.termasuk_listrik = element.desc
-                }
-                else if(element.jenis == 'jenis_listrik'){
-                    this.jenis_listrik = element.desc
-                }
-                else if(element.jenis == 'ukuran_kamar'){
-                    this.ukuran_kamar = element.desc
-                }
-            })
+            const kamarSpec = this.kos_model.kamar_spesifikasi[0];
+
+            this.ukuran_kamar = kamarSpec.ukuran;
         },
 
         getKosFasilitas(){

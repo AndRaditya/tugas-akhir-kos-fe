@@ -68,7 +68,7 @@
                             </v-layout>
                         </div>
                         <div class="cust-transaksi--detail__child-1__header-2">
-                            <p class="pengelola__sudah--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Pengelola'">{{ kos_booking.status }}</p>
+                            <p class="pengelola__sudah--verifikasi regular-text__medium" v-if="kos_booking.status == 'Menunggu Konfirmasi Bukti Transfer'">{{ kos_booking.status }}</p>
                             <p class="pengelola__terkonfirmasi regular-text__medium" v-else-if="kos_booking.status == 'Terkonfirmasi'">{{ kos_booking.status }}</p>
                             <p class="pengelola__dibatalkan regular-text__medium" v-else-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking.status }}</p>
                         </div>
@@ -83,6 +83,7 @@
                                 <p class="regular-text">Tanggal Selesai</p>
                                 <p class="regular-text">Total Bulan</p>
                                 <p class="regular-text">Jumlah Kamar</p>
+                                <p class="regular-text" v-if="kos_booking.status == 'Dibatalkan'">Alasan Pembatalan</p>
                             </v-layout>
                         </div>
                         <div class="cust-transaksi--detail__child-3__desc-2">
@@ -91,6 +92,9 @@
                                 <p class="regular-text__medium ">{{ tanggal_selesai[index] }}</p>
                                 <p class="regular-text__medium ">{{ kos_booking.total_bulan }} Bulan</p>
                                 <p class="regular-text__medium ">{{ kos_booking.total_kamar }} Kamar</p>
+                                <!-- <p class="regular-text__medium " v-if="kos_booking.status == 'Dibatalkan'">{{ kos_booking.alasan_pembatalan }}</p> -->
+                                <p class="regular-text__medium" v-if="kos_booking.status == 'Dibatalkan' ">{{ kos_booking.alasan_pembatalan ? kos_booking.alasan_pembatalan : `&ndash;` }}</p>
+
                             </v-layout>
                         </div>
                     </div>
